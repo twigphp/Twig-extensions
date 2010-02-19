@@ -38,9 +38,16 @@ class Twig_Extension_Text extends Twig_Extension
 
 if (function_exists('mb_get_info')) {
 
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
+            if ($preserve) {
+                if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
+                    $length = $breakpoint;
+                }
+                
+            }
+            
             return mb_substr($value, 0, $length, $env->getCharset()) . $separator;
         }
         
@@ -49,13 +56,20 @@ if (function_exists('mb_get_info')) {
     
 } else {
 
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         if (strlen($value) > $length) {
+            if ($preserve) {
+                if (false !== ($breakpoint = strpos($value, ' ', $length))) {
+                    $length = $breakpoint;
+                }
+                
+            }
+        
             return substr($value, 0, $length) . $separator;
         }
         
         return $value;
     }
-    
+   
 }
