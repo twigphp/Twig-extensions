@@ -24,8 +24,17 @@ class Twig_Extension_Text extends Twig_Extension
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
         );
     }
+    
+    /**
+     * Name of this extension
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'Text';
+    }
 }
-
 
 if (function_exists('mb_get_info')) {
 
