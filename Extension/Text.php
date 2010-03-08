@@ -23,6 +23,7 @@ class Twig_Extension_Text extends Twig_Extension
         return array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'nl2br' => new Twig_Filter_Function('nl2br'),
         );
     }
     
