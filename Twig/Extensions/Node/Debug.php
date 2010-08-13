@@ -13,10 +13,11 @@
  * Represents a debug node.
  *
  * @package    twig
+ * @subpackage Twig-extensions
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class Twig_Node_Debug extends Twig_Node
+class Twig_Extensions_Node_Debug extends Twig_Node
 {
     public function __construct(Twig_Node_Expression $expr = null, $lineno, $tag = null)
     {

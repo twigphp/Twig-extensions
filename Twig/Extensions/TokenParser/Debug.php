@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Twig_TokenParser_Debug extends Twig_TokenParser
+class Twig_Extensions_TokenParser_Debug extends Twig_TokenParser
 {
     /**
      * Parses a token and returns a node.

@@ -12,7 +12,7 @@
  * @package Twig
  * @subpackage Twig-extensions
  */
-class Twig_Extension_Text extends Twig_Extension
+class Twig_Extensions_Extension_Text extends Twig_Extension
 {
     /**
      * Returns a list of filters.
