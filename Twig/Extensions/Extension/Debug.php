@@ -18,7 +18,7 @@ class Twig_Extensions_Extension_Debug extends Twig_Extension
     public function getTokenParsers()
     {
         return array(
-            new Twig_TokenParser_Debug(),
+            new Twig_Extensions_TokenParser_Debug(),
         );
     }
 
