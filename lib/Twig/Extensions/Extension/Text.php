@@ -24,7 +24,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
-            'nl2br' => new Twig_Filter_Function('nl2br'),
+            'nl2br'    => new Twig_Filter_Function('twig_nl2br_filter', array('needs_environment' => true, 'is_safe' => array('html'))),
         );
     }
 
@@ -37,6 +37,11 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         return 'Text';
     }
+}
+
+function twig_nl2br_filter($env, $value, $sep = '<br />')
+{
+    return str_replace("\n", $sep."\n", twig_escape_filter($env, $value, 'html'));
 }
 
 if (function_exists('mb_get_info')) {
