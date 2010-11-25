@@ -12,7 +12,7 @@
          bootstrap="test/bootstrap.php"
 >
   <testsuites>
-    <testsuite name="Twig Test Suite">
+    <testsuite name="Twig Extensions Test Suite">
       <directory>./test/Twig/</directory>
     </testsuite>
   </testsuites>
@@ -22,4 +22,8 @@
       <directory suffix=".php">./lib/Twig/</directory>
     </whitelist>
   </filter>
+
+  <php>
+      <const name="TWIG_LIBRARY_PATH" value="/path/to/library/where/Twig/located" />
+  </php>
 </phpunit>
