@@ -38,7 +38,7 @@ class Twig_Extensions_Node_Debug extends Twig_Node
             ->indent()
         ;
 
-        if (null === $this->expr) {
+        if (null === $this->getNode('expr')) {
             // remove embedded templates (macros) from the context
             $compiler
                 ->write("\$vars = array();\n")
@@ -56,7 +56,7 @@ class Twig_Extensions_Node_Debug extends Twig_Node
         } else {
             $compiler
                 ->write("print_r(")
-                ->subcompile($this->expr)
+                ->subcompile($this->getNode('expr'))
                 ->raw(");\n")
             ;
         }
