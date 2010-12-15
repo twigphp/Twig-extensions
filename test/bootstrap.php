@@ -16,15 +16,5 @@ if (!defined('TWIG_LIB_DIR') || 'NOT_SET' === TWIG_LIB_DIR) {
 require_once TWIG_LIB_DIR.'/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-function twigExtensionAutoload($class)
-{
-    if (0 !== strpos($class, 'Twig_Extensions')) {
-        return;
-    }
-
-    if (file_exists($file = dirname(__FILE__).'/../lib/'.str_replace('_', '/', $class).'.php')) {
-        require $file;
-    }
-}
-
-spl_autoload_register('twigExtensionAutoload');
+require_once dirname(__FILE__).'/../lib/Twig/Extensions/Autoloader.php';
+Twig_Extensions_Autoloader::register();
