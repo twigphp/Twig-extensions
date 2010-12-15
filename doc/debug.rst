@@ -17,7 +17,7 @@ output a specific variable or an expression:
 
     {% debug post.body %}
 
-.. warning::
+.. caution::
 
     The ``debug`` tag only works when the ``debug`` environment option is set
     to ``true``.
