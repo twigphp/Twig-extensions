@@ -36,7 +36,7 @@ Usage
 
 Use the ``trans`` block to mark parts in the template as translatable:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {% trans "Hello World!" %}
 
@@ -48,7 +48,7 @@ Use the ``trans`` block to mark parts in the template as translatable:
 
 In a translatable string, you can embed variables:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {% trans %}
         Hello {{ name }}!
@@ -61,7 +61,7 @@ In a translatable string, you can embed variables:
 If you need to apply filters to the variables, you first need to assign the
 result to a variable:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {% set name = name|capitalize %}
 
@@ -71,7 +71,7 @@ result to a variable:
 
 To pluralize a translatable string, use the ``plural`` block:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {% trans %}
         Hey {{ name }}, I have one apple.
@@ -86,7 +86,7 @@ contain the count value (here the value of ``apple_count``).
 Within an expression or in a tag, you can use the ``trans`` filter to translate
 simple strings or variables:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {{ var|default(default_value|trans) }}
 
@@ -98,7 +98,7 @@ The filter is less powerful as it only works for simple variables or strings.
 For more complex scenario, like pluralization, you can use a two-step
 strategy:
 
-.. code-block: jinja
+.. code-block:: jinja
 
     {# assign the translation to a temporary variable #}
     {% set default_value %}
