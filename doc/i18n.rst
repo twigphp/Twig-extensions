@@ -146,7 +146,7 @@ templates. Here is a simple example to get you started::
 Use the standard ``xgettext`` utility as you would have done with plain PHP
 code:
 
-.. code-block: text
+.. code-block:: text
 
     xgettext --default-domain=messages -p ./locale --from-code=UTF-8 -n --omit-header -L PHP /tmp/cache/*.php
 
