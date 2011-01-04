@@ -119,6 +119,6 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             }
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $node->getLine()))), $vars);
+        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
     }
 }
