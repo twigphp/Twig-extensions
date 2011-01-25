@@ -104,20 +104,30 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             return array($body, array());
         }
 
-        $msg = '';
         $vars = array();
-        foreach ($body as $node) {
-            if ($node instanceof Twig_Node_Print) {
-                $n = $node->getNode('expr');
-                while ($n instanceof Twig_Node_Expression_Filter) {
-                    $n = $n->getNode('node');
+
+        if(count($body))
+        {
+            $msg = '';
+
+            foreach ($body as $node) {
+                if ($node instanceof Twig_Node_Print) {
+                    $n = $node->getNode('expr');
+                    while ($n instanceof Twig_Node_Expression_Filter) {
+                        $n = $n->getNode('node');
+                    }
+                    $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
+                    $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getLine());
+                } else {
+                    $msg .= $node->getAttribute('data');
                 }
-                $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
-                $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getLine());
-            } else {
-                $msg .= $node->getAttribute('data');
             }
         }
+        else
+        {
+            $msg = $body->getAttribute('data');
+        }
+
 
         return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
     }
