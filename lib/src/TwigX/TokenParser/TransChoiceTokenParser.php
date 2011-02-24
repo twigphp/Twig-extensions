@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Twig\Extension\TokenParser;
+namespace TwigX\TokenParser;
 
-use Twig\Extension\Node\TransNode;
+use TwigX\Node\TransNode;
 
 /**
  *
