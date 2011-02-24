@@ -11,8 +11,8 @@
 
 namespace Twig\Extension;
 
-use Twig\TokenParser\TransTokenParser;
-use Twig\TokenParser\TransChoiceTokenParser;
+use Twig\Extension\TokenParser\TransTokenParser;
+use Twig\Extension\TokenParser\TransChoiceTokenParser;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
