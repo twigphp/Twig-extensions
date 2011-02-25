@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace TwigX;
+namespace TwigX\Extension;
 
-use TwigX\TokenParser\TransTokenParser;
-use TwigX\TokenParser\TransChoiceTokenParser;
+use TwigX\Extension\TokenParser\TransTokenParser;
+use TwigX\Extension\TokenParser\TransChoiceTokenParser;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
