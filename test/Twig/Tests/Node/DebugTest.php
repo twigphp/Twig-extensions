@@ -39,6 +39,11 @@ class Twig_Tests_Node_DebugTest extends Twig_Tests_Node_TestCase
     {
         $tests = array();
 
+        $func = 'print_r';
+        if (extension_loaded('xdebug')) {
+            $func = 'var_dump';
+        }
+
         $tests[] = array(new Twig_Extensions_Node_Debug(null, 0), <<<EOF
 if (\$this->env->isDebug()) {
     \$vars = array();
@@ -47,7 +52,7 @@ if (\$this->env->isDebug()) {
             \$vars[\$key] = \$value;
         }
     }
-    print_r(\$vars);
+    $func(\$vars);
 }
 EOF
         );
@@ -57,7 +62,7 @@ EOF
 
         $tests[] = array($node, <<<EOF
 if (\$this->env->isDebug()) {
-    print_r((isset(\$context['foo']) ? \$context['foo'] : null));
+    $func((isset(\$context['foo']) ? \$context['foo'] : null));
 }
 EOF
         );

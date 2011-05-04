@@ -38,6 +38,11 @@ class Twig_Extensions_Node_Debug extends Twig_Node
             ->indent()
         ;
 
+        $func = 'print_r';
+        if (extension_loaded('xdebug')) {
+            $func = 'var_dump';
+        }
+
         if (null === $this->getNode('expr')) {
             // remove embedded templates (macros) from the context
             $compiler
@@ -51,11 +56,11 @@ class Twig_Extensions_Node_Debug extends Twig_Node
                 ->write("}\n")
                 ->outdent()
                 ->write("}\n")
-                ->write("print_r(\$vars);\n")
+                ->write("$func(\$vars);\n")
             ;
         } else {
             $compiler
-                ->write("print_r(")
+                ->write("$func(")
                 ->subcompile($this->getNode('expr'))
                 ->raw(");\n")
             ;
