@@ -47,7 +47,7 @@ if (\$this->env->isDebug()) {
             \$vars[\$key] = \$value;
         }
     }
-    print_r(\$vars);
+    var_dump(\$vars);
 }
 EOF
         );
@@ -57,7 +57,7 @@ EOF
 
         $tests[] = array($node, <<<EOF
 if (\$this->env->isDebug()) {
-    print_r((isset(\$context['foo']) ? \$context['foo'] : null));
+    var_dump((isset(\$context['foo']) ? \$context['foo'] : null));
 }
 EOF
         );
