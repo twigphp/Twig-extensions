@@ -148,7 +148,7 @@ code:
 
 .. code-block:: text
 
-    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 -n --omit-header -L PHP /tmp/cache/*.php
+    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 -n -L PHP /tmp/cache/*/*/*.php
 
 .. _`gettext`:       http://www.php.net/gettext
 .. _`documentation`: http://fr.php.net/manual/en/function.gettext.php
