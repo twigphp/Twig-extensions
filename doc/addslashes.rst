@@ -11,11 +11,12 @@ Useful for ie: javascript var in twig templates.
 How to use it
 -------------
 
-in your Acme/YourBundle/Resources/config/services.yml:: 
+in your Acme/YourBundle/Resources/config/services.yml::
 
-services:
-    twig.extension.txt:
-        class: Twig_Extensions_Extension_Addslashes
-        tags:
-            - { name: twig.extension }
+	services:
+		twig.extension.txt:
+			class: Twig_Extensions_Extension_Addslashes
+			tags:
+				- { name: twig.extension }
 
+.. _`addslashes`:       http://www.php.net/addslashes
