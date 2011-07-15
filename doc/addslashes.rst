@@ -10,10 +10,11 @@ Useful for javascript var in twig templates
 
 ## How to use it
 
-in your Acme/YourBundle/Resources/config/services.yml
+in your Acme/YourBundle/Resources/config/services.yml::
 
-```services:
+services:
     twig.extension.txt:
         class: Twig_Extensions_Extension_Addslashes
         tags:
-            - { name: twig.extension }```
+            - { name: twig.extension }
+..
