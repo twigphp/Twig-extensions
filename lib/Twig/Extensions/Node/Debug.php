@@ -51,11 +51,11 @@ class Twig_Extensions_Node_Debug extends Twig_Node
                 ->write("}\n")
                 ->outdent()
                 ->write("}\n")
-                ->write("print_r(\$vars);\n")
+                ->write("var_dump(\$vars);\n")
             ;
         } else {
             $compiler
-                ->write("print_r(")
+                ->write("var_dump(")
                 ->subcompile($this->getNode('expr'))
                 ->raw(");\n")
             ;
