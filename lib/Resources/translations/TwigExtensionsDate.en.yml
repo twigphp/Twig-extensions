@@ -1,0 +1,8 @@
+date.year: '%year% year|%year% years'
+date.month: '%month% month|%month% months'
+date.day: '%day% day|%day% days'
+date.hour: '%hour% hour|%hour% hours'
+date.minute: '%minute% minute|%minute% minutes'
+date.second: '%second% second|%second% seconds'
+date.new: 'less than a minute'
+date.and: ' and '
