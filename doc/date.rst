@@ -3,9 +3,7 @@ The Date Extension
 
 The ``date`` extension provides the following filters:
 
-* ``datediff``: The date filter is able to format a interval between a date and today:
-
-.. code-block:: jinja
+* ``datediff``: The date filter is able to format a interval between a date and today::
   
    The post was sent {{ post.published_at | datediff }} ago.
 
@@ -15,17 +13,13 @@ The ``date`` extension provides the following filters:
 Configuration
 -------------
 
-This filter uses the traslator service so, you need to activate it:
-
-.. code-block:: jinja
+This filter uses the traslator service so, you need to activate it::
 
     // app/config/config.yml
     framework:
         translator:      { fallback: en }
 
-After that, you need to register the extension:
-
-.. code-block:: jinja
+After that, you need to register the extension::
 
     // app/config/config.yml
     services:
@@ -38,13 +32,11 @@ After that, you need to register the extension:
 Usage
 _____
 
-.. code-block:: jinja
+How to use::
 
     {{ [datetime instance or string] | datediff }}
 
-You can also specify the timezone, the message catalog and the locale
-
-.. code-block:: jinja
+You can also specify the timezone, the message catalog and the locale::
 
     {{ [datetime instance or string] | datediff("Europe/Madrid")  }}
     {{ [datetime instance or string] | datediff("Europe/Madrid", "admin")  }}
