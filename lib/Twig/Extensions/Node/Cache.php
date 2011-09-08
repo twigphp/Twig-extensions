@@ -21,7 +21,7 @@ class Twig_Extensions_Node_Cache extends Twig_Node
         $cache = $compiler->getEnvironment()->getExtension('cache');
         if (!$cache->isEnabled()) {
             return $compiler->subcompile($this->getNode('body'));
-    }
+        }
 
         // Get the cache key
         $cache_key = $this->getAttribute('cache_key');

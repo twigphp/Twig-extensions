@@ -74,7 +74,7 @@ class Twig_Extensions_Extension_Cache extends Twig_Extension
     {
         if ($this->enabled) {
             return apc_exists($this->generateCacheKey($cache_key));
-    }
+        }
 
         return false;
     }
@@ -89,7 +89,7 @@ class Twig_Extensions_Extension_Cache extends Twig_Extension
     {
         if ($this->enabled) {
             return apc_fetch($this->generateCacheKey($cache_key));
-    }
+        }
 
         return false;
     }
@@ -103,9 +103,9 @@ class Twig_Extensions_Extension_Cache extends Twig_Extension
     {
         if (false === $expiry) {
             $expiry = $this->default_expiry;
-    }
-
-        if ($this->enabled)
+        }
+        if ($this->enabled) {
             apc_store($this->generateCacheKey($cache_key), $body, $expiry);
+        }
     }
 }
