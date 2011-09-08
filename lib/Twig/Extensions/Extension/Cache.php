@@ -5,7 +5,7 @@
  *
  * @author Zakay Danial
  */
-class Twig_Extension_Cache extends Twig_Extension
+class Twig_Extensions_Extension_Cache extends Twig_Extension
 {
     protected $default_expiry;
     protected $cache_generation;
@@ -31,7 +31,7 @@ class Twig_Extension_Cache extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(new Twig_TokenParser_Cache());
+        return array(new Twig_Extensions_TokenParser_Cache());
     }
 
     /**
@@ -72,8 +72,9 @@ class Twig_Extension_Cache extends Twig_Extension
      */
     public function cacheExists($cache_key)
     {
-        if ($this->enabled)
+        if ($this->enabled) {
             return apc_exists($this->generateCacheKey($cache_key));
+    }
 
         return false;
     }
@@ -86,8 +87,10 @@ class Twig_Extension_Cache extends Twig_Extension
      */
     public function cacheGet($cache_key)
     {
-        if ($this->enabled)
+        if ($this->enabled) {
             return apc_fetch($this->generateCacheKey($cache_key));
+    }
+
         return false;
     }
 
@@ -98,12 +101,11 @@ class Twig_Extension_Cache extends Twig_Extension
      */
     public function cacheSet($cache_key, $body, $expiry = false)
     {
-        if ($expiry === false)
+        if (false === $expiry) {
             $expiry = $this->default_expiry;
+    }
 
         if ($this->enabled)
             apc_store($this->generateCacheKey($cache_key), $body, $expiry);
     }
-
 }
-

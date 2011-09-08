@@ -1,8 +1,7 @@
 <?php
 
-class Twig_TokenParser_Cache extends Twig_TokenParser
+class Twig_Extensions_TokenParser_Cache extends Twig_TokenParser
 {
-
     /**
      * Parses a token and returns a node.
      *
@@ -27,13 +26,13 @@ class Twig_TokenParser_Cache extends Twig_TokenParser
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        return new Twig_Node_Cache(
-                $body,
-                array(
-                    'cache_key' => $cache_key
-                ),
-                $lineno,
-                $this->getTag()
+        return new Twig_Extensions_Node_Cache(
+            $body,
+            array(
+                'cache_key' => $cache_key
+            ),
+            $lineno,
+            $this->getTag()
         );
     }
 
@@ -51,6 +50,4 @@ class Twig_TokenParser_Cache extends Twig_TokenParser
     {
         return 'cache';
     }
-
 }
-
