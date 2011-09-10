@@ -38,18 +38,31 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
 }
 
 if (class_exists('NumberFormatter')) {
-    function twig_format_currency($value, $currency)
+    function twig_format_currency($value, $currency, $locale = null)
     {
         static $formatter;
+
+        if (null === $locale) {
+            $locale = Locale::getDefault();
+        }
+
         if (null === $formatter) {
-            $formatter = new NumberFormatter(Locale::getDefault(), NumberFormatter::CURRENCY);
+            $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         }
 
         return $formatter->formatCurrency($value, $currency);
     }
 } else {
-    function twig_format_currency($value)
+    function twig_format_currency($value, $currency = null, $locale = null)
     {
+        if (null !== $currency) {
+            throw new \LogicException("You must have Intl enabled to specify a currency. Pass null if you\'re trying to set the locale.");
+        }
+
+        if (null !== $locale) {
+            setlocale(LC_MONETARY, $locale);
+        }
+        
         return money_format("%i", $value);
     }
 }
