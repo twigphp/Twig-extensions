@@ -22,9 +22,10 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
-            'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
-            'nl2br'    => new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'truncate'  => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
+            'wordwrap'  => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'nl2br'     => new Twig_Filter_Function('twig_nl2br_filter'   , array('pre_escape' => 'html', 'is_safe' => array('html'))),
+						'auto_link' => new Twig_Filter_Function('auto_link_filter'    , array('is_safe' => array('html'))),
         );
     }
 
@@ -101,4 +102,29 @@ if (function_exists('mb_get_info')) {
   {
       return wordwrap($value, $length, $separator, !$preserve);
   }
+}
+
+function auto_link_filter($string)
+{
+
+    $regexp = "/(<a.*?>)?(https?)?(:\/\/)?(\w+\.)?(\w+)\.(\w+)(<\/a.*?>)?/i";
+    $anchor_markup = "<a href=\"%s://%s\" target=\"_blank\" >%s</a>";
+
+    preg_match_all($regexp, $string, $matches, \PREG_SET_ORDER);
+
+    foreach ($matches as $match) {
+
+        // Check url is not wrapped in an anchor tag
+        if (empty($match[1]) && empty($match[7])) {
+
+            $http = $match[2]?$match[2]:'http';
+
+            $replace = sprintf($anchor_markup, $http, $match[0], $match[0]);
+
+            $string = str_replace($match[0], $replace, $string);
+        }
+
+    }
+
+    return $string;
 }
