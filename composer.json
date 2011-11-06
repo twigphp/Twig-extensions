@@ -1,0 +1,20 @@
+{
+    "name": "twig/extensions",
+    "description": "Common additional features for Twig that do not directly belong in core",
+    "keywords": ["debug","i18n","text"],
+    "homepage": "https://github.com/fabpot/Twig-extensions",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        }
+    ],
+    "require": {
+        "twig/twig": "1.*"
+    },
+    "autoload": {
+        "psr-0": { "Twig_Extensions_": "lib/Twig/Extensions" }
+    }
+}
