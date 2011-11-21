@@ -1,2 +1,5 @@
 .DS_Store
 phpunit.xml
+/.buildpath
+/.project
+/.settings
