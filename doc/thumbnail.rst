@@ -50,7 +50,7 @@ In your twig template you can use one in these:
 Installation
 ------------
 
-- Edit app/config.yml or your bundle config.yml to use the Thumbnail extension::
+Edit app/config.yml or your bundle config.yml to use the Thumbnail extension::
 
     services:
         twig.extension.thumbnail:
