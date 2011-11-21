@@ -2,9 +2,9 @@
 
 /**
  * This file is part of Twig.
- * 
+ *
  * (c) 2011 Emanuele Gaspari Castelletti
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -24,10 +24,10 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 	private $thumbnail_filename;
 
 	/**
-     * Returns a list of functions
-     *
-     * @return array
-     */
+	 * Returns a list of functions
+	 *
+	 * @return array
+	 */
 	public function getFunctions()
 	{
 		return array(
@@ -36,10 +36,10 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 	}
 
 	/**
-     * Name of this extension
-     *
-     * @return string
-     */
+	 * Name of this extension
+	 *
+	 * @return string
+	 */
 	public function getName()
 	{
 		return 'thumbnailExtension';
@@ -51,14 +51,14 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 	 * eg: filename = image1.jpg
 	 * $size can be:
 	 *
-	 * 1) array( 'width'=>100, 'height'=>50 )	=> resize the image to this fixed dimension
-	 * 																					 thumb filename = image1_w100_h50.jpg
-	 * 2) array( 'width'=>100 )								=> calculate the corresponding height and then resize the image
-	 * 																					 thumb filename = image1_w100.jpg
-	 * 3) array( 'height'=>50 )								=> calculate the corresponding width and then resize the image
-	 * 																					 thumb filename = image1_h50.jpg
-	 * 4) array( 'scale'=>30 )								=> resize the image with 30% width and 30% height of the original image
-	 * 																					 thumb filename = image1_s30.jpg
+	 * 1) array( 'width'=>100, 'height'=>50 )	=>	resize the image to this fixed dimension
+	 * 												thumbnail filename = image1_w100_h50.jpg
+	 * 2) array( 'width'=>100 )					=> 	calculate the corresponding height and then resize the image
+	 * 												thumbnail filename = image1_w100.jpg
+	 * 3) array( 'height'=>50 )					=>	calculate the corresponding width and then resize the image
+	 * 												thumbnail filename = image1_h50.jpg
+	 * 4) array( 'scale'=>30 )					=> 	resize the image with 30% width and 30% height of the original image
+	 * 												thumbnail filename = image1_s30.jpg
 	 *
 	 * the thumbnail file is created in the same path containing the original image
 	 *
@@ -111,7 +111,7 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 			{
 				throw new InvalidArgumentException();
 			}
-				
+
 
 			// actually resize the image depengind by $size
 			if (isset($size['width']) && isset($size['height']))
