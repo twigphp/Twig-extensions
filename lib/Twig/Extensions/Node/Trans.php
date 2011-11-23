@@ -94,7 +94,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                 ;
             }
 
-            $compiler->raw(');');
+            $compiler->raw(");\n");
         }
     }
 
