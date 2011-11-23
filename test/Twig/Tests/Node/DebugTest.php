@@ -55,12 +55,12 @@ EOF
         $expr = new Twig_Node_Expression_Name('foo', 0);
         $node = new Twig_Extensions_Node_Debug($expr, 0);
 
-        $tests[] = array($node, <<<EOF
+        $tests[] = array($node, sprintf(<<<EOF
 if (\$this->env->isDebug()) {
-    var_dump((isset(\$context['foo']) ? \$context['foo'] : null));
+    var_dump(%s);
 }
 EOF
-        );
+        , $this->getVariableGetter('foo')));
 
         return $tests;
     }
