@@ -2,9 +2,9 @@
 
 /**
  * This file is part of Twig.
- *
+ * 
  * (c) 2011 Emanuele Gaspari Castelletti
- *
+ * 
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -14,20 +14,32 @@
  */
 class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 {
-	// absolute path of the original image
-	private $image_absolute_filename;
+	// relative path (to web dir) of the original image
+	private $image_relative_path;
 
-	// image type
-	private $image_type;
-
-	// filename of the generated thumbnail
-	private $thumbnail_filename;
-
+	// relative path (to web dir) of the generated thumbnail
+	private $thumbnail_relative_path;
+	
+	// resources of image and thumbnail
+	private $image		= null;
+	private $thumbnail	= null;
+	
+	// dirname containing the php script (eg: app.php)
+	private $document_root;
+	
 	/**
-	 * Returns a list of functions
-	 *
-	 * @return array
+	 * Initializes the $document_root internal variable
 	 */
+	public function __construct()
+	{
+		$this->document_root = realpath($_SERVER['DOCUMENT_ROOT']);
+	}
+	
+	/**
+     * Returns a list of available functions
+     *
+     * @return array
+     */
 	public function getFunctions()
 	{
 		return array(
@@ -36,213 +48,266 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 	}
 
 	/**
-	 * Name of this extension
-	 *
-	 * @return string
-	 */
+     * Name of this extension
+     *
+     * @return string
+     */
 	public function getName()
 	{
-		return 'thumbnailExtension';
+		return 'Thumbnail';
 	}
 
 	/**
-	 * 	return the new thumbnail path
+	 * Returns the relative path (to web dir) of the created thumbnail file if everithig ok.
+	 * Returns the relative path (to web dir) of the original image if any error occurs.
 	 *
-	 * eg: filename = image1.jpg
-	 * $size can be:
+	 * eg: $image_relative_path = /uploads/image1.jpg
+	 * 
+	 * $options can be:
 	 *
-	 * 1) array( 'width'=>100, 'height'=>50 )	=>	resize the image to this fixed dimension
-	 * 												thumbnail filename = image1_w100_h50.jpg
-	 * 2) array( 'width'=>100 )					=> 	calculate the corresponding height and then resize the image
-	 * 												thumbnail filename = image1_w100.jpg
-	 * 3) array( 'height'=>50 )					=>	calculate the corresponding width and then resize the image
-	 * 												thumbnail filename = image1_h50.jpg
-	 * 4) array( 'scale'=>30 )					=> 	resize the image with 30% width and 30% height of the original image
-	 * 												thumbnail filename = image1_s30.jpg
+	 * 1) array('width'=>100, 'height'=>50)			=>	resizes the image to this fixed size
+	 * 													thumbnail path = /uploads/image1_w100_h50.jpg
+	 * 
+	 * 2) array('width'=>100, 'permissions'=>755)	=>	calculates the corresponding height and then resize the image
+	 * 													applies 755 permissions to the created thumbnail file
+	 * 													thumbnail path = /uploads/image1_w100.jpg
+	 * 
+	 * 3) array('height'=>50, 'quality'=>90)		=>	calculates the corresponding width and then resize the image
+	 * 													if the image is jpeg, applies a percentage value (90%) to the thumbnail quality (range 0-100)
+	 * 													thumbnail path = /uploads/image1_h50_q90.jpg
+	 * 
+	 * 4) array('scale'=>30)						=>	resizes the image with 30% width and 30% height of the original image
+	 * 													thumbnail path = /uploads/image1_s30.jpg
 	 *
-	 * the thumbnail file is created in the same path containing the original image
+	 * Important:
+	 * 	1) The thumbnail file is created in the same path containing the original image
+	 * 	2) All relative paths are intended from the folder containing the php script (eg: app.php, app_dev.php)
 	 *
-	 * @param String $absolute_filename the absolute path of the original image
-	 * @param array $size
+	 * @param string $image_relative_path relative path (to web dir) of the original image
+	 * @param array $options thumbnail size values and more
 	 */
-	public function thumbnail($absolute_filename, Array $size = array())
+	public function thumbnail($image_relative_path, array $options = array())
 	{
+		// prints the relative path of the thumbnail
 		try
 		{
-			$this->createThumbnail($absolute_filename, $size);
+			echo $this->createThumbnail($image_relative_path, $options);
 		}
+		// suppresses internal exceptions and print the original filename if any error occurs
 		catch(Exception $e)
-		{}
-
-		// print the path of the thumbnail
-		echo $this->thumbnail_filename;
-	}
-
-	private function createThumbnail($absolute_filename, Array $size)
-	{
-		// if original file does not exist or it is not a file
-		if (!file_exists($absolute_filename) || !is_file($absolute_filename))
-		throw new InvalidArgumentException();
-			
-		// absolute path of the original image
-		$this->image_absolute_filename = $absolute_filename;
-			
-		// create the name of the thumbnail
-		$this->setThumbnailName($size);
-			
-		// if thumbnail does not already exists, create id
-		if (!file_exists($this->thumbnail_filename))
 		{
-			// recognize image type
-			$image_info = getimagesize($this->image_absolute_filename);
-			$this->image_type = $image_info[2];
+			//throw $e;
+			echo $image_relative_path;
+		}
+	}
+	
+	/**
+	 * Internal function to create the thumbnail
+	 * 
+	 * @param string $image_relative_path relative path (to web dir) of the original image
+	 * @param array $options thumbnail size values and more
+	 * @throws InvalidArgumentException
+	 * @throws Exception
+	 * @return string relative path (to web dir) of the generated thumbnail
+	 */
+	private function createThumbnail($image_relative_path = null, array $options = array())
+	{
+		// the absolute path of the original image
+		$image_absolute_path = $this->document_root.$image_relative_path;
+		
+		// if original file does not exist or it is not a file
+		if (!file_exists($image_absolute_path) || !is_file($image_absolute_path))
+			throw new InvalidArgumentException('The original file "'.$image_absolute_path.'" is not a file or does not exist.');
 
-			if( $this->image_type == IMAGETYPE_JPEG )
+		// sets the relative path class variable of the original image
+		$this->image_relative_path = $image_relative_path;
+		
+		// recognizes image type. required for thumbnail filename
+		try
+		{
+			$image_info = getimagesize($image_absolute_path);
+		}
+		catch (Exception $e)
+		{
+			throw new InvalidArgumentException('The original file "'.$image_absolute_path.'" is not an image.');
+		}
+		
+		$image_type = $image_info[2];
+		
+		if ($image_type == IMAGETYPE_JPEG)
+		{
+			$this->image = imagecreatefromjpeg($image_absolute_path);
+		}
+		else if ($image_type == IMAGETYPE_GIF)
+		{
+			$this->image = imagecreatefromgif($image_absolute_path);
+		}
+		else if ($image_type == IMAGETYPE_PNG)
+		{
+			$this->image = imagecreatefrompng($image_absolute_path);
+		}
+		else
+		{
+			throw new InvalidArgumentException('Unsupported type of image: '.$image_type);
+		}
+		
+		// generates the relative path of the thumbnail
+		try
+		{
+			$this->thumbnail_relative_path = $this->getThumbnailRelativePath($options, $image_type);
+		}
+		catch (Exception $e)
+		{
+			throw $e;
+		}
+		
+		// if thumbnail does not exist yet, creates it
+		if (!file_exists($this->document_root.$this->thumbnail_relative_path))
+		{
+			// resizes the image depending on specified $options
+			if (isset($options['width']) && isset($options['height']))
 			{
-				$this->image_absolute_filename = imagecreatefromjpeg($this->image_absolute_filename);
-			} elseif( $this->image_type == IMAGETYPE_GIF )
+				$this->resize($options['width'], $options['height']);
+			}
+			else if (isset($options['width']))
 			{
-				$this->image_absolute_filename = imagecreatefromgif($this->image_absolute_filename);
-			} elseif( $this->image_type == IMAGETYPE_PNG )
+				$this->resizeToWidth($options['width']);
+			}
+			else if (isset($options['height']))
 			{
-				$this->image_absolute_filename = imagecreatefrompng($this->image_absolute_filename);
+				$this->resizeToHeight($options['height']);
+			}
+			else if (isset($options['scale']))
+			{
+				$this->scale($options['scale']);
 			}
 			else
 			{
-				throw new InvalidArgumentException();
+				throw new InvalidArgumentException('New size not specified. A value for width, height or scale must be set.');
 			}
-
-
-			// actually resize the image depengind by $size
-			if (isset($size['width']) && isset($size['height']))
-			{
-				$this->resize($size['width'], $size['height']);
-			}
-			else if (isset($size['width']))
-			{
-				$this->resizeToWidth($size['width']);
-			}
-			else if (isset($size['height']))
-			{
-				$this->resizeToHeight($size['height']);
-			}
-			else if (isset($size['scale']))
-			{
-				$this->scale($size['scale']);
-			}
-			else
-			{
-				throw new InvalidArgumentException();
-			}
-
-			// salva
-			try
-			{
-				$this->save();
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
+			
+			// saves the thumbnail
+			$this->save($image_type, $options);
 		}
 			
-		// calculate the relative path from the document root
-		$this->thumbnail_filename = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath($this->thumbnail_filename));
+		// returns the relative path of the created thumbnail
+		return $this->thumbnail_relative_path;
 	}
 
 	/**
-	 * calculate the name of the thumbnail
+	 * Calculates the relative path of the thumbnail
 	 *
-	 * @param array $size
+	 * @param array $options thumbnail size values and more
+	 * @param unknown_type $image_type
+	 * @return string relative path (to web dir) of the generated thumbnail
 	 */
-	private function setThumbnailName(Array $size)
+	private function getThumbnailRelativePath(array $options = array(), $image_type)
 	{
-		// info about the orifinal image
-		$filename_info = pathinfo($this->image_absolute_filename);
+		// info about the original image
+		$filename_info	= pathinfo($this->document_root.$this->image_relative_path);
 		$filename		= $filename_info['filename'];
-		$extension	= $filename_info['extension'];
+		$extension		= $filename_info['extension'];
 		$dirname		= $filename_info['dirname'];
 
-		// $thumbnail_filename = original filename; if any errors occur, it return <img> tag with the original image
+		// $thumbnail_filename = original filename; if any error occurs, it returns <img> tag with the original image
 		$thumbnail_filename = $filename;
 
-		// switch by content of $size
-		if (isset($size['width']) && isset($size['height']))
+		// switches by content of $options related to the size
+		if (isset($options['width']) && isset($options['height']))
 		{
-			$thumbnail_filename = $filename.'_w'.$size['width'].'_h'.$size['height'];
+			$thumbnail_filename = $filename.'_w'.$options['width'].'_h'.$options['height'];
 		}
-		else if (isset($size['width']))
+		else if (isset($options['width']))
 		{
-			$thumbnail_filename = $filename.'_w'.$size['width'];
+			$thumbnail_filename = $filename.'_w'.$options['width'];
 		}
-		else if (isset($size['height']))
+		else if (isset($options['height']))
 		{
-			$thumbnail_filename = $filename.'_h'.$size['height'];
+			$thumbnail_filename = $filename.'_h'.$options['height'];
 		}
-		else if (isset($size['scale']))
+		else if (isset($options['scale']))
 		{
-			$thumbnail_filename = $filename.'_s'.$size['scale'];
+			$thumbnail_filename = $filename.'_s'.$options['scale'];
 		}
-
-		// set class variable $this->thumbnail_filename
-		$this->thumbnail_filename = $dirname.'/'.$thumbnail_filename.'.'.$extension;
+		
+		// append the portion of the filename regarding the quality
+		if ($image_type == IMAGETYPE_JPEG && isset($options['quality']))
+		{
+			$thumbnail_filename = $thumbnail_filename.'_q'.$options['quality'];
+		}
+		
+		// returns the generated filename of the thumbnail
+		return str_replace($filename, $thumbnail_filename, $this->image_relative_path);
 	}
 
 	/**
-	 * get the width of the original image
+	 * Returns the width of the original image
 	 */
 	private function getWidth()
 	{
-		return imagesx($this->image_absolute_filename);
+		return imagesx($this->image);
 	}
 
 	/**
-	 * get the height of the original image
+	 * Returns the height of the original image
 	 */
 	private function getHeight()
 	{
-		return imagesy($this->image_absolute_filename);
+		return imagesy($this->image);
 	}
 
 	/**
-	 * save the genrated thumbnail
+	 * Saves the generated thumbnail
 	 *
-	 * @param string $image_type
-	 * @param integer $compression
-	 * @param integer $permissions
+	 * $options accepts:	'permisisons'	=> interger (eg: 775, 644, 0755)
+	 * 						'quality'		=> integer; 0 <= quality <= 100
+	 *
+	 * @param unknown_type $image_type original image type
+	 * @param integer $options thumbnail size values and more
 	 */
-	private function save($image_type = IMAGETYPE_JPEG, $compression = 100, $permissions = 0755)
+	private function save($image_type = IMAGETYPE_JPEG, $options = array())
 	{
-		$filename = $this->thumbnail_filename;
-
 		try
 		{
-			if( $image_type == IMAGETYPE_JPEG )
+			// saves as jpeg
+			if ($image_type == IMAGETYPE_JPEG)
 			{
-				imagejpeg($this->image_absolute_filename,$filename,$compression);
+				$quality = 100;
+				// adjusts quality
+				if (isset($options['quality']))
+				{
+					$quality = $options['quality'];
+					if ($quality < 0) $quality = 0;
+					if ($quality > 100) $quality = 100;
+				}
+				
+				imagejpeg($this->thumbnail, $this->document_root.$this->thumbnail_relative_path, $quality);
 			}
-			else if( $image_type == IMAGETYPE_GIF )
+			// saves as gif
+			else if ($image_type == IMAGETYPE_GIF)
 			{
-				imagegif($this->image_absolute_filename,$filename);
+				imagegif($this->thumbnail, $this->document_root.$this->thumbnail_relative_path);
 			}
-			else if( $image_type == IMAGETYPE_PNG )
+			// saves as png
+			else if ($image_type == IMAGETYPE_PNG)
 			{
-				imagepng($this->image_absolute_filename,$filename);
-			}
-
-			if( $permissions != null)
-			{
-				chmod($filename,$permissions);
+				imagepng($this->thumbnail, $this->document_root.$this->thumbnail_relative_path);
 			}
 		}
 		catch (Exception $e)
 		{
 			throw $e;
 		}
+		
+		// changes the thumbnail file permissions
+		if (isset($options['permissions']) && is_int($options['permissions']))
+		{
+			chmod($this->document_root.$this->thumbnail_relative_path, $options['permissions']);
+		}
 	}
 
 	/**
-	 * resize the original image to a fixed height, calculating corresponding width
+	 * Resizes the original image to a fixed height, calculating corresponding width
 	 *
 	 * @param integer $height
 	 */
@@ -251,11 +316,11 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 		$ratio	= $height / $this->getHeight();
 		$width	= $this->getWidth() * $ratio;
 
-		$this->resize($width,$height);
+		$this->resize($width, $height);
 	}
 
 	/**
-	 * resize the original image to a fixed width, calculating corresponding height
+	 * Resizes the original image to a fixed width, calculating corresponding height
 	 *
 	 * @param integer $width
 	 */
@@ -264,11 +329,11 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 		$ratio	= $width / $this->getWidth();
 		$height	= $this->getheight() * $ratio;
 
-		$this->resize($width,$height);
+		$this->resize($width, $height);
 	}
 
 	/**
-	 * scale the original image to a fixed percentage value, calculating corresponding width and height
+	 * Scales the original image to a fixed percentage value, calculating corresponding width and height
 	 *
 	 * @param integer $scale
 	 */
@@ -277,23 +342,22 @@ class Twig_Extensions_Extension_Thumbnail extends Twig_Extension
 		$width	= $this->getWidth() * $scale/100;
 		$height	= $this->getheight() * $scale/100;
 
-		$this->resize($width,$height);
+		$this->resize($width, $height);
 	}
 
 	/**
-	 * actually resize the original image to a fixed width and height
+	 * Actually resizes the original image to a fixed width and height
 	 *
 	 * @param integer $width
 	 * @param integer $height
 	 */
-	function resize($width,$height)
+	function resize($width, $height)
 	{
-		$thumbnail = imagecreatetruecolor($width, $height);
-
-		imagecopyresampled($thumbnail, $this->image_absolute_filename, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
-
-		// set the class variable $this->image_absolute_filename
-		$this->image_absolute_filename = $thumbnail;
+		// creates thumbnail resource
+		$this->thumbnail = imagecreatetruecolor($width, $height);
+		
+		// resizes the original image
+		imagecopyresampled($this->thumbnail, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
 	}
 
 }
