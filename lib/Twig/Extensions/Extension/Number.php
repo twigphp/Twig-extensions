@@ -21,7 +21,21 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
      */
     public function getFilters()
     {
-        return array('number' => new Twig_Filter_Function('number_format'));
+        return array('number' => new Twig_Filter_Function('number_format'),
+                     'money'  => new Twig_Filter_Function('twig_money_format'),
+                     
+        );
+    }
+    /**
+     * Returns a list of funtions.
+     *
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array('rand'   => new Twig_Function_Function('rand'),
+                     
+        );
     }
 
     /**
@@ -33,4 +47,12 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
     {
         return 'Number';
     }
+}
+
+/**
+ * A wrapper had to be defined due to php inconsistent API
+*/
+function twig_money_format($number, $format)
+{
+    return money_format($format, $number);
 }
