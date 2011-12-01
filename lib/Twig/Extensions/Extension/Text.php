@@ -96,7 +96,7 @@ if (function_exists('mb_get_info')) {
 
     function twig_in_string_test($needle, $value)
     {
-        return false !== mb_strpos($value, $needle);
+        return false !== mb_strpos((string) $value, (string) $needle);
     }
 } else {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
@@ -121,6 +121,6 @@ if (function_exists('mb_get_info')) {
 
     function twig_in_string_test($needle, $value)
     {
-        return false !== strpos($value, $needle);
+        return false !== strpos((string) $value, (string) $needle);
     }
 }
