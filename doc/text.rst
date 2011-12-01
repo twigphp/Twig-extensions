@@ -9,4 +9,4 @@ The Text extensions provides the following filters:
 
 And the following tests:
 
-* ``string_contains``
+* ``in_string``
