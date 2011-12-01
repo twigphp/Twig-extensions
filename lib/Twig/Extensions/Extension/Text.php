@@ -23,6 +23,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         return array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
+            'substr'   => new Twig_Filter_Function('twig_substr_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
             'nl2br'    => new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
@@ -60,6 +61,15 @@ if (function_exists('mb_get_info')) {
         return $value;
     }
 
+    function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
+    {
+        if (null === $length) {
+            return mb_substr($value, $start, mb_strlen($value), $env->getCharset());
+        } else {
+            return mb_substr($value, $start, $length, $env->getCharset());
+        }
+    }
+
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
         $sentences = array();
@@ -95,6 +105,15 @@ if (function_exists('mb_get_info')) {
         }
 
         return $value;
+    }
+
+    function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
+    {
+        if (null === $length) {
+            return substr($value, $start);
+        } else {
+            return substr($value, $start, $length);
+        }
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
