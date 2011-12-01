@@ -36,7 +36,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     public function getTests()
     {
         return array(
-            'string_contains' => new Twig_Test_Function('twig_string_contains_test'),
+            'in_string' => new Twig_Test_Function('twig_in_string_test'),
         );
     }
 
@@ -94,7 +94,7 @@ if (function_exists('mb_get_info')) {
         return implode($separator, $sentences);
     }
 
-    function twig_string_contains_test($value, $needle)
+    function twig_in_string_test($needle, $value)
     {
         return false !== mb_strpos($value, $needle);
     }
@@ -119,7 +119,7 @@ if (function_exists('mb_get_info')) {
         return wordwrap($value, $length, $separator, !$preserve);
     }
 
-    function twig_string_contains_test($value, $needle)
+    function twig_in_string_test($needle, $value)
     {
         return false !== strpos($value, $needle);
     }
