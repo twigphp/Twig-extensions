@@ -64,10 +64,10 @@ if (function_exists('mb_get_info')) {
     function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
     {
         if (null === $length) {
-            return mb_substr($value, $start, mb_strlen($value), $env->getCharset());
-        } else {
-            return mb_substr($value, $start, $length, $env->getCharset());
+            $length = mb_strlen($value);
         }
+
+        return mb_substr($value, $start, $length, $env->getCharset());
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
@@ -110,10 +110,10 @@ if (function_exists('mb_get_info')) {
     function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
     {
         if (null === $length) {
-            return substr($value, $start);
-        } else {
-            return substr($value, $start, $length);
+            $length = strlen($value);
         }
+
+        return substr($value, $start, $length);
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
