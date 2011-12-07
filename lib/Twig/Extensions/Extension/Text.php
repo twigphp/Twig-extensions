@@ -45,16 +45,38 @@ function twig_nl2br_filter($value, $sep = '<br />')
 }
 
 if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $toSentence = false, $preserve = false, $separator = '...')
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
-            if ($preserve) {
-                if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
-                    $length = $breakpoint;
-                }
-            }
+            if ($toSentence === true) {
+                $value = trim(strip_tags($value));
+                $value = preg_replace('/^[^⋅]{0,100}⋅/', '', $value);
 
-            return mb_substr($value, 0, $length, $env->getCharset()) . $separator;
+                if (strlen($value) === 0) {
+                    return '';
+                }
+
+                $lines = preg_split('/([\.\?\!\⋅]+\s)/', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
+                $fragment = '';
+
+                foreach ($lines as $key => $line) {
+                    $fragment .= $line;
+                    if (($key % 2) && (strlen($fragment) >= $length)) {
+                        break;
+                    }
+                }
+                
+                return $fragment;
+
+            } else {
+                if ($preserve) {
+                    if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
+                        $length = $breakpoint;
+                    }
+                }
+
+                return mb_substr($value, 0, $length, $env->getCharset()) . $separator;
+            }    
         }
 
         return $value;
