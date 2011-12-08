@@ -44,30 +44,33 @@ function twig_nl2br_filter($value, $sep = '<br />')
     return str_replace("\n", $sep."\n", $value);
 }
 
+function twig_truncate_filter_to_sentence($value, $length) {
+    $value = trim(strip_tags($value));
+    $value = preg_replace('/^[^⋅]{0,100}⋅/', '', $value);
+
+    if (strlen($value) === 0) {
+        return '';
+    }
+
+    $lines = preg_split('/([\.\?\!\⋅]+\s)/', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $fragment = '';
+
+    foreach ($lines as $key => $line) {
+        $fragment .= $line;
+        if (($key % 2) && (strlen($fragment) >= $length)) {
+            break;
+        }
+    }
+    
+    return $fragment;
+}
+
 if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $toSentence = false, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...', $toSentence = false)
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
             if ($toSentence === true) {
-                $value = trim(strip_tags($value));
-                $value = preg_replace('/^[^⋅]{0,100}⋅/', '', $value);
-
-                if (strlen($value) === 0) {
-                    return '';
-                }
-
-                $lines = preg_split('/([\.\?\!\⋅]+\s)/', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
-                $fragment = '';
-
-                foreach ($lines as $key => $line) {
-                    $fragment .= $line;
-                    if (($key % 2) && (strlen($fragment) >= $length)) {
-                        break;
-                    }
-                }
-                
-                return $fragment;
-
+                return twig_truncate_filter_to_sentence($value, $length);
             } else {
                 if ($preserve) {
                     if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
@@ -104,9 +107,11 @@ if (function_exists('mb_get_info')) {
         return implode($separator, $sentences);
     }
 } else {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...', $toSentence = false)
     {
-        if (strlen($value) > $length) {
+        if ($toSentence === true) {
+            return twig_truncate_filter_to_sentence($value, $length);
+        } elseif (strlen($value) > $length) {
             if ($preserve) {
                 if (false !== ($breakpoint = strpos($value, ' ', $length))) {
                     $length = $breakpoint;
