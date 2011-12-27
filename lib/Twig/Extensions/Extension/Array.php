@@ -13,14 +13,14 @@
 class Twig_Extensions_Extension_Array extends Twig_Extension
 {
     /**
-     * Returns a list of filters.
+     * Returns a list of filters
      *
      * @return array
      */
     public function getFilters()
     {
         return array(
-        	'sort_by_attribute'   => new Twig_Filter_Function('twig_sort_by_attribute_filter'),
+            'sort_by_attribute'   => new Twig_Filter_Function('twig_sort_by_attribute_filter'),
         );
     }
 
@@ -38,19 +38,19 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
 /**
  * Sorts an array.
  * Allows to sort an array of objects by a specified object property.
- * Allows to sort an array of arrays by a specified index.
+ * Allows to sort an array of arrays by a specified index/key.
  * Allows to sort hybrid arrays of objects, string, numbers
  * 
  * $options accepted values:
- * 	'case_sensitive': true|false(default)
+ * 	'caseSensitive': true|false(default)
  * 
- * @param array $array An array
- * @param string $attribute An object property or an array index
+ * @param array $array The array to be sorted
+ * @param string $attribute An object property or an array index/key
  * @param array $options An array of options
  */
-function twig_sort_by_attribute_filter($array, $attribute = null, $options = array())
+function twig_sort_by_attribute_filter($array, $attribute = null, $options = array('caseSensitive' => false))
 {
-    // throw an exception if $attribute is not specified
+    // returns the original array if $attribute is not specified
     if (null === $attribute) {
         return $array;
     }
@@ -59,11 +59,11 @@ function twig_sort_by_attribute_filter($array, $attribute = null, $options = arr
      * builds $arrItemsToSort, a temp array to be sorted
      * 
      * $arrItemsToSort keys		= $array keys
-     * $arrItemsToSort values	= values of each object's attribute of $array or values of $array at specified index
+     * $arrItemsToSort values	= values of each object's attribute of $array or values of $array at specified index/key
      */
     $arrItemsToSort = array();
     
-    // array to store the items which cannot be sorted. they will be merged to $arrItemsToSort in the tail
+    // array to store the items which cannot be sorted. they will be merged to $arrItemsToSort in the end
     $arrExcludedItemsFromSorting = array();
     
     foreach ($array as $k => $v) {
@@ -73,9 +73,12 @@ function twig_sort_by_attribute_filter($array, $attribute = null, $options = arr
         // $v is an object
         } elseif (is_object($v)) {
             $getter = preg_replace("/[^a-zA-Z0-9]/", "", "get".$attribute);
+            $isser  = preg_replace("/[^a-zA-Z0-9]/", "", "is".$attribute);
             
             if (method_exists($v, $getter)) {
                 $v = $v->$getter();
+            } elseif (method_exists($v, $isser)) {
+                $v = $v->$isser();
             } else {
                 array_push($arrExcludedItemsFromSorting, $v);
                 continue;
@@ -89,13 +92,13 @@ function twig_sort_by_attribute_filter($array, $attribute = null, $options = arr
             continue;
         }
         
-        // applies "case_sensitive" option
-        if ( !isset($options['case_sensitive'])  || true !== $options['case_sensitive'] ) {
+        // applies "caseSensitive" option
+        if (!isset($options['caseSensitive']) || true !== $options['caseSensitive']) {
             if (is_string($v)) {
                 $v = strtolower($v);
             }
         }
-
+        
         // $v is now te value the user wants to sort the $array by
         $arrItemsToSort[$k] = $v;
     }
@@ -103,11 +106,11 @@ function twig_sort_by_attribute_filter($array, $attribute = null, $options = arr
     // actually sort the $arrItemsToSort array
     asort($arrItemsToSort);
     
-    // replaces the $arrItemsToSort values with the $array values
+    // replaces the $arrItemsToSort values with the original $array values
     foreach ($arrItemsToSort as $k => $v) {
         $arrItemsToSort[$k] = $array[$k];
     }
     
-    // returns the sorted portion of the original $array with the items excluded from sorting
+    // returns the sorted portion of the original $array merged with the items excluded from sorting
     return array_merge($arrItemsToSort, $arrExcludedItemsFromSorting);
 }
