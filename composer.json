@@ -15,6 +15,6 @@
         "twig/twig": "1.*"
     },
     "autoload": {
-        "psr-0": { "Twig_Extensions_": "lib/Twig/Extensions" }
+        "psr-0": { "Twig_Extensions_": "lib/" }
     }
 }
