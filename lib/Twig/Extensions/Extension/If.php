@@ -39,5 +39,5 @@ class Twig_Extensions_Extension_If extends Twig_Extension
 
 function twig_if_filter($value, $condition)
 {
-    return ($condition) ? $value : null;
+    return $condition ? $value : null;
 }
