@@ -22,7 +22,7 @@ class Twig_Extensions_Extension_If extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'if' => new Twig_Filter_Function('twig_if_filter', array('needs_environment' => false))
+            'if' => new Twig_Filter_Function('twig_if_filter')
         );
     }
 
