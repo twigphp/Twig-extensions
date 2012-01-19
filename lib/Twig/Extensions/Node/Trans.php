@@ -100,16 +100,19 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
     protected function compileString(Twig_NodeInterface $body)
     {
-        if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant) {
+        if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant || $body instanceof Twig_Node_Expression_TempName) {
             return array($body, array());
         }
 
         $vars = array();
-
         if (count($body)) {
             $msg = '';
 
             foreach ($body as $node) {
+                if (get_class($node) === 'Twig_Node' && $node->getNode(0) instanceof Twig_Node_SetTemp) {
+                    $node = $node->getNode(1);
+                }
+
                 if ($node instanceof Twig_Node_Print) {
                     $n = $node->getNode('expr');
                     while ($n instanceof Twig_Node_Expression_Filter) {

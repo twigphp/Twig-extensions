@@ -21,12 +21,17 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        $filters = array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'substr'   => new Twig_Filter_Function('twig_substr_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
-            'nl2br'    => new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
+
+        if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
+            $filters['nl2br'] = new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html')));
+        }
+
+        return $filters;
     }
 
     /**
