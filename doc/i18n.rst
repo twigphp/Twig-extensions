@@ -54,6 +54,8 @@ In a translatable string, you can embed variables:
         Hello {{ name }}!
     {% endtrans %}
 
+During the gettext lookup these placeholders are converted. ``{{ name }}`` becomes ``%name%`` so the gettext ``msgid`` for this string would be ``Hello %name%!``.
+
 .. note::
 
     ``{% trans "Hello {{ name }}!" %}`` is not a valid statement.
