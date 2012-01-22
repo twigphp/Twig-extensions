@@ -23,6 +23,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         $filters = array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
+            'substr'   => new Twig_Filter_Function('twig_substr_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
         );
 
@@ -65,6 +66,15 @@ if (function_exists('mb_get_info')) {
         return $value;
     }
 
+    function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
+    {
+        if (null === $length) {
+            $length = mb_strlen($value);
+        }
+
+        return mb_substr($value, $start, $length, $env->getCharset());
+    }
+
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
         $sentences = array();
@@ -100,6 +110,15 @@ if (function_exists('mb_get_info')) {
         }
 
         return $value;
+    }
+
+    function twig_substr_filter(Twig_Environment $env, $value, $start, $length = null)
+    {
+        if (null === $length) {
+            $length = strlen($value);
+        }
+
+        return substr($value, $start, $length);
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
