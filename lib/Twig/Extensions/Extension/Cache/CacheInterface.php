@@ -12,7 +12,7 @@
 
 interface Twig_Extensions_Extension_Cache_CacheInterface
 {
-	public function get($key);
+    public function get($key);
 
-	public function set($key, $value, $time);
+    public function set($key, $value, $time);
 }

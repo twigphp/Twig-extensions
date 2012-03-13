@@ -13,6 +13,28 @@
 class Twig_Extensions_Extension_Cache extends Twig_Extension
 {
     /**
+     * holds the cache backend in use
+     *
+     * @var object
+     **/
+    protected $cacheBackend;
+
+    public function __construct(Twig_Extensions_Extension_Cache_CacheInterface $cacheBackend)
+    {
+        $this->cacheBackend = $cacheBackend;
+    }
+
+    /**
+     * Returns the cache backend in use
+     *
+     * @return object An object that implements Twig_Extensions_Extension_Cache_CacheInterface
+     */
+    public function getCacheBackend()
+    {
+        return $this->cacheBackend;
+    }
+
+    /**
      * Returns the token parser instance to add to the existing list.
      *
      * @return array An array of Twig_TokenParser instances

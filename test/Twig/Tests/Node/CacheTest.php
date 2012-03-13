@@ -18,12 +18,13 @@ class Twig_Tests_Node_CacheTest extends Twig_Tests_Node_TestCase
      */
     public function testConstructor()
     {
-		$staticContent = '<div>static content</div>';
+        $staticContent = '<div>static content</div>';
 
         $key = 'keyname';
+        $dynamicKey = false;
         $time = 100;
-		$value = new Twig_Node(array(new Twig_Node_Text($staticContent, 0)));
-		$node = new Twig_Extensions_Node_Cache($key, $value, $time, 0);
+        $value = new Twig_Node(array(new Twig_Node_Text($staticContent, 0)));
+        $node = new Twig_Extensions_Node_Cache($key, $value, $time, $dynamicKey, 0);
 
         $this->assertEquals($value, $node->getNode('value'));
         $this->assertEquals($key, $node->getAttribute('key'));
@@ -40,48 +41,65 @@ class Twig_Tests_Node_CacheTest extends Twig_Tests_Node_TestCase
 
     public function getTests()
     {
-		$time = 100; // 100 seconds
-		$staticContent = '<div>static content</div>';
+        $time = 100; // 100 seconds
+        $staticContent = '<div>static content</div>';
 
-		$key = 'keyname';
-		$value = new Twig_Node(array(new Twig_Node_Text($staticContent, 0)));
-		$textnode = new Twig_Extensions_Node_Cache($key, $value, $time, 0);
+        $key = 'keyname';
+        $dynamicKey = false;
+        $value = new Twig_Node(array(new Twig_Node_Text($staticContent, 0)));
+        $textnode = new Twig_Extensions_Node_Cache($key, $value, $time, $dynamicKey, 0);
 
-		$t = new Twig_Node(array(
-			new Twig_Node_Expression_Constant(true, 0),
-			new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0)
-		), array(), 0);
-		$else = null;
-		$value = new Twig_Node_If($t, $else, 0);
-		$ifnode = new Twig_Extensions_Node_Cache($key, $value, $time, 0);
+        $t = new Twig_Node(array(
+            new Twig_Node_Expression_Constant(true, 0),
+            new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0)
+        ), array(), 0);
+        $else = null;
+        $value = new Twig_Node_If($t, $else, 0);
+        $ifnode = new Twig_Extensions_Node_Cache($key, $value, $time, $dynamicKey, 0);
 
-		return array(
-			array($textnode, <<<EOF
-\$twigExtensionCache = Twig_Extensions_Extension_Cache_CacheHandler::getInstance()->getCacheBackend();
-\$twigExtensionCacheValue = \$twigExtensionCache->get('$key');
+        $dynamicKey = true;
+        $value = new Twig_Node(array(new Twig_Node_Text($staticContent, 0)));
+        $dynamicnode = new Twig_Extensions_Node_Cache($key, $value, $time, $dynamicKey, 0);
+
+        return array(
+            array($textnode, <<<EOF
+\$twigExtensionCacheBackend = \$this->getEnvironment()->getExtension('cache')->getCacheBackend();
+\$twigExtensionCacheValue = \$twigExtensionCacheBackend->get('$key');
 if (\$twigExtensionCacheValue === null) {
     ob_start();
     echo "$staticContent";
     \$twigExtensionCacheValue = ob_get_clean();
-    \$twigExtensionCache->set('$key', \$twigExtensionCacheValue, 100);
+    \$twigExtensionCacheBackend->set('$key', \$twigExtensionCacheValue, 100);
 }
 echo \$twigExtensionCacheValue;
 EOF
-			),
-			array($ifnode, <<<EOF
-\$twigExtensionCache = Twig_Extensions_Extension_Cache_CacheHandler::getInstance()->getCacheBackend();
-\$twigExtensionCacheValue = \$twigExtensionCache->get('$key');
+            ),
+            array($ifnode, <<<EOF
+\$twigExtensionCacheBackend = \$this->getEnvironment()->getExtension('cache')->getCacheBackend();
+\$twigExtensionCacheValue = \$twigExtensionCacheBackend->get('$key');
 if (\$twigExtensionCacheValue === null) {
     ob_start();
     if (true) {
     echo {$this->getVariableGetter('foo')};
 }
     \$twigExtensionCacheValue = ob_get_clean();
-    \$twigExtensionCache->set('$key', \$twigExtensionCacheValue, 100);
+    \$twigExtensionCacheBackend->set('$key', \$twigExtensionCacheValue, 100);
 }
 echo \$twigExtensionCacheValue;
 EOF
-			)
-		);
+            ),
+            array($dynamicnode, <<<EOF
+\$twigExtensionCacheBackend = \$this->getEnvironment()->getExtension('cache')->getCacheBackend();
+\$twigExtensionCacheValue = \$twigExtensionCacheBackend->get((string)\$context['$key']);
+if (\$twigExtensionCacheValue === null) {
+    ob_start();
+    echo "$staticContent";
+    \$twigExtensionCacheValue = ob_get_clean();
+    \$twigExtensionCacheBackend->set('$key', \$twigExtensionCacheValue, 100);
+}
+echo \$twigExtensionCacheValue;
+EOF
+            ),
+        );
     }
 }
