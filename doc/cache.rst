@@ -38,38 +38,34 @@ ready to use backends:
 
 This backend as its name suggest does nothing, which makes it convenient
 when you are in a heavy development stage and not want to worry about
-caching:
+caching::
 
-```php
-<?php
+    <?php
 
-// ...
+    // ...
 
-$environment = new Twig_Environment(new Twig_Loader_Filesystem('.'));
-$dummyBackend = new Twig_Extensions_Extension_Cache_DummyCacheBackend();
-$environment->addExtension(new Twig_Extensions_Extension_Cache($dummyBackend));
+    $environment = new Twig_Environment(new Twig_Loader_Filesystem('.'));
+    $dummyBackend = new Twig_Extensions_Extension_Cache_DummyCacheBackend();
+    $environment->addExtension(new Twig_Extensions_Extension_Cache($dummyBackend));
 
-// ...
+    // ...
 
-```
 
 ### MemoizationCacheBackend
 
 This backend [memoize](http://en.wikipedia.org/wiki/Memoization "See Memoization")
-the template fragment for the current request only:
+the template fragment for the current request only::
 
-```php
-<?php
+    <?php
 
-// ...
+    // ...
 
-$environment = new Twig_Environment(new Twig_Loader_Filesystem('.'));
-$dummyBackend = new Twig_Extensions_Extension_Cache_MemoizationCacheBackend();
-$environment->addExtension(new Twig_Extensions_Extension_Cache($dummyBackend));
+    $environment = new Twig_Environment(new Twig_Loader_Filesystem('.'));
+    $dummyBackend = new Twig_Extensions_Extension_Cache_MemoizationCacheBackend();
+    $environment->addExtension(new Twig_Extensions_Extension_Cache($dummyBackend));
 
-// ...
+    // ...
 
-```
 
 With that in place, every time the twig environment renders a template containing
 the ``{% cache ... %}`` tag, it will call your custom backend ``get($key)`` method,
@@ -82,73 +78,65 @@ Examples
 
 ### Key name as string
 
-Template ``test_template.txt``:
+Template ``test_template.txt``::
 
-```
-{% cache 'cache-key' 12 %}
-    {% for i in collection %}
-        {{ i }}
-    {% endfor %}
-{% endcache %}
+    {% cache 'cache-key' 12 %}
+        {% for i in collection %}
+            {{ i }}
+        {% endfor %}
+    {% endcache %}
 
-```
 
-Example php file:
+Example php file::
 
-```php
-$loader = new Twig_Loader_Filesystem('.');
-$environment = new Twig_Environment($loader);
-$cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_DummyCacheBackend());
+    <?php
+    $loader = new Twig_Loader_Filesystem('.');
+    $environment = new Twig_Environment($loader);
+    $cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_DummyCacheBackend());
 
-$environment->addExtension($cacheExtension);
+    $environment->addExtension($cacheExtension);
 
-echo $environment->render('test_template.txt', array('collection' => range(0, 5)));
-
-```
+    echo $environment->render('test_template.txt', array('collection' => range(0, 5)));
 
 In the example above the cache key name will be 'cache-key'
 
 ### Key name as an object
 
-Template ``test_template.txt``:
+Template ``test_template.txt``::
 
-```
-{% cache myobj 12 %}
-    {% for i in collection %}
-        {{ myobj.sayHello }}
-    {% endfor %}
-{% endcache %}
+    {% cache myobj 12 %}
+        {% for i in collection %}
+            {{ myobj.sayHello }}
+        {% endfor %}
+    {% endcache %}
 
-```
 
-Example php file:
+Example php file::
 
-```php
+    <?php
 
-class MyClass
-{
-    public function sayHello()
+    class MyClass
     {
-        return 'Hello';
+        public function sayHello()
+        {
+            return 'Hello';
+        }
+
+        public function __toString()
+        {
+            return 'myclass-instance';
+        }
     }
 
-    public function __toString()
-    {
-        return 'myclass-instance';
-    }
-}
+    $myobj = new MyClass();
 
-$myobj = new MyClass();
+    $loader = new Twig_Loader_Filesystem('.');
+    $environment = new Twig_Environment($loader);
+    $cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_DummyCacheBackend());
 
-$loader = new Twig_Loader_Filesystem('.');
-$environment = new Twig_Environment($loader);
-$cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_DummyCacheBackend());
+    $environment->addExtension($cacheExtension);
 
-$environment->addExtension($cacheExtension);
-
-echo $environment->render('test_template.txt', array('collection' => range(0, 5), 'myobj' => $myobj));
-
-```
+    echo $environment->render('test_template.txt', array('collection' => range(0, 5), 'myobj' => $myobj));
 
 In the example above the cache key name will be 'myclass-instance'
 
