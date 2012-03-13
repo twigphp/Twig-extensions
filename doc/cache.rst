@@ -55,8 +55,7 @@ caching::
 MemoizationCacheBackend
 '''''''''''''''''''''''
 
-This backend [memoize](http://en.wikipedia.org/wiki/Memoization "See Memoization")
-the template fragment for the current request only::
+This backend memoize_ the template fragment for the current request only::
 
     <?php
 
@@ -144,3 +143,5 @@ Example php file::
 
 In the example above the cache key name will be 'myclass-instance'
 
+
+.. _`memoize`: http://en.wikipedia.org/wiki/Memoization
