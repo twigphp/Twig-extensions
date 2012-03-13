@@ -34,7 +34,8 @@ need to do is create a class that implements
 as the one to use by the extension. By default, the extension provides two
 ready to use backends:
 
-### DummyCacheBackend
+DummyCacheBackend
+''''''''''''''''''
 
 This backend as its name suggest does nothing, which makes it convenient
 when you are in a heavy development stage and not want to worry about
@@ -51,7 +52,8 @@ caching::
     // ...
 
 
-### MemoizationCacheBackend
+MemoizationCacheBackend
+'''''''''''''''''''''''
 
 This backend [memoize](http://en.wikipedia.org/wiki/Memoization "See Memoization")
 the template fragment for the current request only::
@@ -76,7 +78,8 @@ method with the rendered chunk of template as the value of ``$value``
 Examples
 --------
 
-### Key name as string
+Key name as string
+''''''''''''''''''
 
 Template ``test_template.txt``::
 
@@ -100,7 +103,8 @@ Example php file::
 
 In the example above the cache key name will be 'cache-key'
 
-### Key name as an object
+Key name as an object
+''''''''''''''''''
 
 Template ``test_template.txt``::
 
