@@ -50,9 +50,12 @@ function twig_nl2br_filter($value, $sep = '<br />')
 }
 
 if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...', $strip_tags = false)
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
+            if ($strip_tags) {
+                $value = strip_tags($value);
+            }
             if ($preserve) {
                 if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
                     $length = $breakpoint;
