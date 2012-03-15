@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2010 Fabien Potencier
+ * (c) 2012 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +15,8 @@ class Twig_Extensions_Extension_Cache extends Twig_Extension
     /**
      * holds the cache backend in use
      *
-     * @var object
-     **/
+     * @var Twig_Extensions_Extension_Cache_CacheInterface
+     */
     protected $cacheBackend;
 
     public function __construct(Twig_Extensions_Extension_Cache_CacheInterface $cacheBackend)
@@ -42,16 +42,6 @@ class Twig_Extensions_Extension_Cache extends Twig_Extension
     public function getTokenParsers()
     {
         return array(new Twig_Extensions_TokenParser_Cache());
-    }
-
-    /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
-     */
-    public function getFilters()
-    {
-        return array();
     }
 
     /**

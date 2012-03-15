@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009-2010 Fabien Potencier
+ * (c) 2009-2012 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,27 +23,13 @@ class Twig_Extensions_TokenParser_Cache extends Twig_TokenParser
     {
         $lineno = $token->getLine();
 
-        $stream = $this->parser->getStream();
-        $keyToken = $stream->getCurrent();
-
-        if ($keyToken->test(Twig_Token::STRING_TYPE)) {
-            $dynamicKey = false;
-        } elseif ($keyToken->test(Twig_Token::NAME_TYPE)) {
-            $dynamicKey = true;
-        } else {
-            // it should notify that actually two kind of tokens may be used:
-            // STRING_TYPE and NAME_TYPE
-            $keyToken->expect(Twig_Token::STRING_TYPE);
-        }
-
-        $key = $keyToken->getValue();
-        $stream->next();
-        $time = $stream->expect(Twig_Token::NUMBER_TYPE)->getValue();
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $key = $this->parser->getExpressionParser()->parseExpression();
+        $time = $this->parser->getStream()->expect(Twig_Token::NUMBER_TYPE)->getValue();
+        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
         $value = $this->parser->subparse(array($this, 'decideCacheEnd'), true);
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
-        return new Twig_Extensions_Node_Cache($key, $value, $time, $dynamicKey, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Cache($key, $value, $time, $lineno, $this->getTag());
     }
 
     public function decideCacheEnd(Twig_Token $token)

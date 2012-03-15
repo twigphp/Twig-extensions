@@ -12,14 +12,10 @@ rendered template fragments using the cache backend of your choice.
 
 
 Here ``key`` can be both, a string or a variable name, in case it is the
-later the value is computed as following:
-
-1. Look for a the object in the current template context which name is
-   ``key``
-2. That object is casted into a string
-3. The value returned is used as the cache key name
-
-[See the second example below if this is not clear]
+later that value will be pased as the ``key`` param to your custom
+backend's ``get`` and ``set`` methods. This is **very important**, if the
+value of the variable with that name is an object or anything different
+than a string, that value will be passed **as is**.
 
 ``time`` is an integer representing the time you want to cache this
 fragment and its unit (seconds, minutes, etc) is the one choosed by your
@@ -102,7 +98,7 @@ Example php file::
 
 In the example above the cache key name will be 'cache-key'
 
-Key name as an object
+Key name as a name
 ''''''''''''''''''
 
 Template ``test_template.txt``::
@@ -135,13 +131,23 @@ Example php file::
 
     $loader = new Twig_Loader_Filesystem('.');
     $environment = new Twig_Environment($loader);
-    $cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_DummyCacheBackend());
+    $cacheExtension = new Twig_Extensions_Extension_Cache(new Twig_Extensions_Extension_Cache_MemoizationCacheBackend());
 
     $environment->addExtension($cacheExtension);
 
     echo $environment->render('test_template.txt', array('collection' => range(0, 5), 'myobj' => $myobj));
 
-In the example above the cache key name will be 'myclass-instance'
+In the example above the cache key name will be 'myclass-instance', that's
+because ``Twig_Extensions_Extension_Cache_MemoizationCacheBackend``
+``get`` and ``set`` methods explicitly cast the ``key`` param into a
+string as follows::
+
+    ...
+    $key = (string) $key;
+    ...
+
+ And as a result, the special method ``__toString`` of the object is
+called
 
 
 .. _`memoize`: http://en.wikipedia.org/wiki/Memoization
