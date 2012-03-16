@@ -69,22 +69,26 @@ if (function_exists('mb_get_info')) {
     {
         $sentences = array();
 
-        $previous = mb_regex_encoding();
-        mb_regex_encoding($env->getCharset());
-
-        $pieces = mb_split($separator, $value);
-        mb_regex_encoding($previous);
-
-        foreach ($pieces as $piece) {
-            while(!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
-                $sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
-                $piece = mb_substr($piece, $length, 2048, $env->getCharset());
-            }
-
-            $sentences[] = $piece;
+        if(!$preserve) {
+            $previous = mb_regex_encoding();
+        	mb_regex_encoding($env->getCharset());
+        	
+        	$pieces = mb_split($separator, $value);
+        	mb_regex_encoding($previous);
+        	
+        	foreach ($pieces as $piece) {
+        		while(mb_strlen($piece, $env->getCharset()) > $length) {
+        			$sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
+        			$piece = mb_substr($piece, $length, 2048, $env->getCharset());
+        		}
+        	
+        		$sentences[] = $piece;
+        	}
+        	
+        	return implode($separator, $sentences);        	
+        } else {
+        	return wordwrap($value, $length, $separator, true);
         }
-
-        return implode($separator, $sentences);
     }
 } else {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
