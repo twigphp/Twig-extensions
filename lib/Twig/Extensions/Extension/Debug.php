@@ -23,16 +23,6 @@ class Twig_Extensions_Extension_Debug extends Twig_Extension
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
-     */
-    public function getFilters()
-    {
-        return array();
-    }
-
-    /**
      * Returns the name of the extension.
      *
      * @return string The extension name
