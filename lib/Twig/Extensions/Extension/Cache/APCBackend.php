@@ -11,7 +11,12 @@ class Twig_Extensions_Extension_Cache_APCBackend implements Twig_Extensions_Exte
 {
     public function get($key)
     {
-        return apc_fetch($key);
+        $value = apc_fetch($key);
+        if($value !== false)
+        {
+            return $value;
+        }
+        return null;
     }
 
     public function set($key, $value, $time = 0)
