@@ -64,6 +64,22 @@ This backend memoize_ the template fragment for the current request only::
     // ...
 
 
+APCBackend
+''''''''''
+
+This backend uses APC cache::
+
+    <?php
+
+    // ...
+
+    $environment = new Twig_Environment(new Twig_Loader_Filesystem('.'));
+    $APCBackend = new Twig_Extensions_Extension_Cache_APCBackend();
+    $environment->addExtension(new Twig_Extensions_Extension_Cache($APCBackend));
+
+    // ...
+
+
 With that in place, every time the twig environment renders a template containing
 the ``{% cache ... %}`` tag, it will call your custom backend ``get($key)`` method,
 if ``get($key)`` returns ``null`` then it will call your backend's ``set($key, $value, $time)``
