@@ -1,7 +1,7 @@
 The Debug Extension
 ===================
 
-.. warning::
+.. caution::
 
     This extension is deprecated as of Twig 1.5. Use the Twig built-in `dump`_
     function instead.
