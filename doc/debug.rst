@@ -27,4 +27,4 @@ output a specific variable or an expression:
     The ``debug`` tag only works when the ``debug`` environment option is set
     to ``true``.
 
-.. _dump`: http://twig.sensiolabs.org/dump
+.. _`dump`: http://twig.sensiolabs.org/dump
