@@ -1,6 +1,11 @@
 The Debug Extension
 ===================
 
+.. warning::
+
+    This extension is deprecated as of Twig 1.5. Use the Twig built-in `dump`_
+    function instead.
+
 The ``debug`` extension provides a ``debug`` tag that can be used to
 output the content of the current context:
 
@@ -21,3 +26,5 @@ output a specific variable or an expression:
 
     The ``debug`` tag only works when the ``debug`` environment option is set
     to ``true``.
+
+.. _dump`: http://twig.sensiolabs.org/dump
