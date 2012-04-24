@@ -1,6 +1,6 @@
 <?php
 /**
- * Twig Extension to add the eval filter to evaluate twig code passed into a template
+ * Twig Extension to add the eval function to evaluate twig code passed into a template
  */
 class Twig_Extensions_Extension_Eval extends Twig_Extension
 {
@@ -15,14 +15,14 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
+     * Returns a list of functions to add to the existing list.
      *
-     * @return array An array of filters
+     * @return array An array of functions
      */
-    public function getFilters()
+    public function getFunctions()
     {
         return array(
-            'eval' => new Twig_Filter_Method($this, 'evaluateString', array(
+            'eval' => new \Twig_Function_Method($this, 'evaluateString', array(
                 'needs_environment' => true,
                 'needs_context'     => true,
             )),
