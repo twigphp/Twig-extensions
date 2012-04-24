@@ -22,7 +22,7 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            'eval' => new \Twig_Function_Method($this, 'evaluateString', array(
+            'eval' => new Twig_Function_Method($this, 'evaluateString', array(
                 'needs_environment' => true,
                 'needs_context'     => true,
             )),
