@@ -22,7 +22,7 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'eval' => new \Twig_Filter_Method($this, 'evaluateString', array(
+            'eval' => new Twig_Filter_Method($this, 'evaluateString', array(
                 'needs_environment' => true,
                 'needs_context'     => true,
             )),
@@ -32,12 +32,12 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     /**
      * Loads a string template and returns the rendered version
      *
-     * @param  \Twig_Environment $env
+     * @param  Twig_Environment $env
      * @param  array             $context
      * @param  string            $string  The string template to load
      * @return string
      */
-    public function evaluateString(\Twig_Environment $env, $context, $string)
+    public function evaluateString(Twig_Environment $env, $context, $string)
     {
         $newEnv = $this->setLoader($env);
         return $newEnv->loadTemplate($string)->render($context);
@@ -46,13 +46,13 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     /**
      * Clones the current environment and sets the loader to be a string loader
      *
-     * @param  \Twig_Environment $env
-     * @return \Twig_Environment
+     * @param  Twig_Environment $env
+     * @return Twig_Environment
      */
-    private function setLoader(\Twig_Environment $env)
+    private function setLoader(Twig_Environment $env)
     {
         $newEnv = clone $env;
-        $loader = new \Twig_Loader_String();
+        $loader = new Twig_Loader_String();
         $newEnv->setLoader($loader);
         return $newEnv;
     }
