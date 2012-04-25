@@ -39,6 +39,7 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
      */
     public function evaluateString(Twig_Environment $env, $context, $string)
     {
+        // set loader to be a string loader on a cloned environment so we aren't messing with the actual environment
         $newEnv = $this->setLoader(clone $env);
         return $newEnv->loadTemplate($string)->render($context);
     }
