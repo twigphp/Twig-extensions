@@ -13,7 +13,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
 {
     public function __construct()
     {
-        if (!class_exists('IntlDateFormatter')) {
+        if (!class_exists('IntlDateFormatter') || !class_exists('NumberFormatter')) {
             throw new RuntimeException('The intl extension is needed to use intl-based filters.');
         }
     }
@@ -27,6 +27,8 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     {
         return array(
             new Twig_SimpleFilter('localizeddate', 'twig_localized_date_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('localizednumber', 'twig_localized_number_filter'),
+            new Twig_SimpleFilter('localizedcurrency', 'twig_localized_currency_filter'),
         );
     }
 
@@ -63,4 +65,52 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     );
 
     return $formatter->format($date->getTimestamp());
+}
+
+function twig_localized_number_filter($number, $style = 'decimal', $format = 'default', $currency = null, $locale = null )
+{
+    $formatter = getNumberFormatter(
+        $locale !== null ? $locale : Locale::getDefault(),
+        $style
+    );
+
+    $formatValues = array(
+        'default'   => NumberFormatter::TYPE_DEFAULT,
+        'int32'     => NumberFormatter::TYPE_INT32,
+        'int64'     => NumberFormatter::TYPE_INT64,
+        'double'    => NumberFormatter::TYPE_DOUBLE,
+        'currency'  => NumberFormatter::TYPE_CURRENCY,
+    );
+
+    return $formatter->format(
+        $number,
+        $formatValues[$format]);
+}
+
+function twig_localized_currency_filter($number, $currency = null, $locale = null)
+{
+    $formatter = getNumberFormatter(
+        $locale !== null ? $locale : Locale::getDefault(),
+        'currency'
+    );
+
+    return $formatter->formatCurrency($number, $currency);
+}
+
+function getNumberFormatter($locale, $style)
+{
+    $styleValues = array(
+        'decimal'       => NumberFormatter::DECIMAL,
+        'currency'      => NumberFormatter::CURRENCY,
+        'percent'       => NumberFormatter::PERCENT,
+        'scientific'    => NumberFormatter::SCIENTIFIC,
+        'spellout'      => NumberFormatter::SPELLOUT,
+        'ordinal'       => NumberFormatter::ORDINAL,
+        'duration'      => NumberFormatter::DURATION,
+    );
+
+    return NumberFormatter::create(
+        $locale !== null ? $locale : Locale::getDefault(),
+        $styleValues[$style]
+    );
 }
