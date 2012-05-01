@@ -69,7 +69,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
 
 function twig_localized_number_filter($number, $style = 'decimal', $format = 'default', $currency = null, $locale = null )
 {
-    $formatter = getNumberFormatter(
+    $formatter = twig_get_number_formatter(
         $locale !== null ? $locale : Locale::getDefault(),
         $style
     );
@@ -89,7 +89,7 @@ function twig_localized_number_filter($number, $style = 'decimal', $format = 'de
 
 function twig_localized_currency_filter($number, $currency = null, $locale = null)
 {
-    $formatter = getNumberFormatter(
+    $formatter = twig_get_number_formatter(
         $locale !== null ? $locale : Locale::getDefault(),
         'currency'
     );
@@ -97,7 +97,7 @@ function twig_localized_currency_filter($number, $currency = null, $locale = nul
     return $formatter->formatCurrency($number, $currency);
 }
 
-function getNumberFormatter($locale, $style)
+function twig_get_number_formatter($locale, $style)
 {
     $styleValues = array(
         'decimal'       => NumberFormatter::DECIMAL,
