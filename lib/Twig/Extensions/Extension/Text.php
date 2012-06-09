@@ -24,6 +24,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $filters = array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'un_camel_case' => new Twig_Filter_Function('twig_un_camel_case_filter'),
         );
 
         if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
@@ -42,6 +43,12 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         return 'Text';
     }
+}
+
+function twig_un_camel_case_filter($string)
+{
+    $newString = preg_replace('`([A-Z])`', ' $1', $string);
+    return strtolower($newString);
 }
 
 function twig_nl2br_filter($value, $sep = '<br />')
