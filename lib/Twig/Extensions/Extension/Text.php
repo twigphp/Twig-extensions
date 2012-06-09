@@ -22,8 +22,8 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     public function getFilters()
     {
         $filters = array(
-            'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
-            'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'truncate'      => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
+            'wordwrap'      => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
             'un_camel_case' => new Twig_Filter_Function('twig_un_camel_case_filter'),
         );
 
