@@ -11,7 +11,7 @@ class Twig_Extensions_Extension_UnCamelCase extends Twig_Extension
      */
     public function getName()
     {
-        return 'unCamelCase';
+        return 'un_came_case';
     }
 
     /**
@@ -22,7 +22,7 @@ class Twig_Extensions_Extension_UnCamelCase extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'unCamelCase' => new Twig_Filter_Method($this, 'unCamelCaseString'),
+            'un_camel_case' => new Twig_Filter_Method($this, 'unCamelCaseString'),
         );
     }
 
