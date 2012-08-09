@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.10" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0               http://pear.php.net/dtd/tasks-1.0.xsd               http://pear.php.net/dtd/package-2.0               http://pear.php.net/dtd/package-2.0.xsd">
+  <name>Twig_Extensions</name>
+  <channel>pear.twig-project.org</channel>
+  <summary>Twig Extensions</summary>
+  <description>Twig Extensions</description>
+  <lead>
+    <name>Fabien Potencier</name>
+    <user/>
+    <email>fabien.potencier@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>2012-08-09</date>
+  <time>23:32:56</time>
+  <version>
+    <release>1.9.1</release>
+    <api>1.9.1</api>
+  </version>
+  <stability>
+    <release>stable</release>
+    <api>stable</api>
+  </stability>
+  <license>PHP</license>
+  <notes>-</notes>
+  <contents>
+    <dir name="/">
+      <file name="doc/debug.rst" role="doc" md5sum="b05570861b86caa7d3df7f7e95ab2413"/>
+      <file name="doc/index.rst" role="doc" md5sum="23003a7d81d4749c8b51d7654e572835"/>
+      <file name="doc/i18n.rst" role="doc" md5sum="bd7cbffd5c3d762bc60c8bb58491332b"/>
+      <file name="doc/text.rst" role="doc" md5sum="186294a942c0cedda3fe4bab57e60ba3"/>
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.3</min>
+      </php>
+      <pearinstaller>
+        <min>1.4</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <phprelease>
+    <filelist>
+      <install name="doc/debug.rst" as="debug.rst"/>
+      <install name="doc/index.rst" as="index.rst"/>
+      <install name="doc/i18n.rst" as="i18n.rst"/>
+      <install name="doc/text.rst" as="text.rst"/>
+    </filelist>
+  </phprelease>
+</package>
