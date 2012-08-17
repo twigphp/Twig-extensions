@@ -24,6 +24,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $filters = array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'linkify' => new Twig_Filter_Function('twig_linkify_filter', array('pre_escape' => 'html', 'is_safe' => array('html')))
         );
 
         if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
@@ -47,6 +48,14 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 function twig_nl2br_filter($value, $sep = '<br />')
 {
     return str_replace("\n", $sep."\n", $value);
+}
+
+function twig_linkify_filter($text)
+{
+    $text= preg_replace("/(^|[\n ])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is", "$1$2<a     href=\"$3\" >$3</a>", $text);
+    $text= preg_replace("/(^|[\n ])([\w]*?)((www|ftp)\.[^ \,\"\t\n\r<]*)/is", "$1$2<a href=\"http://$3\" >$3</a>", $text);
+    $text= preg_replace("/(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1<a href=\"mailto:$2@$3\">$2@$3</a>", $text);
+    return($text);
 }
 
 if (function_exists('mb_get_info')) {
