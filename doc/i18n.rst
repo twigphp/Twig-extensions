@@ -154,5 +154,10 @@ code:
 
     xgettext --default-domain=messages -p ./locale --from-code=UTF-8 -n --omit-header -L PHP /tmp/cache/*.php
 
-.. _`gettext`:       http://www.php.net/gettext
-.. _`documentation`: http://fr.php.net/manual/en/function.gettext.php
+Another workaround is to use `Twig Gettext Extractor`_ and extract the template
+strings right from `Poedit`_.
+
+.. _`gettext`:                http://www.php.net/gettext
+.. _`documentation`:          http://fr.php.net/manual/en/function.gettext.php
+.. _`Twig Gettext Extractor`: https://github.com/umpirsky/Twig-Gettext-Extractor
+.. _`Poedit`:                 http://www.poedit.net/
