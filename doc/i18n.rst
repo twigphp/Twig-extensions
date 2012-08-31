@@ -141,8 +141,10 @@ templates. Here is a simple example to get you started::
     // iterate over all your templates
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tplDir), RecursiveIteratorIterator::LEAVES_ONLY) as $file)
     {
-      // force compilation
-      $twig->loadTemplate(str_replace($tplDir.'/', '', $file));
+        // force compilation
+        if ($file->isFile()) {
+            $twig->loadTemplate(str_replace($tplDir.'/', '', $file));
+        }
     }
 
 Use the standard ``xgettext`` utility as you would have done with plain PHP
