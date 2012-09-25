@@ -23,7 +23,8 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     {
         return array(
             'eval' => new Twig_Function_Method($this, 'evaluateString', array(
-                'needs_context' => true,
+                'needs_context'     => true,
+                'needs_environment' => true,
             )),
         );
     }
@@ -31,13 +32,27 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     /**
      * Loads a string template and returns the evaluated result
      *
-     * @param  array   $context
-     * @param  string  $string  The string template to evaluate
+     * @param  Twig_Environment $currEnv Current environment
+     * @param  array            $context
+     * @param  string           $string  The string template to evaluate
      * @return string
      */
-    public function evaluateString($context, $string)
+    public function evaluateString(Twig_Environment $currEnv, $context, $string)
+    {
+        $env = $this->setUpEnvironment($currEnv);
+        return $env->loadTemplate($string)->render($context);
+    }
+
+    /**
+     * Makes a new environment and adds the extensions from the current environment
+     *
+     * @param  Twig_Environment $currEnv Current environment
+     * @return Twig_Environment
+     */
+    private function setUpEnvironment(Twig_Environment $currEnv)
     {
         $env = new Twig_Environment(new Twig_Loader_String());
-        return $env->loadTemplate($string)->render($context);
+        $env->setExtensions($currEnv->getExtensions());
+        return $env;
     }
 }
