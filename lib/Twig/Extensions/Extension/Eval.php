@@ -23,37 +23,21 @@ class Twig_Extensions_Extension_Eval extends Twig_Extension
     {
         return array(
             'eval' => new Twig_Function_Method($this, 'evaluateString', array(
-                'needs_environment' => true,
-                'needs_context'     => true,
+                'needs_context' => true,
             )),
         );
     }
 
     /**
-     * Loads a string template and returns the rendered version
+     * Loads a string template and returns the evaluated result
      *
-     * @param  Twig_Environment $env
-     * @param  array             $context
-     * @param  string            $string  The string template to load
+     * @param  array   $context
+     * @param  string  $string  The string template to evaluate
      * @return string
      */
-    public function evaluateString(Twig_Environment $env, $context, $string)
+    public function evaluateString($context, $string)
     {
-        // set loader to be a string loader on a cloned environment so we aren't messing with the actual environment
-        $newEnv = $this->setLoader(clone $env);
-        return $newEnv->loadTemplate($string)->render($context);
-    }
-
-    /**
-     * Sets the environment's loader to be a string loader
-     *
-     * @param  Twig_Environment $env
-     * @return Twig_Environment
-     */
-    private function setLoader(Twig_Environment $env)
-    {
-        $loader = new Twig_Loader_String();
-        $env->setLoader($loader);
-        return $env;
+        $env = new Twig_Environment(new Twig_Loader_String());
+        return $env->loadTemplate($string)->render($context);
     }
 }
