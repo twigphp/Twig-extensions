@@ -48,6 +48,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 function twig_un_camel_case_filter($string)
 {
     $newString = preg_replace('`([A-Z])`', ' $1', $string);
+
     return strtolower($newString);
 }
 
