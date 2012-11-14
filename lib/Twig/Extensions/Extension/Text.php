@@ -34,6 +34,18 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     }
 
     /**
+     * Returns a list of tests.
+     *
+     * @return array
+     */
+    public function getTests()
+    {
+        return array(
+            'in_string' => new Twig_Test_Function('twig_in_string_test'),
+        );
+    }
+
+    /**
      * Name of this extension
      *
      * @return string
@@ -86,6 +98,11 @@ if (function_exists('mb_get_info')) {
 
         return implode($separator, $sentences);
     }
+
+    function twig_in_string_test($needle, $value)
+    {
+        return false !== mb_strpos((string) $value, (string) $needle);
+    }
 } else {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
@@ -105,5 +122,10 @@ if (function_exists('mb_get_info')) {
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
         return wordwrap($value, $length, $separator, !$preserve);
+    }
+
+    function twig_in_string_test($needle, $value)
+    {
+        return false !== strpos((string) $value, (string) $needle);
     }
 }
