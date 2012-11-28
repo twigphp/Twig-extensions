@@ -11,16 +11,16 @@
  * @author Chris Sedlmayr (catchamonkey) <chris@sedlmayr.co.uk>
  * @package Twig
  */
-class Twig_Tests_Extensions_Extension_String_Test extends PHPUnit_Framework_TestCase
+class Twig_Tests_Extensions_Extension_Text_Test extends PHPUnit_Framework_TestCase
 {
     public function testSlugify()
     {
-        $string = new Twig_Extensions_Extension_String();
+        $text = new Twig_Extensions_Extension_Text();
 
-        $output = $string->slugify('This is?foo=bar !@£$ a.string_--with--spaces and &5things');
+        $output = $text->slugify('This is?foo=bar !@£$ a.string_--with--spaces and &5things');
         $this->assertEquals('this-is-foo-bar-a-string_-with-spaces-and-5things', $output);
         // chinese character test
-        $output = $string->slugify('This is汉语!@£$ a.string_--with--sPaces and &5things');
+        $output = $text->slugify('This is汉语!@£$ a.string_--with--sPaces and &5things');
         $this->assertEquals('this-is汉语-a-string_-with-spaces-and-5things', $output);
     }
 }
