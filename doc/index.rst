@@ -7,6 +7,7 @@ Twig Extensions
     debug
     text
     i18n
+    string
 
 The Twig Extensions repository provides several useful extensions for Twig:
 
@@ -16,3 +17,5 @@ The Twig Extensions repository provides several useful extensions for Twig:
 
 * :doc:`I18n <i18n>`: Adds internationalization support via the ``gettext``
   library.
+
+* :doc:`String <string>`: Provides useful filters for string manipulation
