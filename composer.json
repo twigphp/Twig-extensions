@@ -15,7 +15,7 @@
         "twig/twig": "1.*"
     },
     "autoload": {
-        "psr-0": { "Twig_Extensions_": "lib/" }
+        "psr-0": { "Twig_Extensions_Extension_": "lib/" }
     },
     "extra": {
         "branch-alias": {
