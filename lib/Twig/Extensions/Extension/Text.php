@@ -59,7 +59,7 @@ if (function_exists('mb_get_info')) {
                 }
             }
 
-            return mb_substr($value, 0, $length, $env->getCharset()) . $separator;
+            return rtrim(mb_substr($value, 0, $length, $env->getCharset())) . $separator;
         }
 
         return $value;
@@ -96,7 +96,7 @@ if (function_exists('mb_get_info')) {
                 }
             }
 
-            return substr($value, 0, $length) . $separator;
+            return rtrim(substr($value, 0, $length)) . $separator;
         }
 
         return $value;
