@@ -26,7 +26,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'localizeddate' => new Twig_Filter_Function('twig_localized_date_filter'),
+            'localizeddate' => new Twig_Filter_Function('twig_localized_date_filter', array('needs_environment' => true)),
         );
     }
 
@@ -41,8 +41,10 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     }
 }
 
-function twig_localized_date_filter($date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null)
+function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null)
 {
+    $date = twig_date_converter($env, $date, $timezone);
+
     $formatValues = array(
         'none'   => IntlDateFormatter::NONE,
         'short'  => IntlDateFormatter::SHORT,
@@ -55,17 +57,8 @@ function twig_localized_date_filter($date, $dateFormat = 'medium', $timeFormat =
         $locale !== null ? $locale : Locale::getDefault(),
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
-        date_default_timezone_get()
+        $date->getTimezone()->getName()
     );
-
-    if (!$date instanceof DateTime) {
-        if (ctype_digit((string) $date)) {
-            $date = new DateTime('@'.$date);
-            $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
-        } else {
-            $date = new DateTime($date);
-        }
-    }
 
     return $formatter->format($date->getTimestamp());
 }
