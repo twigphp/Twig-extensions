@@ -2,7 +2,9 @@
 
 interface Twig_Extensions_Extension_Gettext_POString_Interface {
     
-    public function __construct($msgid, $msgidPlural = null);
+    public function __construct($msgid);
+
+    public function setMsgidPlural($msgidPlural);
 
     public function setCategory($category);
     
