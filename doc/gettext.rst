@@ -1,14 +1,13 @@
 The Gettext Extension
 =====================
 
-The Gettext extension adds complete `gettext`_ support to Twig. It defines a whole host of functions that can be used in Twig templates. It also adds an ``Extractor`` class, which can parse Twig templates and extract all strings marked for localization. The gettext support includes:
+The Gettext extension adds complete `gettext`_ support to Twig. It defines a whole host of functions and filters that can be used in Twig templates. It also adds an ``Extractor`` class, which can parse Twig templates and extract all strings marked for localization. The gettext support includes:
 
 * categories
 * domains
 * context
 * plurals
 * extractable comments
-* convenience wrapper for string formatting
 
 Configuration
 -------------
@@ -37,45 +36,57 @@ PHP `documentation`_::
     The Gettext extension only works if the PHP `gettext`_ extension is
     enabled.
     
-The ``Twig_Extensions_Extension_Gettext`` class accepts one constructor argument: ``$useShortnames``. By default it is set to ``true``, which means every gettext function is aliased to a shortname. If this conflicts with another extension, set it to false::
+The ``Twig_Extensions_Extension_Gettext`` class accepts one constructor argument: ``$useShortnames``. By default it is set to ``true``, which means every gettext function and filter is aliased to a shortname. If this conflicts with another extension, set it to false::
 
     $twig->addExtension(new Twig_Extensions_Extension_Gettext(false));
 
-The examples below assume shortnames are on, see :ref:`API documentation <api-docs>` for alternative names.
+Most examples below assume shortnames are on, see :ref:`API documentation <api-docs>` for alternative names.
 
     
 Usage
 -----
 
-Wrap any translatable strings in your templates into one of the appropriate gettext functions:
+Wrap any translatable string in your templates into one of the appropriate gettext functions or filters:
 
 .. code-block:: jinja
 
     <h1>{{ _('Hello World!') }}</h1>
-    <p>{{ _nf('It has been one day without apocalypse.', 'It has been %d days without apocalypse.', n, n) }}</p>
+    <h1>{{ 'Hello World!'|gettext }}</h1>
+    
+    <p>{{ _n('One day without accident.', '%d days without accident.', n)|sprintf(n) }}</p>
     
     {#
        The %s is an noun, the %d a number. If you need to
        switch the order of the placeholders for translation,
        use %1$s and %2$d instead.
     #}
-    <p>{{ _f('The %s contains %d monkeys', thing, num) }}</p>
+    <p>{{ 'The %s contains %d monkeys'|gettext|sprintf(thing, num) }}</p>
     
-    <input type="submit" value="{{ _p('verb', 'Update') }}">
+    <input type="submit" value="{{ 'Update'|_p('verb') }}">
     
     {% if someError %}
-        <p>{{ _d('errors', 'Some error occurred!') }}</p>
+        <p>{{ 'Some error occurred!'|_d('errors') }}</p>
     {% endif %}
     
-All gettext functions either start with an underscore (short aliases) or end in ``gettext`` (full name). There are many variations of the basic ``_()``/``gettext()`` function, each with an array of letters tagged on. The letters are shorthand for various attributes that can be modified about the translatable string:
+.. caution::
+
+    You can use gettext functions only for constant expressions. Using them on a variable or dynamic expression
+    means the string cannot be automatically extracted, which breaks the workflow of gettext. The bundled ``Extractor``
+    class will throw an error if it encounters invalid values. For example, this does not work:
+    
+    .. code-block:: jinja
+    
+        {{ 'string'|title|gettext }}
+        {{ var|gettext }}
+    
+Strings can either be wrapped in a gettext function or can be put trough an equivalent filter. The function syntax may be better for users already familiar with the PHP gettext extension and/or may be more compatible with existing toolchains, the filter syntax respects the Twig syntax better. All gettext expressions either start with an underscore (short aliases) or end in ``gettext`` (full name). There are many variations of the basic ``_()``/``gettext()`` function, each with an array of letters tagged on. The letters are shorthand for various attributes that can be modified about the translatable string:
 
 * ``n``: pluralization
 * ``d``: override default domain
 * ``c``: override ``LC_MESSAGES`` category
 * ``p``: put the string in a context
-* ``f``: convenience wrapper for `sprintf`_
 
-The full `GNU gettext documentation`_ details the usage of these different aspects and I highly recommend you read it. A short summary follows.
+The full `GNU gettext documentation`_ details the usage of these different attributes and I highly recommend you read it. A short summary follows.
 
 The translation files are organized in a directory structure like this:
 
@@ -95,7 +106,7 @@ The translation files are organized in a directory structure like this:
 
 ``en_US`` is the *locale*, which is selected using the ``setlocale`` function. ``LC_MESSAGES``, ``LC_MONETARY`` are *categories*, each category can be switched to use a different locale; for instance you can localize text to English while formatting numbers and times in French format, if your users so desire. The names of the ``.mo`` files are the *domain*, they help you organize your strings into groups. Inside the ``.mo`` files a string may be marked with a *context*. Contexts help you distiguish between two identical strings which may translate differently, for example ``_p('verb', 'Update')`` and ``_p('noun', 'Update')``. Try to use these distictions while writing code, it makes the translation job easier later on.
 
-The ``f`` functions are a convenience wrapper added by the Twig ``gettext`` extension. They allow you to pass an arbitrary number of parameters which will be used as parameters to `sprintf`_ after localizing the string. For example:
+The Gettext extension also defines the ``sprintf`` filter to replicate the typical use of `sprintf`_ in combination with gettext:
 
 .. code-block:: php
 
@@ -105,7 +116,7 @@ The ``f`` functions are a convenience wrapper added by the Twig ``gettext`` exte
 .. code-block:: jinja
 
     {# Twig gettext equivalent #}
-    {{ _f('The %s contains %d monkeys', thing, num) }}
+    {{ 'The %s contains %d monkeys'|gettext|sprintf(thing, num) }}
 
 .. code-block:: php
 
@@ -115,7 +126,7 @@ The ``f`` functions are a convenience wrapper added by the Twig ``gettext`` exte
 .. code-block:: jinja
     
     {# Twig gettext equivalent #}
-    {{ _nf('The %s contains one monkey', 'The %s contains %d monkeys', num, thing, num) }}
+    {{ _n('The %s contains one monkey', 'The %s contains %d monkeys', num)|sprintf(thing, num) }}
 
 
 String extraction
@@ -158,7 +169,7 @@ The ``Twig_Extensions_Extension_Gettext_Extractor`` extracts Twig comments on th
 .. code-block:: jinja
 
     {# Please do not translate "Foo", it is our product name and the whole sentence is a word play. #}
-    <p>{{ _("Get Foobar'd today!") }}</p>
+    <p>{{ "Get Foobar'd today!"|gettext }}</p>
     
 The extracted ``.po`` file will contain:
 
@@ -180,23 +191,18 @@ If there is one or more lines of whitespace between the comment and the ``gettex
 API
 ---
 
+Note that the argument order may differ between function and filter syntax. The function syntax uses the original PHP/C gettext parameter order, while the filter syntax tries to make the argument order more memorable by using largely the same order as the n/d/c/p letters in the name of the filter.
+
 * ``gettext``, ``_``
 
   Basic translation in default domain and ``LC_MESSAGES`` category.
 
   .. code-block:: jinja
   
+      {{ 'String'|gettext }}
+      {{ 'String'|_ }}
       {{ gettext('String') }}
       {{ _('String') }}
-
-* ``fgettext``, ``_f``
-
-  Translation in default domain and ``LC_MESSAGES`` category with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ fgettext('String', arg, ..) }}
-      {{ _f('String', arg, ..) }}
 
 * ``pgettext``, ``_p``
 
@@ -204,17 +210,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'String'|pgettext('context') }}
+      {{ 'String'|_p('context') }}
       {{ pgettext('context', 'String') }}
       {{ _p('context', 'String') }}
-
-* ``pfgettext``, ``_pf``
-
-  Translation in default domain and ``LC_MESSAGES`` category with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ pfgettext('context', 'String', arg, ..) }}
-      {{ _pf('context', 'String', arg, ..) }}
 
 * ``ngettext``, ``_n``
 
@@ -222,17 +221,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'Singular'|ngettext('Plural', num) }}
+      {{ 'Singular'|_n('Plural', num) }}
       {{ ngettext('Singular', 'Plural', num) }}
       {{ _n('Singular', 'Plural', num) }}
-
-* ``nfgettext``, ``_nf``
-
-  Pluralized translation in default domain and ``LC_MESSAGES`` category with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ nfgettext('Singular', 'Plural', num, arg, ..) }}
-      {{ _nf('Singular', 'Plural', num, arg, ..) }}
 
 * ``npgettext``, ``_np``
 
@@ -240,17 +232,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'Singular'|npgettext('Plural', num, 'context') }}
+      {{ 'Singular'|_np('Plural', num, 'context') }}
       {{ npgettext('context', 'Singular', 'Plural', num) }}
       {{ _np('context', 'Singular', 'Plural', num) }}
-
-* ``npfgettext``, ``_npf``
-
-  Pluralized translation in default domain and ``LC_MESSAGES`` category with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ npfgettext('context', 'Singular', 'Plural', num, arg, ..) }}
-      {{ _npf('context', 'Singular', 'Plural', num, arg, ..) }}
 
 * ``dgettext``, ``_d``
 
@@ -258,17 +243,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'String'|dgettext('domain') }}
+      {{ 'String'|_d('domain') }}
       {{ dgettext('domain', 'String') }}
       {{ _d('domain', 'String') }}
-
-* ``dfgettext``, ``_df``
-
-  Translation in ``LC_MESSAGES`` category and specified domain with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dfgettext('domain', 'String', arg, ..) }}
-      {{ _df('domain', 'String', arg, ..) }}
 
 * ``dpgettext``, ``_dp``
 
@@ -276,17 +254,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'String'|dpgettext('domain', 'context') }}
+      {{ 'String'|_dp('domain', 'context') }}
       {{ dpgettext('context', 'domain', 'String') }}
       {{ _dp('context', 'domain', 'String') }}
-
-* ``dpfgettext``, ``_dpf``
-
-  Translation in ``LC_MESSAGES`` category and specified domain with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dpfgettext('context', 'domain', 'String', arg, ..) }}
-      {{ _dpf('context', 'domain', 'String', arg, ..) }}
 
 * ``dngettext``, ``_dn``
 
@@ -294,18 +265,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'Singular'|dngettext('Plural', num, 'domain') }}
+      {{ 'Singular'|_dn('Plural', num, 'domain') }}
       {{ dngettext('domain', 'Singular', 'Plural', num) }}
       {{ _dn('domain', 'Singular', 'Plural', num) }}
-
-
-* ``dnfgettext``, ``_dnf``
-
-  Pluralized translation in ``LC_MESSAGES`` category and specified domain with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dnfgettext('domain', 'Singular', 'Plural', num, arg, ..) }}
-      {{ _dnf('domain', 'Singular', 'Plural', num, arg, ..) }}
 
 * ``dnpgettext``, ``_dnp``
 
@@ -313,17 +276,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'Singular'|dnpgettext('Plural', num, 'domain', 'context') }}
+      {{ 'Singular'|_dnp('Plural', num, 'domain', 'context') }}
       {{ dnpgettext('context, 'domain', 'Singular', 'Plural', num) }}
       {{ _dnp('context', 'domain', 'Singular', 'Plural', num) }}
-
-* ``dnpfgettext``, ``_dnpf``
-
-  Pluralized translation in ``LC_MESSAGES`` category and specified domain with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dnpfgettext('context, 'domain', 'Singular', 'Plural', num, arg, ..) }}
-      {{ _dnpf('context', 'domain', 'Singular', 'Plural', num, arg, ..) }}
 
 * ``dcgettext``, ``_dc``
 
@@ -331,17 +287,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'String'|dcgettext('domain', 'category') }}
+      {{ 'String'|_dc('domain', 'category') }}
       {{ dcgettext('domain', 'String', 'category') }}
       {{ _dc('domain', 'String', 'category') }}
-
-* ``dcfgettext``, ``_dcf``
-
-  Translation in specified domain and category with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dcfgettext('domain', 'String', 'category', arg, ..) }}
-      {{ _dcf('domain', 'String', 'category', arg, ..) }}
 
 * ``dcpgettext``, ``_dcp``
 
@@ -349,18 +298,10 @@ API
 
   .. code-block:: jinja
   
+      {{ 'String'|dcpgettext('domain', 'category', 'context') }}
+      {{ 'String'|_dcp('domain', 'category', 'context') }}
       {{ dcpgettext('context', 'domain', 'String', 'category') }}
       {{ _dcp('context', 'domain', 'String', 'category') }}
-
-
-* ``dcpfgettext``, ``_dcpf``
-
-  Translation in specified domain and category with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dcpfgettext('context', 'domain', 'String', 'category', arg, ..) }}
-      {{ _dcpf('context', 'domain', 'String', 'category', arg, ..) }}
 
 * ``dcngettext``, ``_dcn``
 
@@ -368,35 +309,21 @@ API
 
   .. code-block:: jinja
   
-      {{ dcngettext('domain', 'Singular', 'Plural', 'category') }}
-      {{ _dcn('domain', 'Singular', 'Plural', 'category') }}
-
-* ``dcnfgettext``, ``_dcnf``
-
-  Pluralized translation in specified domain and category with string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dcnfgettext('domain', 'Singular', 'Plural', 'category', arg, ..) }}
-      {{ _dcnf('domain', 'Singular', 'Plural', 'category', arg, ..) }}
+      {{ 'Singular'|dcngettext('Plural', num, 'domain', 'category') }}
+      {{ 'Singular'|_dcn('Plural', num, 'domain', 'category') }}
+      {{ dcngettext('domain', 'Singular', 'Plural', num, 'category') }}
+      {{ _dcn('domain', 'Singular', 'Plural', num, 'category') }}
 
 * ``dcnpgettext``, ``_dcnp``
 
   Pluralized translation in specified domain and category with context.
 
   .. code-block:: jinja
-  
+
+      {{ 'Singular'|dcnpgettext('Plural', num, 'domain', 'category', 'context') }}
+      {{ 'Singular'|_dcnp('Plural', num, 'domain', 'category', 'context') }}
       {{ dcnpgettext('context', 'domain', 'Singular', 'Plural', 'category') }}
       {{ _dcnp('context', 'domain', 'Singular', 'Plural', 'category') }}
-
-* ``dcnpfgettext``, ``_dcnpf``
-
-  Pluralized translation in specified domain and category with context and string formatting.
-
-  .. code-block:: jinja
-  
-      {{ dcnpfgettext('context', 'domain', 'Singular', 'Plural', 'category', arg, ..) }}
-      {{ _dcnpf('context', 'domain', 'Singular', 'Plural', 'category', arg, ..) }}
 
 
 Workflow
