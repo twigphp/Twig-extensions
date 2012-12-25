@@ -148,7 +148,7 @@ class Twig_Extensions_Extension_Gettext extends Twig_Extension {
     }
     
     public function npgettextFilter($msgid1, $msgid2, $n, $context) {
-        return $this->npgettext($context, $msgid1, $msgid2, $context);
+        return $this->npgettext($context, $msgid1, $msgid2, $n);
     }
     
     public function dgettextFilter($message, $domain) {
