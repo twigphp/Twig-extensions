@@ -87,8 +87,7 @@ class Twig_Extensions_Extension_Gettext extends Twig_Extension {
             'dcgettext'   => $dcgettext,
             'dcpgettext'  => $dcpgettext,
             'dcngettext'  => $dcngettext,
-            'dcnpgettext' => $dcnpgettext,
-            'sprintf'     => new Twig_Filter_Method($this, 'sprintf')
+            'dcnpgettext' => $dcnpgettext
         );
         
         if ($this->useShortnames) {
@@ -181,11 +180,6 @@ class Twig_Extensions_Extension_Gettext extends Twig_Extension {
     
     public function dcnpgettextFilter($msgid1, $msgid2, $n, $domain, $category, $context) {
         return $this->dcngettext($context, $domain, $msgid1, $msgid2, $n, $category);
-    }
-    
-    public function sprintf($string /*, $arg, ... */) {
-        $args = func_get_args();
-        return vsprintf($string, array_slice($args, 1));
     }
     
 }

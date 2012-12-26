@@ -53,14 +53,14 @@ Wrap any translatable string in your templates into one of the appropriate gette
     <h1>{{ _('Hello World!') }}</h1>
     <h1>{{ 'Hello World!'|gettext }}</h1>
     
-    <p>{{ _n('One day without accident.', '%d days without accident.', n)|sprintf(n) }}</p>
+    <p>{{ _n('One day without accident.', '%d days without accident.', n)|format(n) }}</p>
     
     {#
        The %s is an noun, the %d a number. If you need to
        switch the order of the placeholders for translation,
        use %1$s and %2$d instead.
     #}
-    <p>{{ 'The %s contains %d monkeys'|gettext|sprintf(thing, num) }}</p>
+    <p>{{ 'The %s contains %d monkeys'|gettext|format(thing, num) }}</p>
     
     <input type="submit" value="{{ 'Update'|_p('verb') }}">
     
@@ -105,28 +105,6 @@ The translation files are organized in a directory structure like this:
         ...
 
 ``en_US`` is the *locale*, which is selected using the ``setlocale`` function. ``LC_MESSAGES``, ``LC_MONETARY`` are *categories*, each category can be switched to use a different locale; for instance you can localize text to English while formatting numbers and times in French format, if your users so desire. The names of the ``.mo`` files are the *domain*, they help you organize your strings into groups. Inside the ``.mo`` files a string may be marked with a *context*. Contexts help you distiguish between two identical strings which may translate differently, for example ``_p('verb', 'Update')`` and ``_p('noun', 'Update')``. Try to use these distictions while writing code, it makes the translation job easier later on.
-
-The Gettext extension also defines the ``sprintf`` filter to replicate the typical use of `sprintf`_ in combination with gettext:
-
-.. code-block:: php
-
-    // regular PHP
-    <?php printf(_('The %s contains %d monkeys'), $thing, $num); ?>
-
-.. code-block:: jinja
-
-    {# Twig gettext equivalent #}
-    {{ 'The %s contains %d monkeys'|gettext|sprintf(thing, num) }}
-
-.. code-block:: php
-
-    // regular PHP
-    <?php printf(ngettext('The %s contains one monkey', 'The %s contains %d monkeys', $num), $thing, $num); ?>
-    
-.. code-block:: jinja
-    
-    {# Twig gettext equivalent #}
-    {{ _n('The %s contains one monkey', 'The %s contains %d monkeys', num)|sprintf(thing, num) }}
 
 
 String extraction
@@ -372,7 +350,6 @@ I recommend again that you read the `GNU gettext documentation`_ to learn more a
 
 .. _`gettext`:                   http://www.php.net/gettext
 .. _`documentation`:             http://php.net/manual/en/function.gettext.php
-.. _`sprintf`:                   http://php.net/sprintf
 .. _`GNU gettext documentation`: http://www.gnu.org/software/gettext/manual/gettext.html
 .. _`msgmerge`:                  http://www.gnu.org/software/gettext/manual/gettext.html#msgmerge-Invocation
 .. _`msgfmt`:                    http://www.gnu.org/software/gettext/manual/gettext.html#msgfmt-Invocation
