@@ -274,7 +274,7 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         }
         
         if ($comment = $this->getPreceedingCommentNode($node->getLine())) {
-            $POString->setExtractedComments(trim($comment->getValue()));
+            $POString->addExtractedComment(trim($comment->getValue()));
         }
         $POString->addReference(sprintf("$this->file:%d", $node->getLine()));
         $this->strings[] = $POString;

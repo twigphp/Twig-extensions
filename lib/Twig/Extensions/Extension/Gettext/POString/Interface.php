@@ -12,7 +12,7 @@ interface Twig_Extensions_Extension_Gettext_POString_Interface {
     
     public function setMsgctxt($msgctxt);
     
-    public function setExtractedComment($comment);
+    public function addExtractedComment($comment);
     
     public function addReference($reference);
     
