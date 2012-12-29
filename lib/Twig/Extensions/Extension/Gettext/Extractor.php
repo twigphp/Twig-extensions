@@ -44,7 +44,8 @@ class Twig_Extensions_Extension_Gettext_Extractor {
     
     protected function extractComments(Twig_TokenStream $stream) {
         $tokens = array();
-        
+        $this->comments = array();
+
         while (!$stream->isEOF()) {
             $token = $stream->next();
             
