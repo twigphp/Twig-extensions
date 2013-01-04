@@ -274,7 +274,7 @@ Note that the argument order may differ between function and filter syntax. The 
   
       {{ 'Singular'|dnpgettext('Plural', num, 'domain', 'context') }}
       {{ 'Singular'|_dnp('Plural', num, 'domain', 'context') }}
-      {{ dnpgettext('context, 'domain', 'Singular', 'Plural', num) }}
+      {{ dnpgettext('context', 'domain', 'Singular', 'Plural', num) }}
       {{ _dnp('context', 'domain', 'Singular', 'Plural', num) }}
 
 * ``dcgettext``, ``_dc``
