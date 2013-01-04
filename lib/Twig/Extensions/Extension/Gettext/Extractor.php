@@ -21,6 +21,8 @@ class Twig_Extensions_Extension_Gettext_Extractor {
     
     protected $POStringFactory;
     
+    protected $inFormatFilterContext = false;
+    
     /**
      * @param Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory An object for constructing POString objects.
      */
@@ -82,8 +84,11 @@ class Twig_Extensions_Extension_Gettext_Extractor {
      * Processes a node and its child nodes recursively.
      * 
      * @param Twig_NodeInterface $node
+     * @param bool $inFormatFilterContext Set to true if we're descending into a `format` filter, parameter is passed down recursively.
      */
-    protected function processNode(Twig_NodeInterface $node) {
+    protected function processNode(Twig_NodeInterface $node, $inFormatFilterContext = false) {
+        $this->inFormatFilterContext = $inFormatFilterContext;
+        
         switch (true) {
             case $node instanceof Twig_Node_Expression_Function :
                 $this->processFunctionNode($node);
@@ -92,13 +97,20 @@ class Twig_Extensions_Extension_Gettext_Extractor {
                 $this->processFilterNode($node);
                 break;
         }
-        
     
         foreach ($node as $child) {
             if ($child instanceof Twig_NodeInterface) {
-                $this->processNode($child);
+                $this->processNode($child, $inFormatFilterContext || $this->isFormatFilter($node));
             }
         }
+    }
+    
+    /**
+     * @param Twig_NodeInterface $node The node to be checked.
+     * @return bool True if $node is a `format` filter.
+     */
+    protected function isFormatFilter(Twig_NodeInterface $node) {
+        return $node instanceof Twig_Node_Expression_Filter && $node->getNode('filter')->getAttribute('value') == 'format';
     }
     
     /**
@@ -304,7 +316,13 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         if ($comment = $this->getPreceedingCommentNode($node->getLine())) {
             $POString->addExtractedComment(trim($comment->getValue()));
         }
+
         $POString->addReference(sprintf("$this->file:%d", $node->getLine()));
+
+        if ($this->inFormatFilterContext) {
+            $POString->addFlag('php-format');
+        }
+
         $this->strings[] = $POString;
     }
     

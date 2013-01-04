@@ -164,6 +164,24 @@ If there is one or more lines of whitespace between the comment and the ``gettex
     *Any* comment block on the preceeding line will be extracted. Take care that it's not a commented-out block of code.
 
 
+Format filters
+^^^^^^^^^^^^^^
+
+The ``Extractor`` attempts to detect when a string is in ``sprintf`` format, which means when it's chained to a Twig ``format`` filter. In this case it sets the ``php-format`` flag on the extracted string, which tools further down in the workflow (can) use for checking the correctness of translated strings. For example:
+
+.. code-block:: jinja
+
+    <p>{{ 'The %s contains %d monkeys'|gettext|format(thing, num) }}</p>
+    
+Resulting ``.po`` file entry:
+
+.. code-block:: text
+
+    #, php-format
+    msgid "The %s contains %d monkeys"
+    msgstr ""
+
+
 .. _api-docs:
 
 API
