@@ -21,6 +21,9 @@ class Twig_Extensions_Extension_Gettext_Extractor {
     
     protected $POStringFactory;
     
+    /**
+     * @param Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory An object for constructing POString objects.
+     */
     public function __construct(Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory) {
         $this->POStringFactory = $POStringFactory;
         
@@ -29,6 +32,12 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         $this->parser = new Twig_Parser($twig);
     }
     
+    /**
+     * Extracts all gettext strings from given Twig template file.
+     * 
+     * @param string $file Path to Twig template file.
+     * @return array Array of POString objects.
+     */
     public function extractFile($file) {
         $this->strings = array();
         $this->file    = $file;
@@ -42,6 +51,12 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         return $this->strings;
     }
     
+    /**
+     * Returns comment node immediately preceeding given line number, if any.
+     * 
+     * @param int $lineno
+     * @return Twig_Extensions_Extension_Gettext_Token Closest preceeding comment token or null.
+     */
     protected function getPreceedingCommentNode($lineno) {
         $commentNode = null;
         foreach ($this->comments as $comment) {
@@ -63,6 +78,11 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         return $commentNode;
     }
     
+    /**
+     * Processes a node and its child nodes recursively.
+     * 
+     * @param Twig_NodeInterface $node
+     */
     protected function processNode(Twig_NodeInterface $node) {
         switch (true) {
             case $node instanceof Twig_Node_Expression_Function :
@@ -81,6 +101,11 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         }
     }
     
+    /**
+     * Processes a Function node.
+     * 
+     * @param Twig_Node_Expression_Function $node
+     */
     protected function processFunctionNode(Twig_Node_Expression_Function $node) {
         switch ($node->getAttribute('name')) {
             case '_' :
@@ -134,6 +159,11 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         }
     }
     
+    /**
+     * Processes a Filter node.
+     * 
+     * @param Twig_Node_Expression_Filter $node
+     */
     protected function processFilterNode(Twig_Node_Expression_Filter $node) {
         switch ($node->getNode('filter')->getAttribute('value')) {
             case '_' :
@@ -187,6 +217,12 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         }
     }
     
+    /**
+     * Parses arguments of a Function node and pushes entry into list of extracted strings.
+     * 
+     * @param Twig_Node_Expression_Function $node
+     * @param mixed Variable number of arguments representing roles of the Twig function arguments.
+     */
     protected function pushFunction(Twig_Node_Expression_Function $node /*, arg, .. */) {
         $args = func_get_args();
         array_shift($args);
@@ -203,6 +239,12 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         $this->pushEntry($node, $valueNodes);
     }
     
+    /**
+     * Parses arguments of a Filter node and pushes entry into list of extracted strings.
+     * 
+     * @param Twig_Node_Expression_Filter $node
+     * @param mixed Variable number of arguments representing roles of the Twig filter arguments.
+     */
     protected function pushFilter(Twig_Node_Expression_Filter $node /*, arg, .. */) {
         $args = func_get_args();
         array_shift($args);
@@ -219,6 +261,12 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         $this->pushEntry($node, $valueNodes);
     }
     
+    /**
+     * Pushes entry into list of extracted strings.
+     * 
+     * @param Twig_Node_Expression $node
+     * @param array $valueNodes Associative array of value nodes (values) and their role (keys).
+     */
     protected function pushEntry(Twig_Node_Expression $node, array $valueNodes) {
         if (!isset($valueNodes[self::MSGID])) {
             throw new LogicException('$valueNodes array must contain a MSGID value');
@@ -260,6 +308,14 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         $this->strings[] = $POString;
     }
     
+    /**
+     * Throws an exception with detailled error message in case of argument parse errors.
+     * 
+     * @param Twig_Node_Expression $argument The invalid/unexpected argument node.
+     * @param Twig_Node_Expression $node The Filter or Function node to which the $argument belongs.
+     * @throws InvalidArgumentException (The main purpose.)
+     * @throws LogicException In case an unexpected $node argument was passed.
+     */
     protected function invalidArgumentTypeParseError(Twig_Node_Expression $argument, Twig_Node_Expression $node) {
         switch (true) {
             case $node instanceof Twig_Node_Expression_Function :
