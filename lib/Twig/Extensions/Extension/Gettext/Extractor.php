@@ -35,32 +35,11 @@ class Twig_Extensions_Extension_Gettext_Extractor {
         
         $source = file_get_contents($file);
         $tokens = $this->lexer->tokenize($source);
-        $tokens = $this->extractComments($tokens);
-        $node   = $this->parser->parse($tokens);
+        $this->comments = $this->lexer->getCommentTokens();
+        $node = $this->parser->parse($tokens);
         $this->processNode($node);
         
         return $this->strings;
-    }
-    
-    protected function extractComments(Twig_TokenStream $stream) {
-        $tokens = array();
-        $this->comments = array();
-
-        while (!$stream->isEOF()) {
-            $token = $stream->next();
-            
-            switch ($token->getType()) {
-                case Twig_Extensions_Extension_Gettext_Token::COMMENT :
-                    $this->comments[] = $token;
-                    break;
-                default :
-                    $tokens[] = $token;
-            }
-        }
-        
-        $tokens[] = $stream->getCurrent();
-        
-        return new Twig_TokenStream($tokens, $stream->getFilename());
     }
     
     protected function getPreceedingCommentNode($lineno) {
