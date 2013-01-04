@@ -7,6 +7,7 @@ Twig Extensions
     debug
     text
     i18n
+    number
 
 The Twig Extensions repository provides several useful extensions for Twig:
 
