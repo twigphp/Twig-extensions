@@ -25,11 +25,14 @@ class Twig_Extensions_Extension_Gettext_Extractor {
     
     /**
      * @param Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory An object for constructing POString objects.
+     * @param array $extensions Additional extensions that need to be loaded into the environment.
      */
-    public function __construct(Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory) {
+    public function __construct(Twig_Extensions_Extension_Gettext_POString_Factory_Interface $POStringFactory, array $extensions = array()) {
         $this->POStringFactory = $POStringFactory;
         
-        $twig         = new Twig_Environment(new Twig_Loader_String);
+        $twig = new Twig_Environment(new Twig_Loader_String);
+        array_map(array($twig, 'addExtension'), $extensions);
+        
         $this->lexer  = new Twig_Extensions_Extension_Gettext_Lexer($twig);
         $this->parser = new Twig_Parser($twig);
     }

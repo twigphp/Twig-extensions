@@ -117,9 +117,10 @@ To generate ``.pot`` files from the returned array, you need a tool that can mer
     Twig_Autoloader::register();
     Twig_Extensions_Autoloader::register();
 
-    $poFactory = new Twig_Extensions_Extension_Gettext_POString_Kunststube_Adapter_Factory;
-    $extractor = new Twig_Extensions_Extension_Gettext_Extractor($poFactory);
-    $catalog   = new Kunststube\POTools\Catalog;
+    $poFactory  = new Twig_Extensions_Extension_Gettext_POString_Kunststube_Adapter_Factory;
+    #extensions = array(new Twig_Extensions_Extension_Gettext);
+    $extractor  = new Twig_Extensions_Extension_Gettext_Extractor($poFactory, $extensions);
+    $catalog    = new Kunststube\POTools\Catalog;
 
     $templatesDir = 'templates';
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($templatesDir), RecursiveIteratorIterator::LEAVES_ONLY) as $file)
@@ -136,7 +137,9 @@ To generate ``.pot`` files from the returned array, you need a tool that can mer
     $catalog->writeToDirectory('locale/en');
 
 
-You can write your own tools if you have different needs. All you need is a class that implements ``Twig_Extensions_Extension_Gettext_POString_Interface``. This is simply a container object that represents one translatable string with all its different possible attributes like domain, context etc. You then pass a factory that implements ``Twig_Extensions_Extension_Gettext_POString_Factory_Interface`` to the extractor class, which allows the extractor to generate one such container object for each extracted string and return an array of such objects. The catalog in the above example has the job of merging and grouping these and writing them into files with the correct format.
+You can write your own toolchain to deal with the extracted strings if you have different needs. All you need is a class that implements ``Twig_Extensions_Extension_Gettext_POString_Interface``. This is simply a container object that represents one translatable string with all its different possible attributes like domain, context etc. You then pass a factory that implements ``Twig_Extensions_Extension_Gettext_POString_Factory_Interface`` to the extractor class, which allows the extractor to generate one such container object for each extracted string and return an array of such objects. The catalog in the above example has the job of merging and grouping these and writing them into POT files with the correct format.
+
+You should also pass an array of the same extensions you load into the regular Twig environment to the Extractor class as the second constructor argument, which should typically include the `Twig_Extensions_Extension_Gettext`.
 
 
 Comments
