@@ -118,7 +118,7 @@ To generate ``.pot`` files from the returned array, you need a tool that can mer
     Twig_Extensions_Autoloader::register();
 
     $poFactory  = new Twig_Extensions_Extension_Gettext_POString_Kunststube_Adapter_Factory;
-    #extensions = array(new Twig_Extensions_Extension_Gettext);
+    $extensions = array(new Twig_Extensions_Extension_Gettext);
     $extractor  = new Twig_Extensions_Extension_Gettext_Extractor($poFactory, $extensions);
     $catalog    = new Kunststube\POTools\Catalog;
 
