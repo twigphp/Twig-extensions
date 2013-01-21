@@ -1,2 +1,4 @@
-.DS_Store
 phpunit.xml
+vendor/
+composer.lock
+
