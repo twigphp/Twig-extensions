@@ -47,21 +47,19 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 
 function twig_pad_filter($value, $padCharacter, $maxLength, $padLeft = true)
 {
-	$padLength = $maxLength - strlen($value);
+    $padLength = $maxLength - mb_strlen($value);
 
-	if ($padLength <= 0) {
-		return $value;
-	}
+    if ($padLength <= 0) {
+        return $value;
+    }
 
-	for ( $i = 0; $i < $padLength; $i++) {
-		if (!$padLeft) {
-			$value = $value . $padCharacter;
-			continue;
-		}
-		$value = $padCharacter . $value;
-	}
+    $padString = str_repeat($padCharacter, $padLength);
 
-	return $value;
+    if ($padLeft) {
+        return $padString . $value;
+    }
+
+    return $value . $padString;
 }
 
 function twig_nl2br_filter($value, $sep = '<br />')
