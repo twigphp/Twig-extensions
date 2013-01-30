@@ -47,7 +47,11 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 
 function twig_pad_filter($value, $padCharacter, $maxLength, $padLeft = true)
 {
-    $padLength = $maxLength - mb_strlen($value);
+    if (function_exists('mb_strlen') {
+        $padLength = $maxLength - mb_strlen($value);
+    } else {
+        $padLength = $maxLength - strlen($value);
+    }
 
     if ($padLength <= 0) {
         return $value;
