@@ -41,7 +41,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     }
 }
 
-function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null)
+function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null)
 {
     $date = twig_date_converter($env, $date, $timezone);
 
@@ -57,7 +57,9 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         $locale !== null ? $locale : Locale::getDefault(),
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
-        $date->getTimezone()->getName()
+        $date->getTimezone()->getName(),
+        IntlDateFormatter::GREGORIAN,
+        $format
     );
 
     return $formatter->format($date->getTimestamp());
