@@ -32,7 +32,7 @@ class Twig_Extensions_Grammar_Body extends Twig_Extensions_Grammar
         return $this->parser->subparse(array($this, 'decideBlockEnd'), true);
     }
 
-    public function decideBlockEnd($token)
+    public function decideBlockEnd(Twig_Token $token)
     {
         return $token->test($this->end);
     }
