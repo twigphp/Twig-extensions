@@ -25,15 +25,20 @@ Arguments
 ~~~~~~~~~
 
 * ``date_format``: The date format. Choose one of these formats:
+
   * 'none':   `IntlDateFormatter::NONE`_
   * 'short':  `IntlDateFormatter::SHORT`_
   * 'medium': `IntlDateFormatter::MEDIUM`_
   * 'long':   `IntlDateFormatter::LONG`_
   * 'full':   `IntlDateFormatter::FULL`_
+
 * ``time_format``: The time format. Same formats possible as above.
+
 * ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
   use ``Locale::getDefault()``
+
 * ``timezone``: The date timezone
+
 * ``format``: Optional pattern to use when formatting or parsing. Possible
   patterns are documented in the `ICU user guide`_.
 
