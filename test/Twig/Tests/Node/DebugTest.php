@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once TWIG_LIB_DIR.'/../test/Twig/Tests/Node/TestCase.php';
-
-class Twig_Tests_Node_DebugTest extends Twig_Tests_Node_TestCase
+class Twig_Tests_Node_DebugTest extends Twig_Test_NodeTestCase
 {
     /**
      * @covers Twig_Node_Debug::__construct
