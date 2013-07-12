@@ -12,7 +12,8 @@
 /**
  * Represents a while node.
  *
- * @package    twig
+ * @package    Twig
+ * @subpackage Twig-extensions
  * @author     Alexey Buyanow <alexbuyanow@gmail.com>
  *
  */

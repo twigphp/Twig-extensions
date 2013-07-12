@@ -21,6 +21,10 @@
  *  {% while test_var == 'true' %}
  *  {% endwhile %}
  *
+ * @package    Twig
+ * @subpackage Twig-extensions
+ * @author     Alexey Buyanow <alexbuyanow@gmail.com>
+ *
  */
 class Twig_Extensions_TokenParser_While extends Twig_TokenParser
 {
