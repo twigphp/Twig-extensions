@@ -16,14 +16,21 @@ class Twig_Extensions_Node_WhileTest extends Twig_Test_NodeTestCase
      */
     public function testConstructor()
     {
-        $t    = new Twig_Node(array(
-            new Twig_Node_Expression_Constant(true, 1),
-            new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
-        ), array(), 1);
-        $else = null;
-        $node = new Twig_Extensions_Node_While($t, 1);
+        $condition = new Twig_Node_Expression_Constant(true, 1);
+        $body      = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1);
+        $node      = new Twig_Extensions_Node_While($condition, $body, 1);
 
-        $this->assertEquals($t, $node->getNode('tests'));
+        $this->assertEquals($condition, $node->getNode('condition'));
+        $this->assertEquals($body, $node->getNode('body'));
+    }
+
+    /**
+     * @covers Twig_Node_For::compile
+     * @dataProvider getTests
+     */
+    public function testCompile($node, $source, $environment = null)
+    {
+        parent::testCompile($node, $source, $environment);
     }
 
     /**
@@ -35,11 +42,9 @@ class Twig_Extensions_Node_WhileTest extends Twig_Test_NodeTestCase
     {
         $tests = array();
 
-        $t    = new Twig_Node(array(
-            new Twig_Node_Expression_Constant(true, 1),
-            new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1),
-        ), array(), 1);
-        $node = new Twig_Extensions_Node_While($t, 1);
+        $condition = new Twig_Node_Expression_Constant(true, 1);
+        $body      = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1);
+        $node      = new Twig_Extensions_Node_While($condition, $body, 1);
 
         $tests[] = array($node, <<<EOF
 // line 1

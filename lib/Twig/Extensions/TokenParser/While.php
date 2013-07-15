@@ -38,17 +38,13 @@ class Twig_Extensions_TokenParser_While extends Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $lineNumber = $token->getLine();
-        $expr       = $this->parser->getExpressionParser()->parseExpression();
+        $condition  = $this->parser->getExpressionParser()->parseExpression();
         $stream     = $this->parser->getStream();
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(array($this, 'decideWhileEnd'));
-
-        $tests = array($expr, $body);
-        $stream->next();
-
+        $body = $this->parser->subparse(array($this, 'decideWhileEnd'), true);
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        return new Twig_Extensions_Node_While(new Twig_Node($tests), $lineNumber, $this->getTag());
+        return new Twig_Extensions_Node_While($condition, $body, $lineNumber, $this->getTag());
     }
 
     /**

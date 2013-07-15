@@ -20,13 +20,14 @@
 class Twig_Extensions_Node_While extends Twig_Node
 {
     /**
-     * @param Twig_NodeInterface $tests
-     * @param integer            $lineNumber
-     * @param string|null        $tag
+     * @param Twig_Node_Expression $condition
+     * @param Twig_NodeInterface   $body
+     * @param int                  $lineNumber
+     * @param null                 $tag
      */
-    public function __construct(Twig_NodeInterface $tests, $lineNumber, $tag = null)
+    public function __construct(Twig_Node_Expression $condition, Twig_NodeInterface $body, $lineNumber, $tag = null)
     {
-        parent::__construct(array('tests' => $tests,), array(), $lineNumber, $tag);
+        parent::__construct(array('condition' => $condition, 'body' => $body, ), array(), $lineNumber, $tag);
     }
 
     /**
@@ -43,10 +44,10 @@ class Twig_Extensions_Node_While extends Twig_Node
         $compiler
             ->addDebugInfo($this)
             ->write('while (')
-            ->subcompile($this->getNode('tests')->getNode(0))
+            ->subcompile($this->getNode('condition'))
             ->write(") {\n")
             ->indent()
-            ->subcompile($this->getNode('tests')->getNode(1))
+            ->subcompile($this->getNode('body'))
             ->outdent()
             ->write("}\n");
     }
