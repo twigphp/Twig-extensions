@@ -19,3 +19,5 @@ The Twig Extensions repository provides several useful extensions for Twig:
   library;
 
 * :doc:`Intl <intl>`: Adds a filter for localization of ``DateTime`` objects.
+
+* :doc:`Money <money>`: Adds a filter to format money by locale.
