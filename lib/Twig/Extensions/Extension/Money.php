@@ -41,6 +41,14 @@ class Twig_Extensions_Extension_Money extends Twig_Extension
 
 function twig_money_format_filter($number, $locale, $format)
 {
+    // Backup previous and set new locale
+    $previousLocale = setlocale(LC_MONETARY, 0);
     setlocale(LC_MONETARY, $locale);
-    return money_format($format, $number);
+
+    $formattedMoney = money_format($format, $number);
+
+    // Reset locale
+    setlocale(LC_MONETARY, $previousLocale);
+
+    return $formattedMoney;
 }
