@@ -1,7 +1,7 @@
 The Text Extension
 ==================
 
-The Text extensions provides the following filters:
+The Text extension provides the following filters:
 
 * ``truncate``
 * ``wordwrap``
