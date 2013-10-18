@@ -54,7 +54,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     );
 
     $formatter = IntlDateFormatter::create(
-        $locale !== null ? $locale : Locale::getDefault(),
+        $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
         $date->getTimezone()->getName(),
