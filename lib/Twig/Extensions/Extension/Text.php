@@ -24,11 +24,10 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $filters = array(
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('nl2br', 'twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
 
-        if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
-            $filters[] = new Twig_SimpleFilter('nl2br', 'twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html')));
-        }
+            
 
         return $filters;
     }
