@@ -22,12 +22,12 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     public function getFilters()
     {
         $filters = array(
-            'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
-            'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
         );
 
         if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
-            $filters['nl2br'] = new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html')));
+            $filters[] = new Twig_SimpleFilter('nl2br', 'twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html')));
         }
 
         return $filters;
