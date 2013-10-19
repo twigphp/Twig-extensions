@@ -21,12 +21,10 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
      */
     public function getFilters()
     {
-        $filters = array(
+        return array(
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
         );
-        
-        return $filters;
     }
 
     /**
