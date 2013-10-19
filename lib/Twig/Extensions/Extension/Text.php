@@ -24,11 +24,8 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $filters = array(
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
-            new Twig_SimpleFilter('nl2br', 'twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
-
-            
-
+        
         return $filters;
     }
 
@@ -41,11 +38,6 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         return 'Text';
     }
-}
-
-function twig_nl2br_filter($value, $sep = '<br />')
-{
-    return str_replace("\n", $sep."\n", $value);
 }
 
 if (function_exists('mb_get_info')) {
