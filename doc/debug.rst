@@ -5,8 +5,8 @@ The Debug Extension
 
     The debug extension (``Twig_Extensions_Extension_Debug``) coming from the
     ``Twig-extensions`` package is deprecated as of Twig 1.5. Use the Twig
-    built-in `dump`_ function instead that comes with the
-    ``Twig_Extension_Debug`` extension.
+    built-in `dump`_ function from the ``Twig_Extension_Debug`` extension
+    instead.
 
 The ``debug`` extension provides a ``debug`` tag that can be used to
 output the content of the current context:
