@@ -1,3 +1,9 @@
+/**
+* Lazy token parser.
+*
+* @package twig
+* @author Christophe SAUVEUR <christophe@xhaleera.com>
+*/
 class Twig_Extensions_TokenParser_Lazy extends Twig_TokenParser
 {
     /**
