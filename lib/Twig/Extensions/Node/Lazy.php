@@ -1,8 +1,8 @@
 /**
-* Represents a trans node.
+* Represents a lazy node.
 *
 * @package twig
-* @author Fabien Potencier <fabien.potencier@symfony-project.com>
+* @author Christophe SAUVEUR <christophe@xhaleera.com>
 */
 class Twig_Extensions_Node_Lazy extends Twig_Node
 {
