@@ -24,6 +24,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $filters = array(
             'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
             'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+            'slugify'  => new Twig_Filter_Method($this, 'slugify'),
         );
 
         if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
@@ -31,6 +32,24 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         }
 
         return $filters;
+    }
+
+    public function slugify($string)
+    {
+        $ret = $string;
+        // remove html line break
+        $ret = preg_replace("<br/>", '', $ret);
+        // strip all non word chars
+        $ret = preg_replace('/\W/u', ' ', $ret);
+        // replace all white space sections with a dash
+        $ret = preg_replace('/\ +/', '-', $ret);
+        // trim dashes
+        $ret = preg_replace('/\-$/', '', $ret);
+        $ret = preg_replace('/^\-/', '', $ret);
+        // convert to lower case
+        $ret = strtolower($ret);
+
+        return $ret;
     }
 
     /**
