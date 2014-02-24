@@ -13,16 +13,25 @@ abstract class Twig_Extensions_Grammar implements Twig_Extensions_GrammarInterfa
     protected $name;
     protected $parser;
 
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @param Twig_ParserInterface $parser
+     */ 
     public function setParser(Twig_ParserInterface $parser)
     {
         $this->parser = $parser;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
