@@ -41,6 +41,8 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
             array('This is a very long sentence.', 6, false, '...', 'This i...'),
             array('This is a very long sentence.', 2, true, '...', 'This...'),
             array('This is a very long sentence.', 2, true, '[...]', 'This[...]'),
+            array('This is a very long sentence.', 23, false, '...', 'This is a very long sen...'),
+            array('This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'),
         );
     }
 }
