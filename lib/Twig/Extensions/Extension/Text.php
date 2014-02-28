@@ -54,9 +54,12 @@ if (function_exists('mb_get_info')) {
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
             if ($preserve) {
-                if (false !== ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
-                    $length = $breakpoint;
+                // If breakpoint is on the last word, return the value without separator.
+                if (false === ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
+                    return $value;
                 }
+
+                $length = $breakpoint;
             }
 
             return rtrim(mb_substr($value, 0, $length, $env->getCharset())) . $separator;
