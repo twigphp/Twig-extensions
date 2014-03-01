@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by jpetitcolas at 2014-02-26T20:33:25Z
+
+The test now uses `class_exists`.
+
+---------------------------------------------------------------------------
+
+by jpetitcolas at 2014-02-28T22:56:40Z
+
+Not exiting test anymore if class is not found.
