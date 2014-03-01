@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2013-10-19T09:01:36Z
+
+The minimum version of Twig should be also changed in composer.json then.
