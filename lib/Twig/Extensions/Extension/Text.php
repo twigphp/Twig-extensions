@@ -21,16 +21,10 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
      */
     public function getFilters()
     {
-        $filters = array(
-            'truncate' => new Twig_Filter_Function('twig_truncate_filter', array('needs_environment' => true)),
-            'wordwrap' => new Twig_Filter_Function('twig_wordwrap_filter', array('needs_environment' => true)),
+        return array(
+            new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
         );
-
-        if (version_compare(Twig_Environment::VERSION, '1.5.0-DEV', '<')) {
-            $filters['nl2br'] = new Twig_Filter_Function('twig_nl2br_filter', array('pre_escape' => 'html', 'is_safe' => array('html')));
-        }
-
-        return $filters;
     }
 
     /**
@@ -42,11 +36,6 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         return 'Text';
     }
-}
-
-function twig_nl2br_filter($value, $sep = '<br />')
-{
-    return str_replace("\n", $sep."\n", $value);
 }
 
 if (function_exists('mb_get_info')) {
