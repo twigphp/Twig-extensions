@@ -26,7 +26,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'localizeddate' => new Twig_Filter_Function('twig_localized_date_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('localizeddate', 'twig_localized_date_filter', array('needs_environment' => true)),
         );
     }
 
