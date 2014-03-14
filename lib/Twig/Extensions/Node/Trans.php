@@ -25,7 +25,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     /**
      * Compiles the node to PHP.
      *
-     * @param Twig_Compiler A Twig_Compiler instance
+     * @param Twig_Compiler $compiler A Twig_Compiler instance
      */
     public function compile(Twig_Compiler $compiler)
     {
@@ -98,6 +98,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         }
     }
 
+    /**
+     * @param Twig_NodeInterface $body A Twig_NodeInterface instance
+     * 
+     * @return array
+     */
     protected function compileString(Twig_NodeInterface $body)
     {
         if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant || $body instanceof Twig_Node_Expression_TempName) {
