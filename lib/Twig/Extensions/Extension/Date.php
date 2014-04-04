@@ -44,7 +44,7 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
  * @param DateTime|string  $birthdate
  * @return integer
  */
-function twig_age_filter(\DateTime $birthdate)
+function twig_age_filter($birthdate)
 {
     if (!$birthdate instanceof \DateTime) $birthdate = new \DateTime($birthdate);
     $age = $birthdate->diff(new \DateTime())->y;
