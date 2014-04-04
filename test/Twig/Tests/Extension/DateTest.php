@@ -29,7 +29,15 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
                 0,
             ),
             array(
+                new \DateTime('1980-01-17'),
+                34,
+            ),
+            array(
                 '17.01.1980',
+                34,
+            ),
+            array(
+                '1980-01-17',
                 34,
             ),
         );
