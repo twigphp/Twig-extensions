@@ -20,7 +20,6 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, twig_age_filter($data));
     }
 
-
     public function getAgeFilterTestData()
     {
         return array(
