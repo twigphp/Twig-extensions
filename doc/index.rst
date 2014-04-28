@@ -9,6 +9,7 @@ Twig Extensions
     i18n
     intl
     array
+    date
 
 The Twig Extensions repository provides several useful extensions for Twig:
 
@@ -22,3 +23,5 @@ The Twig Extensions repository provides several useful extensions for Twig:
 * :doc:`Intl <intl>`: Adds a filter for localization of ``DateTime`` objects.
 
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
+
+* :doc:`Date <date>`: Adds a filter for rendering the difference between dates
