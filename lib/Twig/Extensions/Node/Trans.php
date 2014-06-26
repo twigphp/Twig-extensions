@@ -17,9 +17,9 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, $lineno, $tag = null)
+    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null)
     {
-        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural), array(), $lineno, $tag);
+        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
     }
 
     /**
@@ -42,6 +42,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
 
         if ($vars) {
+            if (null !== ($notes = $this->getNode('notes'))) {
+                $message = trim($notes->getAttribute('data'));
+                $compiler->write("// notes: {$message}\n");
+            }
+
             $compiler
                 ->write('echo strtr('.$function.'(')
                 ->subcompile($msg)
