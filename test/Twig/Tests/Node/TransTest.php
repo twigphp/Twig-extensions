@@ -73,7 +73,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
             new Twig_Node_Print(new Twig_Node_Expression_Name('count', 0), 0),
             new Twig_Node_Text(' apples', 0),
         ), array(), 0);
-        $node = new Twig_Extensions_Node_Trans($body, $plural, null, $count, 0);
+        $node = new Twig_Extensions_Node_Trans($body, $plural, $count, null, 0);
         $tests[] = array($node, sprintf('echo strtr(ngettext("Hey %%name%%, I have one apple", "Hey %%name%%, I have %%count%% apples", abs(12)), array("%%name%%" => %s, "%%name%%" => %s, "%%count%%" => abs(12), ));', $this->getVariableGetter('name'), $this->getVariableGetter('name')));
 
         // with escaper extension set to on
