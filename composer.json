@@ -1,7 +1,7 @@
 {
     "name": "twig/extensions",
     "description": "Common additional features for Twig that do not directly belong in core",
-    "keywords": ["debug","i18n","text"],
+    "keywords": ["i18n","text"],
     "homepage": "https://github.com/fabpot/Twig-extensions",
     "type": "library",
     "license": "MIT",
