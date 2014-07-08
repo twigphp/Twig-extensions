@@ -41,7 +41,6 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
                     $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
                 }
-
             } elseif ('notes' === $next) {
                 $stream->expect(Twig_Token::BLOCK_END_TYPE);
                 $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
