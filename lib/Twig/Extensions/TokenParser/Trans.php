@@ -57,6 +57,8 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
      * Gets the tag name associated with this token parser.
      *
      * @param string The tag name
+     * 
+     * @return string
      */
     public function getTag()
     {
