@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2014-07-08T13:39:53Z
+
+Looks good to me, can you add some tests?
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-07-08T13:40:16Z
+
+Also, can you update the documentation in `doc/i18n.rst`?
