@@ -47,7 +47,6 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         }
 
         if ($vars) {
-
             $compiler
                 ->write('echo strtr('.$function.'(')
                 ->subcompile($msg)
