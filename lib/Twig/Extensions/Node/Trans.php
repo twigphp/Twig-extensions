@@ -41,11 +41,12 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
 
+        if (null !== $notes = $this->getNode('notes')) {
+            $message = trim($notes->getAttribute('data'));
+            $compiler->write("// notes: {$message}\n");
+        }
+
         if ($vars) {
-            if (null !== ($notes = $this->getNode('notes'))) {
-                $message = trim($notes->getAttribute('data'));
-                $compiler->write("// notes: {$message}\n");
-            }
 
             $compiler
                 ->write('echo strtr('.$function.'(')
