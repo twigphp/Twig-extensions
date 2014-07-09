@@ -108,7 +108,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
     /**
      * @param Twig_NodeInterface $body A Twig_NodeInterface instance
-     * 
+     *
      * @return array
      */
     protected function compileString(Twig_NodeInterface $body)
