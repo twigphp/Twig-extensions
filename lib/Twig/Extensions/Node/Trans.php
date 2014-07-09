@@ -43,6 +43,9 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         if (null !== $notes = $this->getNode('notes')) {
             $message = trim($notes->getAttribute('data'));
+
+            // line breaks are not allowed cause we want a single line comment
+            $message = str_replace(["\n", "\r"], " ", $message);
             $compiler->write("// notes: {$message}\n");
         }
 
