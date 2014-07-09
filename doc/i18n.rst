@@ -94,7 +94,7 @@ To add notes for translators, use the ``notes`` block:
     {% plural apple_count %}
         Hey {{ name }}, I have {{ count }} apples.
     {% notes %}
-        This is shown in the user menú. This string should be shorter than 30 chars
+        This is shown in the user menu. This string should be shorter than 30 chars
     {% endtrans %}
 
 You can use ``notes`` with or without ``plural``. Once you get your templates compiled you should
