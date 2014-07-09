@@ -86,6 +86,28 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
         $tests[] = array($node, sprintf('echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo')));
 
+        // with notes
+        $body = new Twig_Node_Expression_Constant('Hello', 0);
+        $notes = new Twig_Node_Text('Notes for translators', 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, $notes, 0);
+        $tests[] = array($node, "// notes: Notes for translators\necho gettext(\"Hello\");");
+
+        $body = new Twig_Node_Expression_Constant('Hello', 0);
+        $notes = new Twig_Node_Text("Notes for translators\nand line breaks", 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, $notes, 0);
+        $tests[] = array($node, "// notes: Notes for translators and line breaks\necho gettext(\"Hello\");");
+
+        $count = new Twig_Node_Expression_Constant(5, 0);
+        $body = new Twig_Node_Text('There is 1 pending task', 0);
+        $plural = new Twig_Node(array(
+            new Twig_Node_Text('There are ', 0),
+            new Twig_Node_Print(new Twig_Node_Expression_Name('count', 0), 0),
+            new Twig_Node_Text(' pending tasks', 0)
+        ), array(), 0);
+        $notes = new Twig_Node_Text("Notes for translators", 0);
+        $node = new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, 0);
+        $tests[] = array($node, "// notes: Notes for translators\n" . 'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+
         return $tests;
     }
 }
