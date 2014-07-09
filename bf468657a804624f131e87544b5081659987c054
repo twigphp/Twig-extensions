@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by joserobleda at 2014-07-09T12:25:45Z
+
+I don't know exactly why the "fabpot" says there is a coding standard error. I can apply the patch directly but I really don't understand it...
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-07-09T12:30:29Z
+
+Probably some extra whitespaces.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-07-09T12:34:05Z
+
+it detected some trailing whitespaces in the codebase, but this is in a different part of the file than your patch
+
+---------------------------------------------------------------------------
+
+by joserobleda at 2014-07-09T12:38:35Z
+
+Looks like everything is ok now
