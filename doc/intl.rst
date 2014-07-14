@@ -3,6 +3,14 @@ The Intl Extension
 
 The *Intl* extensions provides the ``localizeddate`` filter.
 
+Installation
+------------
+
+First, :ref:`install the Extensions library<extensions-install>`. Next, add
+the extension to Twig::
+
+    $twig->addExtension(new Twig_Extensions_Extension_Intl());
+
 ``localizeddate``
 -----------------
 

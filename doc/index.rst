@@ -9,7 +9,20 @@ Twig Extensions
     intl
     array
 
-The Twig Extensions repository provides several useful extensions for Twig:
+The Twig Extensions is a library that provides several useful extensions
+for Twig. You can find it's code at `GitHub.com/fabpot/Twig-extensions`_.
+
+.. _extensions-install:
+
+Installation
+------------
+
+This library can be installed via Composer running the following from the
+command line:
+
+.. code-block:: bash
+
+    composer require twig/extensions ~1.1.0
 
 * :doc:`Text <text>`: Provides useful filters for text manipulation;
 
@@ -19,3 +32,6 @@ The Twig Extensions repository provides several useful extensions for Twig:
 * :doc:`Intl <intl>`: Adds a filter for localization of ``DateTime`` objects.
 
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
+
+
+.. _`GitHub.com/fabpot/Twig-extensions`: https://github.com/fabpot/Twig-extensions
