@@ -30,10 +30,10 @@ command line:
 * :doc:`I18n <i18n>`: Adds internationalization support via the ``gettext``
   library;
 
-* :doc:`Intl <intl>`: Adds a filter for localization of ``DateTime`` objects.
+* :doc:`Intl <intl>`: Adds a filter for localization of ``DateTime`` objects;
 
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
 
-* :doc:`Date <date>`: Adds a filter for rendering the difference between dates
+* :doc:`Date <date>`: Adds a filter for rendering the difference between dates.
 
 .. _`GitHub.com/fabpot/Twig-extensions`: https://github.com/fabpot/Twig-extensions
