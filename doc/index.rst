@@ -8,6 +8,7 @@ Twig Extensions
     i18n
     intl
     array
+    date
 
 The Twig Extensions is a library that provides several useful extensions
 for Twig. You can find it's code at `GitHub.com/fabpot/Twig-extensions`_.
@@ -33,5 +34,6 @@ command line:
 
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
 
+* :doc:`Date <date>`: Adds a filter for rendering the difference between dates
 
 .. _`GitHub.com/fabpot/Twig-extensions`: https://github.com/fabpot/Twig-extensions
