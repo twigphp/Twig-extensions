@@ -13,7 +13,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
 {
     public function __construct()
     {
-        if (!class_exists('IntlDateFormatter') || !class_exists('NumberFormatter')) {
+        if (!class_exists('IntlDateFormatter')) {
             throw new RuntimeException('The intl extension is needed to use intl-based filters.');
         }
     }
@@ -67,14 +67,9 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     return $formatter->format($date->getTimestamp());
 }
 
-function twig_localized_number_filter($number, $style = 'decimal', $format = 'default', $currency = null, $locale = null )
+function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null)
 {
-    $formatter = twig_get_number_formatter(
-        $locale !== null ? $locale : Locale::getDefault(),
-        $style
-    );
-
-    $formatValues = array(
+    static $typeValues = array(
         'default'   => NumberFormatter::TYPE_DEFAULT,
         'int32'     => NumberFormatter::TYPE_INT32,
         'int64'     => NumberFormatter::TYPE_INT64,
@@ -82,24 +77,43 @@ function twig_localized_number_filter($number, $style = 'decimal', $format = 'de
         'currency'  => NumberFormatter::TYPE_CURRENCY,
     );
 
-    return $formatter->format(
-        $number,
-        $formatValues[$format]);
+    $formatter = twig_get_number_formatter($locale, $style);
+
+    if (!isset($typeValues[$type])) {
+        throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
+    }
+
+    return $formatter->format($number, $typeValues[$type]);
 }
 
 function twig_localized_currency_filter($number, $currency = null, $locale = null)
 {
-    $formatter = twig_get_number_formatter(
-        $locale !== null ? $locale : Locale::getDefault(),
-        'currency'
-    );
+    $formatter = twig_get_number_formatter($locale, 'currency');
 
     return $formatter->formatCurrency($number, $currency);
 }
 
+/**
+ * Gets a number formatter instance according to given locale and formatter
+ *
+ * @param  string $locale Locale in which the number would be formatted
+ * @param  int    $style  Style of the formatting
+ *
+ * @return NumberFormatter A NumberFormatter instance
+ */
 function twig_get_number_formatter($locale, $style)
 {
-    $styleValues = array(
+    static $formatter, $currentStyle;
+
+    $locale = $locale !== null ? $locale : Locale::getDefault();
+
+    if ($formatter && $formatter->getLocale() === $locale && $currentStyle === $style) {
+        // Return same instance of NumberFormatter if parameters are the same
+        // to those in previous call
+        return $formatter;
+    }
+
+    static $styleValues = array(
         'decimal'       => NumberFormatter::DECIMAL,
         'currency'      => NumberFormatter::CURRENCY,
         'percent'       => NumberFormatter::PERCENT,
@@ -109,8 +123,13 @@ function twig_get_number_formatter($locale, $style)
         'duration'      => NumberFormatter::DURATION,
     );
 
-    return NumberFormatter::create(
-        $locale !== null ? $locale : Locale::getDefault(),
-        $styleValues[$style]
-    );
+    if (!isset($styleValues[$style])) {
+        throw new Twig_Error_Syntax(sprintf('The style "%s" does not exist. Known styles are: "%s"', $style, implode('", "', array_keys($styleValues))));
+    }
+
+    $currentStyle = $style;
+
+    $formatter = NumberFormatter::create($locale, $styleValues[$style]);
+
+    return $formatter;
 }
