@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by michaelperrin at 2014-07-25T12:50:20Z
+
+@fabpot I addressed the needed changes you mentioned. I didn't know about the exceptions on one line convention!
+
+---------------------------------------------------------------------------
+
+by michaelperrin at 2014-07-25T13:09:30Z
+
+@fabpot Alright! (done)
+
+---------------------------------------------------------------------------
+
+by michaelperrin at 2014-07-30T13:50:15Z
+
+I made the change @sstok proposed to improve performance, using the same instance of `NumberFormatter` when applicable.
+
+From the simple tests I ran, it gets twice as fast although it was already very fast, so the difference should not be noticeable.
+
+*(EDIT: removed my comment on out of memory exception as it was just related to my specific test)*
+
+---------------------------------------------------------------------------
+
+by nicwortel at 2014-08-03T11:42:56Z
+
+Nice job, @michaelperrin. I was just about to do the same when I saw this PR. Thank you! I hope it can be merged, soon.
