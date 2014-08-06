@@ -38,12 +38,12 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
     {
         return 'Number';
     }
-    
+
     /**
      * Filter for converting bytes to a human-readable format, as Unix command "ls -h" does.
      *
-     * @param string|integer $bytes A string or integer number value to format.
-     * @param boolean $base2conversion Defines if the conversion has to be strictly performed as binary values or
+     * @param string|int     $bytes A string or integer number value to format.
+     * @param bool    $base2conversion Defines if the conversion has to be strictly performed as binary values or
      *      by using a decimal conversion such as 1 KByte = 1000 Bytes.
      *
      * @return string The number converted to human readable representation.
@@ -56,6 +56,7 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
         $exp = intval((log($bytes) / log($unit)));
         $pre = ($base2conversion ? "kMGTPE" : "KMGTPE");
         $pre = $pre[$exp - 1] . ($base2conversion ? "" : "i");
+
         return sprintf("%.1f %sB", $bytes / pow($unit, $exp), $pre);
     }
 
