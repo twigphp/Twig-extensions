@@ -24,10 +24,23 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         $count = null;
         $plural = null;
         $notes = null;
+        $domain = null;
+        $end = true;
 
         if (!$stream->test(Twig_Token::BLOCK_END_TYPE)) {
-            $body = $this->parser->getExpressionParser()->parseExpression();
-        } else {
+            if ($stream->nextIf(Twig_Token::NAME_TYPE, 'from')) {
+                $domain = $this->parser->getExpressionParser()->parseExpression();
+            } else {
+                $body = $this->parser->getExpressionParser()->parseExpression();
+                $end = false;
+
+                if ($stream->nextIf(Twig_Token::NAME_TYPE, 'from')) {
+                    $domain = $this->parser->getExpressionParser()->parseExpression();
+                }
+            }
+        }
+
+        if ($end and $stream->test(Twig_Token::BLOCK_END_TYPE)) {
             $stream->expect(Twig_Token::BLOCK_END_TYPE);
             $body = $this->parser->subparse(array($this, 'decideForFork'));
             $next = $stream->next()->getValue();
@@ -51,7 +64,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $domain, $plural, $count, $notes, $lineno, $this->getTag());
     }
 
     public function decideForFork(Twig_Token $token)
@@ -68,7 +81,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
      * Gets the tag name associated with this token parser.
      *
      * @param string The tag name
-     * 
+     *
      * @return string
      */
     public function getTag()

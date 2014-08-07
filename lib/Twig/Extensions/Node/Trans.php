@@ -17,9 +17,9 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null)
+    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $domain = null, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null)
     {
-        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
+        parent::__construct(array('count' => $count, 'body' => $body, 'domain' => $domain, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
     }
 
     /**
@@ -41,6 +41,10 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
 
+        if (null !== $this->getNode('domain')) {
+            $function = 'd'.$function;
+        }
+
         if (null !== $notes = $this->getNode('notes')) {
             $message = trim($notes->getAttribute('data'));
 
@@ -52,6 +56,16 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
+            ;
+
+            if (null !== $this->getNode('domain')) {
+                $compiler
+                    ->subcompile($this->getNode('domain'))
+                    ->raw(', ')
+                ;
+            }
+
+            $compiler
                 ->subcompile($msg)
             ;
 
@@ -89,6 +103,16 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         } else {
             $compiler
                 ->write('echo '.$function.'(')
+            ;
+
+            if (null !== $this->getNode('domain')) {
+                $compiler
+                    ->subcompile($this->getNode('domain'))
+                    ->raw(', ')
+                ;
+            }
+
+            $compiler
                 ->subcompile($msg)
             ;
 

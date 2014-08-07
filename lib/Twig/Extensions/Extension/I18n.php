@@ -28,7 +28,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getFilters()
     {
         return array(
-             new Twig_SimpleFilter('trans', 'gettext'),
+            new Twig_SimpleFilter('trans', array($this, 'trans')),
         );
     }
 
@@ -40,5 +40,22 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getName()
     {
         return 'i18n';
+    }
+
+    /**
+     * Returns a translated string optionally from a specific domain
+     *
+     * @param string $body
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function trans($body, $domain = null)
+    {
+        if ($domain !== null) {
+            return dgettext($domain, $body);
+        }
+
+        return gettext($body);
     }
 }
