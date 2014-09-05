@@ -23,6 +23,7 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
     {
         $filters = array(
              new Twig_SimpleFilter('shuffle', 'twig_shuffle_filter'),
+             new Twig_SimpleFilter('sum', 'twig_sum_filter'),
         );
 
         return $filters;
@@ -53,4 +54,19 @@ function twig_shuffle_filter($array)
     shuffle($array);
 
     return $array;
+}
+
+/**
+ * Calculate the sum of values in an array.
+ *
+ * @param array|Traversable $array An array
+ * @return number
+ */
+function twig_sum_filter($array)
+{
+    if ($array instanceof Traversable) {
+        $array = iterator_to_array($array, false);
+    }
+
+    return array_sum($array);
 }
