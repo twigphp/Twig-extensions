@@ -97,7 +97,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
     public function testDoesNotPreservesWordWhenNoRoomLeft()
     {
         $input = 'No one expects the spanish inquisition';
-        $output ='No one expects the…';
+        $output = 'No one expects the…';
         $limit = mb_strlen($output);
 
         $actual = twig_truncate_filter($this->env, $input, $limit, true, '…');
