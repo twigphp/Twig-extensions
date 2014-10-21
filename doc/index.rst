@@ -11,7 +11,7 @@ Twig Extensions
     date
 
 The Twig Extensions is a library that provides several useful extensions
-for Twig. You can find it's code at `GitHub.com/fabpot/Twig-extensions`_.
+for Twig. You can find it's code at `GitHub.com/twigphp/Twig-extensions`_.
 
 .. _extensions-install:
 
@@ -36,4 +36,4 @@ command line:
 
 * :doc:`Date <date>`: Adds a filter for rendering the difference between dates.
 
-.. _`GitHub.com/fabpot/Twig-extensions`: https://github.com/fabpot/Twig-extensions
+.. _`GitHub.com/twigphp/Twig-extensions`: https://github.com/twigphp/Twig-extensions
