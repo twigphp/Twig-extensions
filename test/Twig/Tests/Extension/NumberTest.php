@@ -10,11 +10,10 @@
  *
  * @author Emanuele Panzeri <thepanz@gmail.com>
  */
-require_once __DIR__ . '/../../../../lib/Twig/Extensions/Extension/Number.php';
+require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Number.php';
 
 class Twig_Tests_Extension_NumberTest extends PHPUnit_Framework_TestCase
 {
-
     public static function setUpBeforeClass()
     {
         if (!class_exists('Twig_Extensions_Extension_Number')) {
