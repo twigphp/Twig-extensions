@@ -51,6 +51,10 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
      */
     public function format_bytes($bytes, $base2conversion = true)
     {
+        if (!is_numeric($bytes)) {
+            return null;
+        }
+
         $unit = $base2conversion ? 1024 : 1000;
         if ($bytes < $unit) {
             return $bytes . " B";

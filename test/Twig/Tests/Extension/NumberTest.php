@@ -38,6 +38,9 @@ class Twig_Tests_Extension_NumberTest extends PHPUnit_Framework_TestCase
     public function getDataBytes()
     {
         return array(
+            array(null, 'ThisIsAString'),
+            array(null, ''),
+            array(null, null),
             array('1 B', 1),
             array('1 B', 1, false),
             array('1000 B',  1000),
