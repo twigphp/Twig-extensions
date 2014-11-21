@@ -49,6 +49,8 @@ class Twig_Tests_Extension_NumberTest extends PHPUnit_Framework_TestCase
             array('1.0 KiB', 1024, false),
             array('2.0 kB',  2048),
             array('2.0 KiB', 2048, false),
+            array('2.0 kB',  '2048'),
+            array('2.0 KiB', '2048', false),
             array('2.4 kB',  2500),
             array('2.5 KiB', 2500, false),
             array('976.6 kB', 1000000),
