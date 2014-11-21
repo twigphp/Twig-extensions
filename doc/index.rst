@@ -9,6 +9,7 @@ Twig Extensions
     intl
     array
     date
+    number
 
 The Twig Extensions is a library that provides several useful extensions
 for Twig. You can find it's code at `GitHub.com/twigphp/Twig-extensions`_.
@@ -35,5 +36,7 @@ command line:
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
 
 * :doc:`Date <date>`: Adds a filter for rendering the difference between dates.
+
+* :doc:`Number <number>`: Adds a filter for rendering the numeric representation conversion.
 
 .. _`GitHub.com/twigphp/Twig-extensions`: https://github.com/twigphp/Twig-extensions
