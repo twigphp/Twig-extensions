@@ -59,6 +59,10 @@ class Twig_Tests_Extension_NumberTest extends PHPUnit_Framework_TestCase
             array('1.0 GiB',  1000000000, false),
             array('1.0 GB',   1073741824),
             array('1.1 GiB',  1073741824, false),
+            array('1.0 TB',   1099511627776),
+            array('1.1 TiB',  1099511627776, false),
+            array('1.0 PB',   1.12589990684263e+15),
+            array('1.1 PiB',  1.12589990684263e+15, false),
         );
     }
 }
