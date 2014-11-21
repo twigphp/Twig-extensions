@@ -43,7 +43,7 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
      * Filter for converting bytes to a human-readable format, as Unix command "ls -h" does.
      *
      * @param string|int     $bytes A string or integer number value to format.
-     * @param bool    $base2conversion Defines if the conversion has to be strictly performed as binary values or
+     * @param bool           $base2conversion Defines if the conversion has to be strictly performed as binary values or
      *      by using a decimal conversion such as 1 KByte = 1000 Bytes.
      *
      * @return string The number converted to human readable representation.
