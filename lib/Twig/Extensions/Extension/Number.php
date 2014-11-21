@@ -61,5 +61,4 @@ class Twig_Extensions_Extension_Number extends Twig_Extension
 
         return sprintf("%.1f %sB", $bytes / pow($unit, $exp), $pre);
     }
-
 }

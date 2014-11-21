@@ -7,16 +7,13 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @author Emanuele Panzeri <thepanz@gmail.com>
  */
 require_once __DIR__ . '/../../../../lib/Twig/Extensions/Extension/Number.php';
 
 class Twig_Tests_Extension_NumberTest extends PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var TwigEnvironment
-     */
-    private $env;
 
     public static function setUpBeforeClass()
     {
