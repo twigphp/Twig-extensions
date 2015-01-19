@@ -39,15 +39,15 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 }
 
 if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $input, $limit = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         $charset = $env->getCharset();
-        if (mb_strlen($input, $charset) <= $limit) {
-            return $input;
+        if (mb_strlen($value, $charset) <= $length) {
+            return $value;
         }
-        $cutLength = $limit - mb_strlen($separator);
-        $firstCut = rtrim(mb_substr($input, 0, $cutLength, $charset));
-        $isBreakpointInWord = ($input[$cutLength] !== ' ');
+        $cutLength = $length - mb_strlen($separator);
+        $firstCut = rtrim(mb_substr($value, 0, $cutLength, $charset));
+        $isBreakpointInWord = ($value[$cutLength] !== ' ');
         if (!$preserve || !$isBreakpointInWord) {
             return $firstCut.$separator;
         }
@@ -78,15 +78,15 @@ if (function_exists('mb_get_info')) {
         return implode($separator, $sentences);
     }
 } else {
-    function twig_truncate_filter(Twig_Environment $env, $input, $limit = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         $charset = $env->getCharset();
-        if (strlen($input, $charset) <= $limit) {
-            return $input;
+        if (strlen($value, $charset) <= $length) {
+            return $value;
         }
-        $cutLength = $limit - strlen($separator);
-        $firstCut = rtrim(substr($input, 0, $cutLength, $charset));
-        $isBreakpointInWord = ($input[$cutLength] !== ' ');
+        $cutLength = $length - strlen($separator);
+        $firstCut = rtrim(substr($value, 0, $cutLength, $charset));
+        $isBreakpointInWord = ($value[$cutLength] !== ' ');
         if (!$preserve || !$isBreakpointInWord) {
             return $firstCut.$separator;
         }
