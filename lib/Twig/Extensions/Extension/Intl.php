@@ -80,9 +80,12 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     $formatter = twig_get_number_formatter($locale, $style);
 
     if ($calculatePrecision) {
+
         $decimal = substr($number, strpos($number, '.')+1);
-        if ($decimal > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
-            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, strlen($decimal));
+        $numberOfDecimals = strlen($decimal);
+
+        if ($decimal > 0 && $numberOfDecimals > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
+            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $numberOfDecimals);
         }
     }
 
@@ -98,9 +101,12 @@ function twig_localized_currency_filter($number, $currency = null, $locale = nul
     $formatter = twig_get_number_formatter($locale, 'currency');
 
     if ($calculatePrecision) {
+
         $decimal = substr($number, strpos($number, '.')+1);
-        if ($decimal > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
-            $formatter->setAttribute(NumberFormatter::SIGNIFICANT_DIGITS_USED, strlen($decimal));
+        $numberOfDecimals = strlen($decimal);
+
+        if ($decimal > 0 && $numberOfDecimals > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
+            $formatter->setAttribute(NumberFormatter::SIGNIFICANT_DIGITS_USED, $numberOfDecimals);
         }
     }
 
