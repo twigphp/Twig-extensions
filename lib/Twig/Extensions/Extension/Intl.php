@@ -67,7 +67,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     return $formatter->format($date->getTimestamp());
 }
 
-function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null)
+function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null, $calculatePrecision=false)
 {
     static $typeValues = array(
         'default'   => NumberFormatter::TYPE_DEFAULT,
@@ -79,6 +79,13 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
 
     $formatter = twig_get_number_formatter($locale, $style);
 
+    if ($calculatePrecision) {
+        $decimal = substr($number, strpos($number, '.')+1);
+        if ($decimal > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
+            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, strlen($decimal));
+        }
+    }
+
     if (!isset($typeValues[$type])) {
         throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
     }
@@ -86,9 +93,16 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     return $formatter->format($number, $typeValues[$type]);
 }
 
-function twig_localized_currency_filter($number, $currency = null, $locale = null)
+function twig_localized_currency_filter($number, $currency = null, $locale = null, $calculatePrecision=false)
 {
     $formatter = twig_get_number_formatter($locale, 'currency');
+
+    if ($calculatePrecision) {
+        $decimal = substr($number, strpos($number, '.')+1);
+        if ($decimal > $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS)) {
+            $formatter->setAttribute(NumberFormatter::SIGNIFICANT_DIGITS_USED, strlen($decimal));
+        }
+    }
 
     return $formatter->formatCurrency($number, $currency);
 }
