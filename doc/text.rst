@@ -31,7 +31,7 @@ This example would print::
     nsectetur
     adipiscing
 
-The default separator is "\n", but you can easily change that by providing one:
+The default separator is "\\n", but you can easily change that by providing one:
 
 .. code-block:: jinja
 
