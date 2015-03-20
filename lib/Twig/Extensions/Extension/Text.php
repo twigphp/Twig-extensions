@@ -38,7 +38,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     }
 }
 
-if (false && function_exists('mb_get_info')) {
+if (function_exists('mb_get_info')) {
     function twig_truncate_filter(Twig_Environment $env, $value, $limit = 30, $preserve = false, $separator = '...')
     {
         if (mb_strlen($value, $env->getCharset()) > $limit) {
