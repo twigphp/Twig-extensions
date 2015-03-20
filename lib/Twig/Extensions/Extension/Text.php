@@ -87,9 +87,11 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     {
         if (strlen($value) > $length) {
             if ($preserve) {
-                if (false !== ($breakpoint = strpos($value, ' ', $length))) {
-                    $length = $breakpoint;
+                if (false === ($breakpoint = strpos($value, ' ', $length))) {
+                    return $value;
                 }
+
+                $length = $breakpoint;
             }
 
             return rtrim(substr($value, 0, $length)) . $separator;
