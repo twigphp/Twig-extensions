@@ -55,7 +55,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
                 $length = $breakpoint;
             }
 
-            return rtrim(mb_substr($value, 0, $length, $env->getCharset())) . $separator;
+            return rtrim(mb_substr($value, 0, $length, $env->getCharset())).$separator;
         }
 
         return $value;
@@ -72,7 +72,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         mb_regex_encoding($previous);
 
         foreach ($pieces as $piece) {
-            while(!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
+            while (!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
                 $sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
                 $piece = mb_substr($piece, $length, 2048, $env->getCharset());
             }
@@ -94,7 +94,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
                 $length = $breakpoint;
             }
 
-            return rtrim(substr($value, 0, $length)) . $separator;
+            return rtrim(substr($value, 0, $length)).$separator;
         }
 
         return $value;
