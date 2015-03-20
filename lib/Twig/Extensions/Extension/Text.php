@@ -52,7 +52,6 @@ if (function_exists('mb_get_info')) {
             // Our examination-length is longer than the actual limit.
             // So we just return our separator.
             if ($limit - $separatorLength - 1 <= 0) {
-
                 return $separator;
             }
 
@@ -87,7 +86,7 @@ if (function_exists('mb_get_info')) {
                 $limit = $limit - $separatorLength;
             }
 
-            return rtrim(mb_substr($value, 0, $limit, $env->getCharset())) . $separator;
+            return rtrim(mb_substr($value, 0, $limit, $env->getCharset())).$separator;
         }
 
         return $value;
@@ -104,7 +103,7 @@ if (function_exists('mb_get_info')) {
         mb_regex_encoding($previous);
 
         foreach ($pieces as $piece) {
-            while(!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
+            while (!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
                 $sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
                 $piece = mb_substr($piece, $length, 2048, $env->getCharset());
             }
@@ -128,7 +127,6 @@ if (function_exists('mb_get_info')) {
             // Our examination-length is longer than the actual limit.
             // So we just return our separator.
             if ($limit - $separatorLength - 1 <= 0) {
-
                 return $separator;
             }
 
@@ -163,7 +161,7 @@ if (function_exists('mb_get_info')) {
                 $limit = $limit - $separatorLength;
             }
 
-            return rtrim(substr($value, 0, $limit)) . $separator;
+            return rtrim(substr($value, 0, $limit)).$separator;
         }
 
         return $value;
