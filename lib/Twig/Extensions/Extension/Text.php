@@ -38,20 +38,56 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     }
 }
 
-if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+if (false && function_exists('mb_get_info')) {
+    function twig_truncate_filter(Twig_Environment $env, $value, $limit = 30, $preserve = false, $separator = '...')
     {
-        if (mb_strlen($value, $env->getCharset()) > $length) {
-            if ($preserve) {
-                // If breakpoint is on the last word, return the value without separator.
-                if (false === ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
-                    return $value;
-                }
+        if (mb_strlen($value, $env->getCharset()) > $limit) {
+            $separatorLength = mb_strlen($separator, $env->getCharset());
 
-                $length = $breakpoint;
+            if ($limit < $separatorLength) {
+                throw new Twig_Error_Syntax('The separator cannot be longer than your limit!');
             }
 
-            return rtrim(mb_substr($value, 0, $length, $env->getCharset())) . $separator;
+            // Special case:
+            // Our examination-length is longer than the actual limit.
+            // So we just return our separator.
+            if ($limit - $separatorLength - 1 <= 0) {
+
+                return $separator;
+            }
+
+            if ($preserve) {
+                // Determine the length of our separator.
+                $examinedString = mb_substr($value, 0, $limit);
+                $lastChar = mb_substr($value, mb_strlen($examinedString) + 1, 1);
+
+                // If we do not find any whitespace in $examinedString starting from our string,
+                // minus the separatorlength and minus one character, then we know that this
+                // word is longer than the separator. So we have to cut off the string before
+                // that.
+                $lastWordStart = mb_strpos($examinedString, ' ', $limit - $separatorLength - 1, $env->getCharset());
+                // Now we have to find the position of the last whitespace. This may be a
+                // problem, if we have a pretty long separator.
+                $lastWordEnd = mb_strrpos($examinedString, ' ', $limit, $env->getCharset());
+
+                if (false === $lastWordStart && false === $lastWordEnd) {
+                    // Case 1: No last word found
+                    $limit = mb_strrpos($examinedString, ' ', 0);
+                } elseif (false !== $lastWordStart && false === $lastWordEnd && $lastChar !== ' ') {
+                    // Case 2: Beginning of last word found, but no end
+                    $limit = $lastWordStart;
+                } elseif (false !== $lastWordStart && false === $lastWordEnd && $lastChar === ' ') {
+                    // Case 3: Beginning of last word found, and it fits right in our limit.
+                    $limit = $lastWordEnd + 1;
+                } else {
+                    // Case 4: It just fits in our boundaries.
+                    $limit = $lastWordEnd;
+                }
+            } else {
+                $limit = $limit - $separatorLength;
+            }
+
+            return rtrim(mb_substr($value, 0, $limit, $env->getCharset())) . $separator;
         }
 
         return $value;
@@ -79,16 +115,55 @@ if (function_exists('mb_get_info')) {
         return implode($separator, $sentences);
     }
 } else {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $limit = 30, $preserve = false, $separator = '...')
     {
-        if (strlen($value) > $length) {
-            if ($preserve) {
-                if (false !== ($breakpoint = strpos($value, ' ', $length))) {
-                    $length = $breakpoint;
-                }
+        if (strlen($value) > $limit) {
+            $separatorLength = strlen($separator);
+
+            if ($limit < $separatorLength) {
+                throw new Twig_Error_Syntax('The separator cannot be longer than your limit!');
             }
 
-            return rtrim(substr($value, 0, $length)) . $separator;
+            // Special case:
+            // Our examination-length is longer than the actual limit.
+            // So we just return our separator.
+            if ($limit - $separatorLength - 1 <= 0) {
+
+                return $separator;
+            }
+
+            if ($preserve) {
+                // Determine the length of our separator.
+                $examinedString = substr($value, 0, $limit);
+                $lastChar = substr($value, strlen($examinedString) + 1, 1);
+
+                // If we do not find any whitespace in $examinedString starting from our string,
+                // minus the separatorlength and minus one character, then we know that this
+                // word is longer than the separator. So we have to cut off the string before
+                // that.
+                $lastWordStart = strpos($examinedString, ' ', $limit - $separatorLength - 1);
+                // Now we have to find the position of the last whitespace. This may be a
+                // problem, if we have a pretty long separator.
+                $lastWordEnd = strrpos($examinedString, ' ', $limit);
+
+                if (false === $lastWordStart && false === $lastWordEnd) {
+                    // Case 1: No last word found
+                    $limit = strrpos($examinedString, ' ', 0);
+                } elseif (false !== $lastWordStart && false === $lastWordEnd && $lastChar !== ' ') {
+                    // Case 2: Beginning of last word found, but no end
+                    $limit = $lastWordStart;
+                } elseif (false !== $lastWordStart && false === $lastWordEnd && $lastChar === ' ') {
+                    // Case 3: Beginning of last word found, and it fits right in our limit.
+                    $limit = $lastWordEnd + 1;
+                } else {
+                    // Case 4: It just fits in our boundaries.
+                    $limit = $lastWordEnd;
+                }
+            } else {
+                $limit = $limit - $separatorLength;
+            }
+
+            return rtrim(substr($value, 0, $limit)) . $separator;
         }
 
         return $value;
