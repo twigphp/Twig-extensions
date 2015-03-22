@@ -13,7 +13,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
     /** @var TwigEnvironment */
     private $env;
 
-    private $classUnderTest;
+    private $objectUnderTest;
 
     public static function setUpBeforeClass()
     {
@@ -24,7 +24,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->classUnderTest = new Twig_Extensions_Extension_Text();
+        $this->objectUnderTest = new Twig_Extensions_Extension_Text();
 
         $this->env = $this->getMock('Twig_Environment');
         $this->env
@@ -39,7 +39,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
      */
     public function testTruncateMultibyte($input, $length, $preserve, $separator, $expectedOutput)
     {
-        $output = $this->classUnderTest->twig_truncate_filter_multibyte($this->env, $input, $length, $preserve, $separator);
+        $output = $this->objectUnderTest->twig_truncate_filter_multibyte($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 
@@ -48,7 +48,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
      */
     public function testTruncate($input, $length, $preserve, $separator, $expectedOutput)
     {
-        $output = $this->classUnderTest->twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
+        $output = $this->objectUnderTest->twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 
