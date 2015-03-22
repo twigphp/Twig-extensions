@@ -39,6 +39,9 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
      */
     public function testTruncateMultibyte($input, $length, $preserve, $separator, $expectedOutput)
     {
+        if (!function_exists('mb_get_info')) {
+            $this->markTestSkipped('Test skipped, because no multibyte extension was found!');
+        }
         $output = $this->objectUnderTest->twig_truncate_filter_multibyte($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
