@@ -105,7 +105,7 @@ class Twig_Extensions_Extension_Indent extends Twig_Extension
                     $lines = explode("\n", $str);
 
                     $lines = array_map(
-                        function ($s) use ($prefix,$len) {
+                        function ($s) use ($prefix, $len) {
                             return strncmp($s, $prefix, $len) === 0 ? substr($s, $len) : $s;
                         },
                         $lines
