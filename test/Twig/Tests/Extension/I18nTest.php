@@ -14,13 +14,6 @@ class Twig_Tests_Extension_I18nTest extends PHPUnit_Framework_TestCase
 {
     private $domain = 'test';
 
-    public static function setUpBeforeClass()
-    {
-        if (!class_exists('Twig_Extensions_Extension_I18n')) {
-            self::markTestSkipped('Unable to find class Twig_Extensions_Extension_I18n.');
-        }
-    }
-
     public function setUp()
     {
         setlocale(LC_ALL, 'en_US.UTF-8');
