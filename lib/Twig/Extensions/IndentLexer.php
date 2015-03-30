@@ -27,22 +27,16 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
         $pairs = array();
         $search_type = null;
 
-        for ($i = 0, $n = count($this->tokens); $i < $n; $i++)
-        {
+        for ($i = 0, $n = count($this->tokens); $i < $n; $i++) {
             $type = $this->tokens[$i]->getType();
 
-            if ($type === $search_type)
-            {
+            if ($type === $search_type) {
                 $pairs[] = $i;
                 $search_type = null;
-            }
-            else if ($type === Twig_Token::BLOCK_START_TYPE)
-            {
+            } elseif ($type === Twig_Token::BLOCK_START_TYPE) {
                 $pairs[] = $i;
                 $search_type = Twig_Token::BLOCK_END_TYPE;
-            }
-            else if ($type === Twig_Token::VAR_START_TYPE)
-            {
+            } elseif ($type === Twig_Token::VAR_START_TYPE) {
                 $pairs[] = $i;
                 $search_type = Twig_Token::VAR_END_TYPE;
             }
@@ -62,8 +56,7 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
         $START = 0;
         $END = 1;
 
-        for ($i = 0, $n = count($pairs); $i < $n; $i += 2)
-        {
+        for ($i = 0, $n = count($pairs); $i < $n; $i += 2) {
             $beg = $pairs[$i + 0];
             $end = $pairs[$i + 1];
 
@@ -73,34 +66,28 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
             $prev = $iprev >= 0 ? $this->tokens[$iprev] : $texttoken;
             $next = $this->tokens[$inext];
 
-            if ($prev->getType() === $texttype && $next->getType() === $texttype)
-            {
+            if ($prev->getType() === $texttype && $next->getType() === $texttype) {
                 $prev_value = $prev->getValue();
                 $next_value = $next->getValue();
 
                 $nl = strrpos($prev_value, "\n");
 
-                if ($nl === false && $iprev === 0)
+                if ($nl === false && $iprev === 0) {
                     $nl = -1;
+                }
 
-                if ($nl !== false && $next_value[0] === "\n")
-                {
+                if ($nl !== false && $next_value[0] === "\n") {
                     $count = strlen($prev_value) - $nl - 1;
 
-                    if (strspn($prev_value, " \t", $nl + 1) === $count)
-                    {
+                    if (strspn($prev_value, " \t", $nl + 1) === $count) {
                         // the pair is in single line
 
-                        if ($this->tokens[$beg]->getType() === Twig_Token::BLOCK_START_TYPE)
-                        {
+                        if ($this->tokens[$beg]->getType() === Twig_Token::BLOCK_START_TYPE) {
                             // substr
 
-                            if ($nsubstr > 0 && $substr[$nsubstr - 3] === $iprev)
-                            {
+                            if ($nsubstr > 0 && $substr[$nsubstr - 3] === $iprev) {
                                 $substr[$nsubstr - 1] = $count;
-                            }
-                            else if ($iprev >= 0)
-                            {
+                            } elseif ($iprev >= 0) {
                                 $substr[] = $iprev;
                                 $substr[] = 0;
                                 $substr[] = $count;
@@ -118,28 +105,23 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
 
                             $tag = $this->tokens[$beg + 1]->getValue();
 
-                            if (in_array($tag, $end_tags))
-                            {
+                            if (in_array($tag, $end_tags)) {
                                 $insert[] = $beg;
                                 $insert[] = $END;
                                 $insert[] = $UNINDENT;
                             }
 
-                            if (in_array($tag, $start_tags))
-                            {
+                            if (in_array($tag, $start_tags)) {
                                 $insert[] = $end + 1;
                                 $insert[] = $START;
                                 $insert[] = $UNINDENT;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             // indent injection
 
-                            $nindent = (int)($count / $indent_len);
+                            $nindent = (int) ($count / $indent_len);
 
-                            if ($nindent > 0)
-                            {
+                            if ($nindent > 0) {
                                 $insert[] = $beg;
                                 $insert[] = $START;
                                 $insert[] = $INDENT;
@@ -157,23 +139,24 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
 
         // consume $substr
 
-        for ($i = 0; $i < $nsubstr; $i += 3)
-        {
+        for ($i = 0; $i < $nsubstr; $i += 3) {
             $index = $substr[$i];
             $start = $substr[$i + 1];
             $length = $substr[$i + 2];
             $token = $this->tokens[$index];
             $value = $token->getValue();
 
-            if ($length > 0)
+            if ($length > 0) {
                 $value = substr($value, $start, -$length);
-            else
+            } else {
                 $value = substr($value, $start);
+            }
 
-            if ($value !== '')
+            if ($value !== '') {
                 $this->tokens[$index] = new Twig_Token($texttype, $value, $token->getLine());
-            else
+            } else {
                 $this->tokens[$index] = null;
+            }
         }
 
         // fill the final $tokens array while consuming $insert
@@ -181,28 +164,27 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
         $tokens = array();
         $t = 0;
 
-        for ($i = 0, $n = count($insert); $i < $n; $i += 3)
-        {
+        for ($i = 0, $n = count($insert); $i < $n; $i += 3) {
             $index = $insert[$i];
             $type = $insert[$i + 1];
             $filter_func = $insert[$i + 2];
 
-            while ($t < $index)
-            {
+            while ($t < $index) {
                 $token = $this->tokens[$t++];
 
-                if ($token !== null)
+                if ($token !== null) {
                     $tokens[] = $token;
+                }
             }
 
-            if ($type === $START)
-            {
+            if ($type === $START) {
                 $line = $this->tokens[$t + ($filter_func === $INDENT ? 0 : -1)]->getLine();
                 $func = ($filter_func === $INDENT ? 'indent' : 'unindent');
                 $count = 1;
 
-                if ($filter_func === $INDENT)
+                if ($filter_func === $INDENT) {
                     $count = $insert[($i++) + 3];
+                }
 
                 array_push(
                     $tokens,
@@ -214,9 +196,7 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
                     new Twig_Token(Twig_Token::PUNCTUATION_TYPE, ')', $line),
                     new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', $line)
                 );
-            }
-            else
-            {
+            } else {
                 $line = $this->tokens[$t + ($filter_func === $INDENT ? -1 : 0)]->getLine();
 
                 $tokens[] = new Twig_Token(Twig_Token::BLOCK_START_TYPE, '', $line);
@@ -227,12 +207,12 @@ class Twig_Extensions_IndentLexer extends Twig_Lexer
 
         $n = count($this->tokens);
 
-        while ($t < $n)
-        {
+        while ($t < $n) {
             $token = $this->tokens[$t++];
 
-            if ($token !== null)
+            if ($token !== null) {
                 $tokens[] = $token;
+            }
         }
 
         $this->tokens = $tokens;

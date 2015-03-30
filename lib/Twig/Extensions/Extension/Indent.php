@@ -22,7 +22,7 @@ class Twig_Extensions_Extension_Indent extends Twig_Extension
             'spaceless',
             'verbatim',
             'else',
-            'elseif'
+            'elseif',
         );
 
         $this->end_tags = array(
@@ -37,14 +37,16 @@ class Twig_Extensions_Extension_Indent extends Twig_Extension
             'endspaceless',
             'endverbatim',
             'else',
-            'elseif'
+            'elseif',
         );
 
-        if (isset($options['start_tags']))
+        if (isset($options['start_tags'])) {
             $this->start_tags = array_merge($this->start_tags, $options['start_tags']);
+        }
 
-        if (isset($options['end_tags']))
+        if (isset($options['end_tags'])) {
             $this->end_tags = array_merge($this->end_tags, $options['end_tags']);
+        }
     }
 
     public function getName()
@@ -74,37 +76,36 @@ class Twig_Extensions_Extension_Indent extends Twig_Extension
         return array(
             new Twig_SimpleFilter(
                 'indent',
-                function($str, $n, $skip_first = true) use($ch)
-                {
+                function ($str, $n, $skip_first = true) use ($ch) {
                     $prefix = str_repeat($ch, $n);
                     $lines = explode("\n", $str);
 
-                    if ($skip_first)
-                    {
+                    if ($skip_first) {
                         $first = array_shift($lines);
 
-                        if (end($lines) === '')
+                        if (end($lines) === '') {
                             array_pop($lines);
+                        }
                     }
 
-                    $lines = array_map(function($s) use($prefix) { return $prefix . $s; }, $lines);
+                    $lines = array_map(function ($s) use ($prefix) { return $prefix.$s; }, $lines);
 
-                    if ($skip_first)
+                    if ($skip_first) {
                         array_unshift($lines, $first);
+                    }
 
                     return implode("\n", $lines);
                 }
             ),
             new Twig_SimpleFilter(
                 'unindent',
-                function($str, $n) use($ch)
-                {
+                function ($str, $n) use ($ch) {
                     $prefix = str_repeat($ch, $n);
                     $len = strlen($prefix);
                     $lines = explode("\n", $str);
 
                     $lines = array_map(
-                        function($s) use($prefix, $len) {
+                        function ($s) use ($prefix,$len) {
                             return strncmp($s, $prefix, $len) === 0 ? substr($s, $len) : $s;
                         },
                         $lines
@@ -112,7 +113,7 @@ class Twig_Extensions_Extension_Indent extends Twig_Extension
 
                     return implode("\n", $lines);
                 }
-            )
+            ),
         );
     }
 }
