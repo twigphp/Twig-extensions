@@ -61,7 +61,7 @@ ending tag belongs with which starting tag.
 Line *expression* blocks preserve the whitespace around them, but they are wrapped around
 ``indent`` filters.
 
-To illustrate how it all works, the template from the example can be seen like this:
+To illustrate how it all works, the template from the example can be seen like this::
 
     {% set variable = "line1\nline2\nline3" %}
     <body>
