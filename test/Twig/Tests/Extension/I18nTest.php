@@ -17,6 +17,8 @@ class Twig_Tests_Extension_I18nTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         setlocale(LC_ALL, 'en_US.UTF-8');
+        putenv('LANG=en_US.UTF-8');
+        putenv('LANGUAGE=en_US');
         bindtextdomain($this->domain, __DIR__.'/../../../locale');
         bind_textdomain_codeset($this->domain, 'UTF-8');
         textdomain($this->domain);
