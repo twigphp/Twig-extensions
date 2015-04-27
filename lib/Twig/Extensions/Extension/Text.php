@@ -24,12 +24,12 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         $multibyteSuffix = '';
 
         if (function_exists('mb_get_info')) {
-            $multibyteSuffix = '_multibyte';
+            $multibyteSuffix = 'Multibyte';
         }
 
         return array(
-            new Twig_SimpleFilter('truncate', array($this, 'twig_truncate_filter'.$multibyteSuffix), array('needs_environment' => true)),
-            new Twig_SimpleFilter('wordwrap', array($this, 'twig_wordwrap_filter'.$multibyteSuffix), array('needs_environment' => true)),
+            new Twig_SimpleFilter('truncate', array($this, 'twigTruncateFilter'.$multibyteSuffix), array('needs_environment' => true)),
+            new Twig_SimpleFilter('wordwrap', array($this, 'twigWordwrapFilter'.$multibyteSuffix), array('needs_environment' => true)),
         );
     }
 
@@ -43,7 +43,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return 'Text';
     }
 
-    public function twig_truncate_filter_multibyte(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    public function twigTruncateFilterMultibyte(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
             if ($preserve) {
@@ -61,7 +61,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return $value;
     }
 
-    public function twig_wordwrap_filter_multibyte(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
+    public function twigWordwrapFilterMultibyte(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
         $sentences = array();
 
@@ -83,7 +83,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return implode($separator, $sentences);
     }
 
-    public function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    public function twigTruncateFilter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
         if (strlen($value) > $length) {
             if ($preserve) {
@@ -100,7 +100,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return $value;
     }
 
-    public function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
+    public function twigWordwrapFilter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
         return wordwrap($value, $length, $separator, !$preserve);
     }

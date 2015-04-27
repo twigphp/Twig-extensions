@@ -42,7 +42,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
         if (!function_exists('mb_get_info')) {
             $this->markTestSkipped('Test skipped, because no multibyte extension was found!');
         }
-        $output = $this->objectUnderTest->twig_truncate_filter_multibyte($this->env, $input, $length, $preserve, $separator);
+        $output = $this->objectUnderTest->twigTruncateFilterMultibyte($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 
@@ -51,7 +51,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
      */
     public function testTruncate($input, $length, $preserve, $separator, $expectedOutput)
     {
-        $output = $this->objectUnderTest->twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
+        $output = $this->objectUnderTest->twigTruncateFilter($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 

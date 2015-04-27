@@ -26,9 +26,9 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('localizeddate', array($this, 'twig_localized_date_filter'), array('needs_environment' => true)),
-            new Twig_SimpleFilter('localizednumber', array($this, 'twig_localized_number_filter')),
-            new Twig_SimpleFilter('localizedcurrency', array($this, 'twig_localized_currency_filter')),
+            new Twig_SimpleFilter('localizeddate', array($this, 'twigLocalizedDateFilter'), array('needs_environment' => true)),
+            new Twig_SimpleFilter('localizednumber', array($this, 'twigLocalizedNumberFilter')),
+            new Twig_SimpleFilter('localizedcurrency', array($this, 'twigLocalizedCurrencyFilter')),
         );
     }
 
@@ -42,7 +42,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
         return 'intl';
     }
 
-    public function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null)
+    public function twigLocalizedDateFilter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null)
     {
         $date = twig_date_converter($env, $date, $timezone);
 
@@ -66,7 +66,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
         return $formatter->format($date->getTimestamp());
     }
 
-    public function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null)
+    public function twigLocalizedNumberFilter($number, $style = 'decimal', $type = 'default', $locale = null)
     {
         static $typeValues = array(
             'default'   => NumberFormatter::TYPE_DEFAULT,
@@ -76,7 +76,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
             'currency'  => NumberFormatter::TYPE_CURRENCY,
         );
 
-        $formatter = $this->twig_get_number_formatter($locale, $style);
+        $formatter = $this->twigGetNumberFormatter($locale, $style);
 
         if (!isset($typeValues[$type])) {
             throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
@@ -85,9 +85,9 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
         return $formatter->format($number, $typeValues[$type]);
     }
 
-    public function twig_localized_currency_filter($number, $currency = null, $locale = null)
+    public function twigLocalizedCurrencyFilter($number, $currency = null, $locale = null)
     {
-        $formatter = $this->twig_get_number_formatter($locale, 'currency');
+        $formatter = $this->twigGetNumberFormatter($locale, 'currency');
 
         return $formatter->formatCurrency($number, $currency);
     }
@@ -102,7 +102,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
      *
      * @return NumberFormatter A NumberFormatter instance
      */
-    protected function twig_get_number_formatter($locale, $style)
+    protected function twigGetNumberFormatter($locale, $style)
     {
         static $formatter, $currentStyle;
 
