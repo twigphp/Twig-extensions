@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  *
  * @author Henrik Bjornskov <hb@peytz.dk>
- * @package Twig
- * @subpackage Twig-extensions
  */
 class Twig_Extensions_Extension_Text extends Twig_Extension
 {
@@ -34,7 +32,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     }
 
     /**
-     * Name of this extension
+     * Name of this extension.
      *
      * @return string
      */

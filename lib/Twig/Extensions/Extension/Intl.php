@@ -93,10 +93,10 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     }
 
     /**
-     * Gets a number formatter instance according to given locale and formatter
+     * Gets a number formatter instance according to given locale and formatter.
      *
-     * @param  string $locale Locale in which the number would be formatted
-     * @param  int    $style  Style of the formatting
+     * @param string $locale Locale in which the number would be formatted
+     * @param int    $style  Style of the formatting
      *
      * @throws Twig_Error_Syntax
      *

@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-require_once __DIR__ . '/../../../../lib/Twig/Extensions/Extension/Array.php';
+require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Array.php';
 
 class Twig_Tests_Extension_ArrayTest extends PHPUnit_Framework_TestCase
 {
@@ -32,7 +32,7 @@ class Twig_Tests_Extension_ArrayTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 array(1, 2, 3),
-                array(1, 2, 3)
+                array(1, 2, 3),
             ),
             array(
                 array('a' => 'apple', 'b' => 'orange', 'c' => 'citrus'),
