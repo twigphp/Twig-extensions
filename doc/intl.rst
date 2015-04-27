@@ -59,6 +59,7 @@ representating the number.
 .. code-block:: jinja
 
     {{ product.quantity|localizednumber }}
+    {{ product.height|localizednumber('decimal', 'default', null, {'fraction_digits': 2}) }}
 
 .. note::
 
@@ -89,6 +90,8 @@ Arguments
 * ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
   use ``Locale::getDefault()``
 
+* ``attributes``: Optional array of `NumberFormatter  attributes`_.
+
 ``localizedcurrency``
 ---------------------
 
@@ -111,6 +114,7 @@ Arguments
 * ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
   use ``Locale::getDefault()``
 
+* ``attributes``: Optional array of `NumberFormatter  attributes`_.
 
 .. _`strtotime`:                      http://php.net/strtotime
 .. _`DateTime`:                       http://php.net/DateTime
@@ -135,3 +139,4 @@ Arguments
 .. _`NumberFormatter::TYPE_INT64`:    http://php.net/manual/en/class.numberformatter.php#numberformatter.constants.type-int64
 .. _`NumberFormatter::TYPE_DOUBLE`:   http://php.net/manual/en/class.numberformatter.php#numberformatter.constants.type-double
 .. _`NumberFormatter::TYPE_CURRENCY`: http://php.net/manual/en/class.numberformatter.php#numberformatter.constants.type-currency
+.. _`NumberFormatter attributes`:     http://php.net/manual/en/class.numberformatter.php#intl.numberformatter-constants.unumberformatattribute
