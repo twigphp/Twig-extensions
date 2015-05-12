@@ -1,7 +1,7 @@
 The Intl Extension
 ==================
 
-The *Intl* extensions provides the ``localizeddate`` filter.
+The *Intl* extensions provides the ``localizeddate``, ``localizednumber`` and ``localizedcurrency`` filters.
 
 Installation
 ------------
