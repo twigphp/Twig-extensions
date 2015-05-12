@@ -41,20 +41,19 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 if (function_exists('mb_get_info')) {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
-        if (mb_strlen($value, $env->getCharset()) > $length) {
-            if ($preserve) {
-                // If breakpoint is on the last word, return the value without separator.
-                if (false === ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
-                    return $value;
-                }
-
-                $length = $breakpoint;
-            }
-
-            return rtrim(mb_substr($value, 0, $length, $env->getCharset())) . $separator;
+        $charset = $env->getCharset();
+        if (mb_strlen($value, $charset) <= $length) {
+            return $value;
         }
+        $cutLength = $length - mb_strlen($separator);
+        $firstCut = rtrim(mb_substr($value, 0, $cutLength, $charset));
+        $isBreakpointInWord = ($value[$cutLength] !== ' ');
+        if (!$preserve || !$isBreakpointInWord) {
+            return $firstCut.$separator;
+        }
+        $lastSpace = mb_strrpos($firstCut, ' ', 0, $charset);
 
-        return $value;
+        return rtrim(mb_substr($firstCut, 0, $lastSpace, $charset)).$separator;
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
@@ -68,7 +67,7 @@ if (function_exists('mb_get_info')) {
         mb_regex_encoding($previous);
 
         foreach ($pieces as $piece) {
-            while(!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
+            while (!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
                 $sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
                 $piece = mb_substr($piece, $length, 2048, $env->getCharset());
             }
@@ -81,17 +80,19 @@ if (function_exists('mb_get_info')) {
 } else {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
     {
-        if (strlen($value) > $length) {
-            if ($preserve) {
-                if (false !== ($breakpoint = strpos($value, ' ', $length))) {
-                    $length = $breakpoint;
-                }
-            }
-
-            return rtrim(substr($value, 0, $length)) . $separator;
+        $charset = $env->getCharset();
+        if (strlen($value, $charset) <= $length) {
+            return $value;
         }
+        $cutLength = $length - strlen($separator);
+        $firstCut = rtrim(substr($value, 0, $cutLength, $charset));
+        $isBreakpointInWord = ($value[$cutLength] !== ' ');
+        if (!$preserve || !$isBreakpointInWord) {
+            return $firstCut.$separator;
+        }
+        $lastSpace = strrpos($firstCut, ' ', 0, $charset);
 
-        return $value;
+        return rtrim(substr($firstCut, 0, $lastSpace, $charset)).$separator;
     }
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
