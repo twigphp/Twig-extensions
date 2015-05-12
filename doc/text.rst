@@ -58,13 +58,13 @@ The example would output ``Hello...``, as ``...`` is the default separator.
 
 You can also tell truncate to preserve whole words by setting the second
 parameter to ``true``. If the last Word is on the the separator, truncate
-will print out the whole Word.
+will strip the last word.
 
 .. code-block:: jinja
 
     {{ "Hello World!" | truncate(7, true) }}
 
-Here ``Hello World!`` would be printed.
+Here ``Hello...`` would be printed.
 
 If you want to change the separator, just set the third parameter to
 your desired separator.
