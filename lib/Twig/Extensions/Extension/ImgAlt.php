@@ -27,10 +27,9 @@ class Twig_Extensions_Extension_imgAlt extends Twig_Extension
 
     public function twig_imgalt_filter($imgName, $minimalLenght = 4)
     {
-        /* to filter file extension and path */
+        /* to keep only the filename */
         $imgNameFiltered = pathinfo($imgName, PATHINFO_FILENAME);
 
-        /* For images names with keywords separated by - */
         $keyWords = explode("-", $imgNameFiltered);
         $keyWordsLongEnough = [];
 

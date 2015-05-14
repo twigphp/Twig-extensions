@@ -6,6 +6,7 @@ The ImgAlt extension provide the following filter:
 * ``imgAlt``
 
 This filter is used to fill the alt="" of an image, it use php pathinfo() function to get the image name, and return a string with all keyword longer than the optional ``minimalLengh`` parameter.
+Works for images named with keywords separated by -
 
 .. code-block:: jinja
 <img src="{{ imageSrc }}" alt="{{ imageSrc|imgalt }}">
