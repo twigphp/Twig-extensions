@@ -31,4 +31,4 @@ Usage
 Optional argument
 -----------------
 
-* ``minimalLenght``: The minimal lenght of word to keep to build the alt string. Default 4
+* ``minimalLenght``: The minimal length of word to keep to build the alt string. Default 4

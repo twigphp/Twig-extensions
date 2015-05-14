@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * This file is part of Twig.
  *
  * (c) 2009 Fabien Potencier
@@ -9,7 +8,6 @@
  * file that was distributed with this source code.
  *
  * @author Bouteillier Nicolas <nicolas@kaizendo.fr>
- *
  */
 class Twig_Extensions_Extension_imgAlt extends Twig_Extension
 {
