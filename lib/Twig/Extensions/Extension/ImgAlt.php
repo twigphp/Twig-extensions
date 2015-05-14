@@ -30,7 +30,7 @@ class Twig_Extensions_Extension_imgAlt extends Twig_Extension
         /* to keep only the filename */
         $imgNameFiltered = pathinfo($imgName, PATHINFO_FILENAME);
 
-        $keyWords = explode("-", $imgNameFiltered);
+        $keyWords = explode('-', $imgNameFiltered);
         $keyWordsLongEnough = [];
 
         /* clean up keywords, ignore less than $minimalLenght letters and numbers */
@@ -40,7 +40,7 @@ class Twig_Extensions_Extension_imgAlt extends Twig_Extension
             }
         }
 
-        return implode(", ", $keyWordsLongEnough);
+        return implode(', ', $keyWordsLongEnough);
     }
 
     public function getName()
