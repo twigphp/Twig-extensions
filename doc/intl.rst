@@ -1,7 +1,7 @@
 The Intl Extension
 ==================
 
-The *Intl* extensions provides the ``localizeddate``, ``localizednumber`` and ``localizedcurrency`` filters.
+The *Intl* extensions provides the ``localizeddate``, ``localizednumber``, ``localizedcurrency`` and ``localizedcurrencysymbol`` filters.
 
 Installation
 ------------
@@ -107,6 +107,26 @@ Arguments
 ~~~~~~~~~
 
 * ``currency``: The 3-letter ISO 4217 currency code indicating the currency to use.
+
+* ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
+  use ``Locale::getDefault()``
+
+``localizedcurrencysymbol``
+---------------------------
+
+Use the ``localizedcurrencysymbol`` filter to format a currency code into a localized symbol string.
+
+.. code-block:: jinja
+
+    {{ 'JPY'|localizedcurrency('fr_FR') }}
+
+.. note::
+
+    Internally, Twig uses the PHP `NumberFormatter::create()`_ function for
+    the number.
+
+Argument
+~~~~~~~~
 
 * ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
   use ``Locale::getDefault()``
