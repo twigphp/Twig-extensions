@@ -25,33 +25,40 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         $plural = null;
         $notes = null;
 
+        $withVars = new \Twig_Node_Expression_Array(array(), $lineno);
+        
         if (!$stream->test(Twig_Token::BLOCK_END_TYPE)) {
-            $body = $this->parser->getExpressionParser()->parseExpression();
-        } else {
+            if ($stream->test('with')) {
+                $stream->next();
+                $withVars = $this->parser->getExpressionParser()->parseExpression();
+            } elseif (!$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+                throw new \Twig_Error_Syntax('Unexpected token. Twig was looking for the "with" keyword.', $stream->getCurrent()->getLine(), $stream->getFilename());
+            }
+        }
+        
+        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $body = $this->parser->subparse(array($this, 'decideForFork'));
+        $next = $stream->next()->getValue();
+
+        if ('plural' === $next) {
+            $count = $this->parser->getExpressionParser()->parseExpression();
             $stream->expect(Twig_Token::BLOCK_END_TYPE);
-            $body = $this->parser->subparse(array($this, 'decideForFork'));
-            $next = $stream->next()->getValue();
+            $plural = $this->parser->subparse(array($this, 'decideForFork'));
 
-            if ('plural' === $next) {
-                $count = $this->parser->getExpressionParser()->parseExpression();
-                $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                $plural = $this->parser->subparse(array($this, 'decideForFork'));
-
-                if ('notes' === $stream->next()->getValue()) {
-                    $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                    $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
-                }
-            } elseif ('notes' === $next) {
+            if ('notes' === $stream->next()->getValue()) {
                 $stream->expect(Twig_Token::BLOCK_END_TYPE);
                 $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
             }
+        } elseif ('notes' === $next) {
+            $stream->expect(Twig_Token::BLOCK_END_TYPE);
+            $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
         }
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
         $this->checkTransString($body, $lineno);
 
-        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $withVars, $plural, $count, $notes, $lineno, $this->getTag());
     }
 
     public function decideForFork(Twig_Token $token)
