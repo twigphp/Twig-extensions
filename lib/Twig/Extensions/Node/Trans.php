@@ -156,14 +156,16 @@ if ($vars) {
             $msg = $body->getAttribute('data');
         }
 
-        preg_match_all('/(?<!%)%([^%]+)%/', $msg, $matches);
-
-        foreach ($matches[1] as $var) {
-            $key = new \Twig_Node_Expression_Constant('%'.$var.'%', $body->getLine());
-            if (!$withVars->hasElement($key)) {
-                $varExpr = new \Twig_Node_Expression_Name($var, $body->getLine());
-                $varExpr->setAttribute('ignore_strict_check', $ignoreStrictCheck);
-                $withVars->addElement($varExpr, $key);
+        if (null !== $withVars) {
+            preg_match_all('/(?<!%)%([^%]+)%/', $msg, $matches);
+    
+            foreach ($matches[1] as $var) {
+                $key = new \Twig_Node_Expression_Constant('%'.$var.'%', $body->getLine());
+                if (!$withVars->hasElement($key)) {
+                    $varExpr = new \Twig_Node_Expression_Name($var, $body->getLine());
+                    $varExpr->setAttribute('ignore_strict_check', $ignoreStrictCheck);
+                    $withVars->addElement($varExpr, $key);
+                }
             }
         }
 
