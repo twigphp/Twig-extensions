@@ -78,25 +78,27 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                 ;
             }
             $compiler->raw('array(');
-if ($vars) {
-            foreach ($vars as $var) {
-                if ('count' === $var->getAttribute('name')) {
-                    $compiler
-                        ->string('%count%')
-                        ->raw(' => abs(')
-                        ->subcompile($this->getNode('count'))
-                        ->raw('), ')
-                    ;
-                } else {
-                    $compiler
-                        ->string('%'.$var->getAttribute('name').'%')
-                        ->raw(' => ')
-                        ->subcompile($var)
-                        ->raw(', ')
-                    ;
+            
+            if ($vars) {
+                foreach ($vars as $var) {
+                    if ('count' === $var->getAttribute('name')) {
+                        $compiler
+                            ->string('%count%')
+                            ->raw(' => abs(')
+                            ->subcompile($this->getNode('count'))
+                            ->raw('), ')
+                        ;
+                    } else {
+                        $compiler
+                            ->string('%'.$var->getAttribute('name').'%')
+                            ->raw(' => ')
+                            ->subcompile($var)
+                            ->raw(', ')
+                        ;
+                    }
                 }
             }
-        }
+            
             if (null !== $withVars) {
                 $compiler->raw(') ');
             }
