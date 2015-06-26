@@ -12,7 +12,6 @@
 /**
  * Represents a trans node.
  *
- * @package    twig
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
@@ -30,7 +29,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
-        
+
         list($msg, $vars, $withVars) = $this->compileString($this->getNode('body'), $this->getNode('withVars'));
 
         if (null !== $this->getNode('plural')) {
@@ -45,7 +44,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $message = trim($notes->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
-            $message = str_replace(array("\n", "\r"), " ", $message);
+            $message = str_replace(array("\n", "\r"), ' ', $message);
             $compiler->write("// notes: {$message}\n");
         }
 
@@ -78,7 +77,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                 ;
             }
             $compiler->raw('array(');
-            
+
             if ($vars) {
                 foreach ($vars as $var) {
                     if ('count' === $var->getAttribute('name')) {
@@ -98,7 +97,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     }
                 }
             }
-            
+
             if (null !== $withVars) {
                 $compiler->raw(') ');
             }
@@ -160,7 +159,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         if (null !== $withVars) {
             preg_match_all('/(?<!%)%([^%]+)%/', $msg, $matches);
-    
+
             foreach ($matches[1] as $var) {
                 $key = new \Twig_Node_Expression_Constant('%'.$var.'%', $body->getLine());
                 if (!$withVars->hasElement($key)) {
