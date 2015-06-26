@@ -26,7 +26,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         $notes = null;
 
         $withVars = new \Twig_Node_Expression_Array(array(), $lineno);
-        
+
         if (!$stream->test(Twig_Token::BLOCK_END_TYPE)) {
             if ($stream->test('with')) {
                 $stream->next();
@@ -35,7 +35,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
                 throw new \Twig_Error_Syntax('Unexpected token. Twig was looking for the "with" keyword.', $stream->getCurrent()->getLine(), $stream->getFilename());
             }
         }
-        
+
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
         $body = $this->parser->subparse(array($this, 'decideForFork'));
         $next = $stream->next()->getValue();
