@@ -32,6 +32,10 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         list($msg, $vars, $withVars) = $this->compileString($this->getNode('body'), $this->getNode('withVars'));
 
+        if (!$withVars->count()) {
+            $withVars = null;
+        }
+
         if (null !== $this->getNode('plural')) {
             list($msg1, $vars1) = $this->compileString($this->getNode('plural'));
 
