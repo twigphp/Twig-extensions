@@ -87,7 +87,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         return 'trans';
     }
 
-    protected function checkTransString(Twig_NodeInterface $body, $lineno)
+    private function checkTransString(Twig_NodeInterface $body, $lineno)
     {
         foreach ($body as $i => $node) {
             if (
@@ -102,7 +102,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         }
     }
 
-    protected function checkWithNode($with, $plural, $lineno)
+    private function checkWithNode($with, $plural, $lineno)
     {
         if (null !== $with && null !== $plural) {
             $key = new Twig_Node_Expression_Constant('%count%', $lineno);
