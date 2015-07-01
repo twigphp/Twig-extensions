@@ -24,41 +24,45 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         $count = null;
         $plural = null;
         $notes = null;
-
-        $withVars = new \Twig_Node_Expression_Array(array(), $lineno);
+        $body = null;
+        $with = null;
 
         if (!$stream->test(Twig_Token::BLOCK_END_TYPE)) {
-            if ($stream->test('with')) {
-                $stream->next();
-                $withVars = $this->parser->getExpressionParser()->parseExpression();
-            } elseif (!$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
-                throw new \Twig_Error_Syntax('Unexpected token. Twig was looking for the "with" keyword.', $stream->getCurrent()->getLine(), $stream->getFilename());
+            if ($stream->nextIf('with')) {
+                $with = $this->parser->getExpressionParser()->parseHashExpression();
+            } else {
+                $body = $this->parser->getExpressionParser()->parseExpression();
             }
         }
 
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(array($this, 'decideForFork'));
-        $next = $stream->next()->getValue();
-
-        if ('plural' === $next) {
-            $count = $this->parser->getExpressionParser()->parseExpression();
+        if (null === $body) {
             $stream->expect(Twig_Token::BLOCK_END_TYPE);
-            $plural = $this->parser->subparse(array($this, 'decideForFork'));
+            $body = $this->parser->subparse(array($this, 'decideForFork'));
+            $next = $stream->next()->getValue();
 
-            if ('notes' === $stream->next()->getValue()) {
+            if ('plural' === $next) {
+                $countExpr = $this->parser->getExpressionParser()->parseMultitargetExpression();
+                $count = new Twig_Node_Expression_Function('abs', $countExpr, $lineno);
+                $stream->expect(Twig_Token::BLOCK_END_TYPE);
+                $plural = $this->parser->subparse(array($this, 'decideForFork'));
+
+                if ('notes' === $stream->next()->getValue()) {
+                    $stream->expect(Twig_Token::BLOCK_END_TYPE);
+                    $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
+                }
+            } elseif ('notes' === $next) {
                 $stream->expect(Twig_Token::BLOCK_END_TYPE);
                 $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
             }
-        } elseif ('notes' === $next) {
-            $stream->expect(Twig_Token::BLOCK_END_TYPE);
-            $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
         }
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
         $this->checkTransString($body, $lineno);
 
-        return new Twig_Extensions_Node_Trans($body, $withVars, $plural, $count, $notes, $lineno, $this->getTag());
+        $this->checkWithNode($with, $plural, $lineno);
+
+        return new Twig_Extensions_Node_Trans($body, $with, $plural, $count, $notes, $lineno, $this->getTag());
     }
 
     public function decideForFork(Twig_Token $token)
@@ -75,7 +79,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
      * Gets the tag name associated with this token parser.
      *
      * @param string The tag name
-     * 
+     *
      * @return string
      */
     public function getTag()
@@ -94,7 +98,17 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
                 continue;
             }
 
-            throw new Twig_Error_Syntax(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineno);
+            throw new Twig_Error_Syntax('The text to be translated with "trans" can only contain references to simple variables', $lineno);
+        }
+    }
+
+    protected function checkWithNode($with, $plural, $lineno)
+    {
+        if (null !== $with && null !== $plural) {
+            $key = new Twig_Node_Expression_Constant('%count%', $lineno);
+            if ($with->hasElement($key)) {
+                throw new Twig_Error_Syntax('The "count" variable is reserved for "plural"', $lineno);
+            }
         }
     }
 }
