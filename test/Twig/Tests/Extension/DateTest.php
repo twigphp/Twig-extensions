@@ -16,7 +16,7 @@ require_once __DIR__ . '/../../../../lib/Twig/Extensions/Extension/Date.php';
 class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var TwigEnvironment
+     * @var \Twig_Environment
      */
     private $env;
 
