@@ -21,7 +21,7 @@ depending on the filtered date.
 
 .. note::
 
-    Internally, Twig uses the PHP ``DateTime::diff()`` method for calculcating the
+    Internally, Twig uses the PHP ``DateTime::diff()`` method for calculating the
     difference between dates, this means that PHP 5.3+ is required.
 
 Arguments
