@@ -17,9 +17,9 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null)
+    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null, Twig_Node_Expression $domain = null)
     {
-        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
+        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes, 'domain' => $domain), array(), $lineno, $tag);
     }
 
     /**
@@ -39,7 +39,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
+        if (null === $domain = $this->getNode('domain')) {
+            $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
+        } else {
+            $function = null === $this->getNode('plural') ? 'dgettext' : 'dngettext';
+        }
 
         if (null !== $notes = $this->getNode('notes')) {
             $message = trim($notes->getAttribute('data'));
@@ -52,6 +56,14 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
+            ;
+            if ($domain) {
+                $compiler
+                    ->subcompile($domain)
+                    ->raw(', ')
+                ;
+            }
+            $compiler
                 ->subcompile($msg)
             ;
 
@@ -89,6 +101,14 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         } else {
             $compiler
                 ->write('echo '.$function.'(')
+            ;
+            if ($domain) {
+                $compiler
+                    ->subcompile($domain)
+                    ->raw(', ')
+                ;
+            }
+            $compiler
                 ->subcompile($msg)
             ;
 
