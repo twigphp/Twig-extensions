@@ -48,6 +48,19 @@ Use the ``trans`` block to mark parts in the template as translatable:
         Hello World!
     {% endtrans %}
 
+An optional translation domain can be provided as second parameter:
+
+.. code-block:: jinja
+
+    {% trans "Hello World!" "mydomain" %}
+
+    {% trans "Hello World!" string_var %}
+
+    {% trans %}
+    {% domain "mydomain" %}
+        Hello World!
+    {% endtrans %}
+
 In a translatable string, you can embed variables:
 
 .. code-block:: jinja
@@ -101,6 +114,19 @@ To add notes for translators, use the ``notes`` block:
 
 You can use ``notes`` with or without ``plural``. Once you get your templates compiled you should
 configure the ``gettext`` parser to get something like this: ``xgettext --add-comments=notes``
+
+To add a translation domain, use the ``domain`` block:
+
+.. code-block:: jinja
+
+    {% trans %}
+    {% domain gettext_domain %}
+        Hey {{ name }}, I have one apple.
+    {% plural apple_count %}
+        Hey {{ name }}, I have {{ count }} apples.
+    {% notes %}
+        This is shown in the user menu. This string should be shorter than 30 chars
+    {% endtrans %}
 
 Within an expression or in a tag, you can use the ``trans`` filter to translate
 simple strings or variables:
