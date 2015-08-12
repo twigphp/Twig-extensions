@@ -15,6 +15,13 @@ require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Intl.php';
  */
 class Twig_Tests_Extension_IntlTest extends PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!class_exists('IntlDateFormatter')) {
+            $this->markTestSkipped('The intl extension is needed to use intl-based filters.');
+        }
+    }
+
     public function testLocalizedDateFilterWithDateTimeZone()
     {
         if (PHP_VERSION_ID < 50500) {
