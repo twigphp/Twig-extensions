@@ -13,6 +13,8 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
     /** @var TwigEnvironment */
     private $env;
 
+    private $objectUnderTest;
+
     public static function setUpBeforeClass()
     {
         if (!class_exists('Twig_Extensions_Extension_Text')) {
@@ -22,6 +24,8 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $this->objectUnderTest = new Twig_Extensions_Extension_Text();
+
         $this->env = $this->getMock('Twig_Environment');
         $this->env
             ->expects($this->any())
@@ -33,9 +37,21 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTruncateTestData
      */
+    public function testTruncateMultibyte($input, $length, $preserve, $separator, $expectedOutput)
+    {
+        if (!function_exists('mb_get_info')) {
+            $this->markTestSkipped('Test skipped, because no multibyte extension was found!');
+        }
+        $output = $this->objectUnderTest->twigTruncateFilterMultibyte($this->env, $input, $length, $preserve, $separator);
+        $this->assertEquals($expectedOutput, $output);
+    }
+
+    /**
+     * @dataProvider getTruncateTestData
+     */
     public function testTruncate($input, $length, $preserve, $separator, $expectedOutput)
     {
-        $output = twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
+        $output = $this->objectUnderTest->twigTruncateFilter($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 

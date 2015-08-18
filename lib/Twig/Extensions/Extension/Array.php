@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  *
  * @author Ricard Clau <ricard.clau@gmail.com>
- * @package Twig
- * @subpackage Twig-extensions
  */
 class Twig_Extensions_Extension_Array extends Twig_Extension
 {
@@ -22,13 +20,13 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
     public function getFilters()
     {
         $filters = array(
-             new Twig_SimpleFilter('shuffle', 'twig_shuffle_filter'),
+             new Twig_SimpleFilter('shuffle', 'twigShuffleFilter'),
         );
 
         return $filters;
     }
     /**
-     * Name of this extension
+     * Name of this extension.
      *
      * @return string
      */
@@ -42,9 +40,10 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
  * Shuffles an array.
  *
  * @param array|Traversable $array An array
+ *
  * @return array
  */
-function twig_shuffle_filter($array)
+function twigShuffleFilter($array)
 {
     if ($array instanceof Traversable) {
         $array = iterator_to_array($array, false);
