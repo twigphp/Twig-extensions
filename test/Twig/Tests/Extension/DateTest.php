@@ -37,7 +37,7 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
             ->method('getTimezone')
             ->will($this->returnValue($timezone));
 
-        $this->env = $this->getMock('Twig_Environment');
+        $this->env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
         $this->env
             ->expects($this->any())
             ->method('getExtension')
