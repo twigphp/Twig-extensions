@@ -22,7 +22,7 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->env = $this->getMock('Twig_Environment');
+        $this->env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
         $this->env
             ->expects($this->any())
             ->method('getCharset')

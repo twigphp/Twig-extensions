@@ -12,12 +12,11 @@
 /**
  * Represents a trans node.
  *
- * @package    twig
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_NodeInterface $body, Twig_NodeInterface $plural = null, Twig_Node_Expression $count = null, Twig_NodeInterface $notes = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
     {
         parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
     }
@@ -45,7 +44,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $message = trim($notes->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
-            $message = str_replace(array("\n", "\r"), " ", $message);
+            $message = str_replace(array("\n", "\r"), ' ', $message);
             $compiler->write("// notes: {$message}\n");
         }
 
@@ -107,11 +106,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     }
 
     /**
-     * @param Twig_NodeInterface $body A Twig_NodeInterface instance
+     * @param Twig_Node $body A Twig_Node instance
      *
      * @return array
      */
-    protected function compileString(Twig_NodeInterface $body)
+    protected function compileString(Twig_Node $body)
     {
         if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant || $body instanceof Twig_Node_Expression_TempName) {
             return array($body, array());
