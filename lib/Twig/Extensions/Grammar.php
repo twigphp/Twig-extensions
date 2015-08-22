@@ -23,7 +23,7 @@ abstract class Twig_Extensions_Grammar implements Twig_Extensions_GrammarInterfa
 
     /**
      * @param Twig_Parser $parser
-     */ 
+     */
     public function setParser(Twig_Parser $parser)
     {
         $this->parser = $parser;

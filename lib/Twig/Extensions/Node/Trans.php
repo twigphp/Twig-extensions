@@ -12,7 +12,6 @@
 /**
  * Represents a trans node.
  *
- * @package    twig
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
@@ -45,7 +44,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $message = trim($notes->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
-            $message = str_replace(array("\n", "\r"), " ", $message);
+            $message = str_replace(array("\n", "\r"), ' ', $message);
             $compiler->write("// notes: {$message}\n");
         }
 

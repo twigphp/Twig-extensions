@@ -12,7 +12,6 @@
 /**
  * Autoloads Twig Extensions classes.
  *
- * @package    twig
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
 class Twig_Extensions_Autoloader
@@ -20,19 +19,19 @@ class Twig_Extensions_Autoloader
     /**
      * Registers Twig_Extensions_Autoloader as an SPL autoloader.
      */
-    static public function register()
+    public static function register()
     {
-        spl_autoload_register(array(new self, 'autoload'));
+        spl_autoload_register(array(new self(), 'autoload'));
     }
 
     /**
      * Handles autoloading of classes.
      *
-     * @param  string  $class  A class name.
+     * @param string $class A class name.
      *
-     * @return boolean Returns true if the class has been loaded
+     * @return bool Returns true if the class has been loaded
      */
-    static public function autoload($class)
+    public static function autoload($class)
     {
         if (0 !== strpos($class, 'Twig_Extensions')) {
             return;

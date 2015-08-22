@@ -40,8 +40,8 @@ abstract class Twig_Extensions_SimpleTokenParser extends Twig_TokenParser
     /**
      * Gets the nodes based on the parsed values.
      *
-     * @param array   $values An array of values
-     * @param integer $line   The parser line
+     * @param array $values An array of values
+     * @param int   $line   The parser line
      */
     abstract protected function getNode(array $values, $line);
 
@@ -88,7 +88,7 @@ abstract class Twig_Extensions_SimpleTokenParser extends Twig_TokenParser
         return $nodes;
     }
 
-    static public function parseGrammar($str, $main = true)
+    public static function parseGrammar($str, $main = true)
     {
         static $cursor;
 
