@@ -58,8 +58,8 @@ function twig_shuffle_filter($array)
 /**
  * Unset a key from an array.
  *
- * @param array $array An array
- * @param string|int $key An array key
+ * @param array      $array An array
+ * @param string|int $key   An array key
  *
  * @return array
  */
