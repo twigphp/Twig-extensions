@@ -21,6 +21,7 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
     {
         $filters = array(
              new Twig_SimpleFilter('shuffle', 'twig_shuffle_filter'),
+             new Twig_SimpleFilter('unset', 'twig_unset_filter'),
         );
 
         return $filters;
@@ -50,6 +51,21 @@ function twig_shuffle_filter($array)
     }
 
     shuffle($array);
+
+    return $array;
+}
+
+/**
+ * Unset a key from an array.
+ *
+ * @param array|Traversable $array An array
+ * @param string $key An array key
+ *
+ * @return array
+ */
+function twig_unset_filter($array, $key)
+{
+    unset($array[$key]);
 
     return $array;
 }
