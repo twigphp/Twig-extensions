@@ -15,7 +15,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
      *
      * @param Twig_Token $token A Twig_Token instance
      *
-     * @return Twig_NodeInterface A Twig_NodeInterface instance
+     * @return Twig_Node A Twig_Node instance
      */
     public function parse(Twig_Token $token)
     {
@@ -87,7 +87,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         return 'trans';
     }
 
-    private function checkTransString(Twig_NodeInterface $body, $lineno)
+    protected function checkTransString(Twig_Node $body, $lineno)
     {
         foreach ($body as $i => $node) {
             if (

@@ -7,9 +7,7 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
  */
-
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -17,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class Twig_Extensions_Extension_Date extends Twig_Extension
 {
-    static $units = array(
+    public static $units = array(
         'y' => 'year',
         'm' => 'month',
         'd' => 'day',
@@ -50,13 +48,13 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
     {
         return array(
             new Twig_SimpleFilter('time_diff', array($this, 'diff'), array(
-                'needs_environment' => true
+                'needs_environment' => true,
             )),
         );
     }
 
     /**
-     * Name of this extension
+     * Name of this extension.
      *
      * @return string
      */

@@ -35,7 +35,7 @@ class SimpleTokenParser extends Twig_Extensions_SimpleTokenParser
         $nodes = array();
         $nodes[] = new Twig_Node_Print(new Twig_Node_Expression_Constant('|', $line), $line);
         foreach ($values as $value) {
-            if ($value instanceof Twig_NodeInterface) {
+            if ($value instanceof Twig_Node) {
                 if ($value instanceof Twig_Node_Expression_Array) {
                     $nodes[] = new Twig_Node_Print(new Twig_Node_Expression_Function('dump', $value, $line), $line);
                 } else {
