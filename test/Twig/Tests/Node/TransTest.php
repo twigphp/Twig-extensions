@@ -36,8 +36,8 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
 
     /**
      * copy/paste from Twig 1.20, as newer version use assertStringMatchesFormat
-     * which break for this test provider, see
-     * https://github.com/twigphp/Twig/commit/f379e8141c8820143c2da91ff5279b641d563f8c
+     * see https://github.com/twigphp/Twig/commit/f379e8141c8820143c2da91ff5279b641d563f8c
+     * which break for this test provider.
      */
     public function assertNodeCompilation($source, Twig_Node $node, Twig_Environment $environment = null)
     {
