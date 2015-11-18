@@ -112,7 +112,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $body = new Twig_Node_Expression_Constant('Hello', 0);
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, $context, 0);
-        $tests[] = array($node, "echo pgettext(\"Sidebar|Menu\", \"Hello\");");
+        $tests[] = array($node, 'echo pgettext("Sidebar|Menu", "Hello");');
 
         $count = new Twig_Node_Expression_Constant(5, 0);
         $body = new Twig_Node_Text('There is 1 pending task', 0);
@@ -123,7 +123,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         ), array(), 0);
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, null, $context, 0);
-        $tests[] = array($node, "".'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+        $tests[] = array($node, 'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
         return $tests;
 
         $body = new Twig_Node_Expression_Constant('Hello', 0);

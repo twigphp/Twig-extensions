@@ -30,11 +30,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     {
         $compiler->addDebugInfo($this);
 
-        $body  = $this->getNode('body');
+        $body = $this->getNode('body');
 
         list($msg, $vars) = $this->compileString($body);
 
-        if (null !== $plural =$this->getNode('plural')) {
+        if (null !== $plural = $this->getNode('plural')) {
             list($msg1, $vars1) = $this->compileString($this->getNode('plural'));
 
             $vars = array_merge($vars, $vars1);
