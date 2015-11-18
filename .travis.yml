@@ -12,7 +12,7 @@ env:
         - deps=no
 
 before_script:
-    - if [ "$deps" = "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
+    - if [ "$deps" = "low" ]; then composer --prefer-stable update; fi;
     - if [ "$deps" = "no" ]; then composer install; fi;
 
 script: phpunit
