@@ -124,6 +124,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, null, $context, 0);
         $tests[] = array($node, 'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+
         return $tests;
 
         $body = new Twig_Node_Expression_Constant('Hello', 0);
@@ -143,6 +144,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $notes = new Twig_Node_Text('Notes for translators', 0);
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $context, 0);
         $tests[] = array($node, "// notes: Notes for translators\n".'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+
         return $tests;
     }
 }
