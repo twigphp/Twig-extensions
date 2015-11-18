@@ -54,11 +54,11 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
 
         $body = new Twig_Node(array(
             new Twig_Node_Text('J\'ai ', 0),
-            new Twig_Node_Print(new Twig_Node_Expression_Name('_foo', 0), 0),
+            new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0),
             new Twig_Node_Text(' pommes', 0),
         ), array(), 0);
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, null, 0);
-        $tests[] = array($node, sprintf('echo strtr(gettext("J\'ai %%_foo%% pommes"), array("%%_foo%%" => %s, ));', $this->getVariableGetter('_foo')));
+        $tests[] = array($node, sprintf('echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo')));
 
         $count = new Twig_Node_Expression_Constant(12, 0);
         $body = new Twig_Node(array(
@@ -79,12 +79,12 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         // with escaper extension set to on
         $body = new Twig_Node(array(
             new Twig_Node_Text('J\'ai ', 0),
-            new Twig_Node_Print(new Twig_Node_Expression_Filter(new Twig_Node_Expression_Name('_foo', 0), new Twig_Node_Expression_Constant('escape', 0), new Twig_Node(), 0), 0),
+            new Twig_Node_Print(new Twig_Node_Expression_Filter(new Twig_Node_Expression_Name('foo', 0), new Twig_Node_Expression_Constant('escape', 0), new Twig_Node(), 0), 0),
             new Twig_Node_Text(' pommes', 0),
         ), array(), 0);
 
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, null, 0);
-        $tests[] = array($node, sprintf('echo strtr(gettext("J\'ai %%_foo%% pommes"), array("%%_foo%%" => %s, ));', $this->getVariableGetter('_foo')));
+        $tests[] = array($node, sprintf('echo strtr(gettext("J\'ai %%foo%% pommes"), array("%%foo%%" => %s, ));', $this->getVariableGetter('foo')));
 
         // with notes
         $body = new Twig_Node_Expression_Constant('Hello', 0);
