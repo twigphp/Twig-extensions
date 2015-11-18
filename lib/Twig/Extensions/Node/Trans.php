@@ -62,7 +62,6 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler->write("// notes: {$message}\n");
         }
 
-
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
