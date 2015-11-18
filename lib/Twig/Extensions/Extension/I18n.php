@@ -42,3 +42,41 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
         return 'i18n';
     }
 }
+
+if(!function_exists('pgettext')){
+    /**
+     * Gets a translation checking the context.
+     *
+     * @param string $context
+     * @param string $original
+     *
+     * @return string
+     */
+    function pgettext($context, $original)
+    {
+        $message = "{$context}\004{$original}";
+        $translation = gettext($message);
+
+        return ($translation === $message) ? $original : $translation;
+    }
+}
+
+if(!function_exists('npgettext')){
+    /**
+     * Gets a translation checking the context and the plural form.
+     *
+     * @param string $context
+     * @param string $original
+     * @param string $plural
+     * @param string $value
+     *
+     * @return string
+     */
+    function npgettext($context, $original, $plural, $value)
+    {
+        $message = "{$context}\004{$original}";
+        $translation = ngettext($message, $plural, $value);
+
+        return ($translation === $message) ? $original : $translation;
+    }
+}
