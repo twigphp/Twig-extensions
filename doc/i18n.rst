@@ -102,6 +102,23 @@ To add notes for translators, use the ``notes`` block:
 You can use ``notes`` with or without ``plural``. Once you get your templates compiled you should
 configure the ``gettext`` parser to get something like this: ``xgettext --add-comments=notes``
 
+To add context for translators, use the ``context`` block:
+
+.. code-block:: jinja
+
+    {% trans %}
+        Hey {{ name }}, I have one apple.
+    {% plural apple_count %}
+        Hey {{ name }}, I have {{ count }} apples.
+    {% notes %}
+        This is shown in the user menu. This string should be shorter than 30 chars
+    {% context %}
+        Sidebar|Menu
+    {% endtrans %}
+
+You can use ``context`` with or without ``plural`` or ``notes``. Once you get your templates compiled you should
+configure the ``gettext`` parser to get something like this: ``xgettext --keyword="pgettext:1c,2" --keyword="npgettext:1c,2,3"``
+
 Within an expression or in a tag, you can use the ``trans`` filter to translate
 simple strings or variables:
 
@@ -169,12 +186,13 @@ code:
 
 .. code-block:: text
 
-    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 -n --omit-header -L PHP /tmp/cache/*.php
+    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 --keyword="pgettext:1c,2" --keyword="npgettext:1c,2,3" -n --omit-header -L PHP /tmp/cache/*.php
 
 Another workaround is to use `Twig Gettext Extractor`_ and extract the template
 strings right from `Poedit`_.
 
 .. _`gettext`:                http://www.php.net/gettext
 .. _`documentation`:          http://fr.php.net/manual/en/function.gettext.php
+.. _`xgettext`:          https://www.gnu.org/software/gettext/manual/html_node/xgettext-Invocation.html
 .. _`Twig Gettext Extractor`: https://github.com/umpirsky/Twig-Gettext-Extractor
 .. _`Poedit`:                 http://www.poedit.net/
