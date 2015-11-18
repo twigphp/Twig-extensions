@@ -16,9 +16,9 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, Twig_Node $context = null, $lineno, $tag = null)
     {
-        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
+        parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes, 'context' => $context), array(), $lineno, $tag);
     }
 
     /**
@@ -30,7 +30,13 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     {
         $compiler->addDebugInfo($this);
 
-        list($msg, $vars) = $this->compileString($this->getNode('body'));
+        $body  = $this->getNode('body');
+
+        if (null !== $context = $this->getNode('context')) {
+            $context = trim($context->getAttribute('data'));
+        }
+
+        list($msg, $vars) = $this->compileString($body);
 
         if (null !== $this->getNode('plural')) {
             list($msg1, $vars1) = $this->compileString($this->getNode('plural'));
@@ -38,7 +44,18 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
+        $is_plural = $this->getNode('plural');
+        $context_exist = $this->getNode('context');
+
+        if(!is_null($context_exist) && !is_null($is_plural)){
+            $function = 'np__';
+        }elseif(!is_null($context_exist)){
+            $function = 'p__';
+        }elseif(!is_null($is_plural)){
+            $function = 'n__';
+        }else{
+            $function = '__';
+        }
 
         if (null !== $notes = $this->getNode('notes')) {
             $message = trim($notes->getAttribute('data'));
@@ -48,19 +65,40 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler->write("// notes: {$message}\n");
         }
 
+
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
-                ->subcompile($msg)
             ;
-
-            if (null !== $this->getNode('plural')) {
+            if(!is_null($context_exist) && !is_null($is_plural)){
                 $compiler
+                    ->string($context)
+                    ->raw(', ')
+                    ->subcompile($msg)
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
+                ;
+            }elseif(!is_null($context_exist)){
+                $compiler
+                    ->string($context)
+                    ->raw(', ')
+                    ->subcompile($msg)
+                ;
+            }elseif(!is_null($is_plural)){
+                $compiler
+                    ->subcompile($msg)
+                    ->raw(', ')
+                    ->subcompile($msg1)
+                    ->raw(', abs(')
+                    ->subcompile($this->getNode('count'))
+                    ->raw(')')
+                ;
+            }else{
+                $compiler
+                    ->subcompile($msg)
                 ;
             }
 
@@ -88,16 +126,36 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         } else {
             $compiler
                 ->write('echo '.$function.'(')
-                ->subcompile($msg)
             ;
-
-            if (null !== $this->getNode('plural')) {
+            if(!is_null($context_exist) && !is_null($is_plural)){
                 $compiler
+                    ->string($context)
+                    ->raw(', ')
+                    ->subcompile($msg)
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
+                ;
+            }elseif(!is_null($context_exist)){
+                $compiler
+                    ->string($context)
+                    ->raw(', ')
+                    ->subcompile($msg)
+                ;
+            }elseif(!is_null($is_plural)){
+                $compiler
+                    ->subcompile($msg)
+                    ->raw(', ')
+                    ->subcompile($msg1)
+                    ->raw(', abs(')
+                    ->subcompile($this->getNode('count'))
+                    ->raw(')')
+                ;
+            }else{
+                $compiler
+                    ->subcompile($msg)
                 ;
             }
 
