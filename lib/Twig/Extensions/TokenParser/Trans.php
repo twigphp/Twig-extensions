@@ -38,8 +38,8 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
                 $stream->expect(Twig_Token::BLOCK_END_TYPE);
                 $plural = $this->parser->subparse(array($this, 'decideForFork'));
 
-                $next_after_plural = $stream->next()->getValue();
-                if ('notes' === $next_after_plural) {
+                $nextAfterPlural = $stream->next()->getValue();
+                if ('notes' === $nextAfterPlural) {
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
                     $notes = $this->parser->subparse(array($this, 'decideForFork'));
 
@@ -48,7 +48,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
                         $context = $this->parser->subparse(array($this, 'decideForEnd'), true);
                     }
                 }
-                elseif('context' === $next_after_plural){
+                elseif('context' === $nextAfterPlural){
                     $stream->expect(Twig_Token::BLOCK_END_TYPE);
                     $context = $this->parser->subparse(array($this, 'decideForFork'));
 

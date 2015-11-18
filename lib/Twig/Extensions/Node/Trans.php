@@ -44,11 +44,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $context = trim($context->getAttribute('data'));
         }
 
-        if(!is_null($context) && !is_null($plural)){
+        if(null !== $context && null !== $plural){
             $function = 'npgettext';
-        }elseif(!is_null($context)){
+        }elseif(null !== $context){
             $function = 'pgettext';
-        }elseif(!is_null($plural)){
+        }elseif(null !== $plural){
             $function = 'ngettext';
         }else{
             $function = 'gettext';
@@ -66,7 +66,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler
                 ->write('echo strtr('.$function.'(')
             ;
-            if(!is_null($context) && !is_null($plural)){
+            if(null !== $context && null !== $plural){
                 $compiler
                     ->string($context)
                     ->raw(', ')
@@ -77,13 +77,13 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
                 ;
-            }elseif(!is_null($context)){
+            }elseif(null !== $context){
                 $compiler
                     ->string($context)
                     ->raw(', ')
                     ->subcompile($msg)
                 ;
-            }elseif(!is_null($plural)){
+            }elseif(null !== $plural){
                 $compiler
                     ->subcompile($msg)
                     ->raw(', ')
@@ -123,7 +123,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler
                 ->write('echo '.$function.'(')
             ;
-            if(!is_null($context) && !is_null($plural)){
+            if(null !== $context && null !== $plural){
                 $compiler
                     ->string($context)
                     ->raw(', ')
@@ -134,13 +134,13 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
                 ;
-            }elseif(!is_null($context)){
+            }elseif(null !== $context){
                 $compiler
                     ->string($context)
                     ->raw(', ')
                     ->subcompile($msg)
                 ;
-            }elseif(!is_null($plural)){
+            }elseif(null !== $plural){
                 $compiler
                     ->subcompile($msg)
                     ->raw(', ')
