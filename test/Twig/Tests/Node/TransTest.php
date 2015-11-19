@@ -112,7 +112,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $body = new Twig_Node_Expression_Constant('Hello', 0);
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, $context, 0);
-        $tests[] = array($node, 'echo pgettext("Sidebar|Menu", "Hello");');
+        $tests[] = array($node, 'echo twig_pgettext("Hello", "Sidebar|Menu");');
 
         $count = new Twig_Node_Expression_Constant(5, 0);
         $body = new Twig_Node_Text('There is 1 pending task', 0);
@@ -123,13 +123,13 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         ), array(), 0);
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, null, $context, 0);
-        $tests[] = array($node, 'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+        $tests[] = array($node, 'echo strtr(twig_npgettext("There is 1 pending task", "There are %count% pending tasks", abs(5), "Sidebar|Menu"), array("%count%" => abs(5), ));');
 
         $body = new Twig_Node_Expression_Constant('Hello', 0);
         $notes = new Twig_Node_Text("Notes for translators\nand line breaks", 0);
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $node = new Twig_Extensions_Node_Trans($body, null, null, $notes, $context, 0);
-        $tests[] = array($node, "// notes: Notes for translators and line breaks\necho pgettext(\"Sidebar|Menu\", \"Hello\");");
+        $tests[] = array($node, "// notes: Notes for translators and line breaks\necho twig_pgettext(\"Hello\", \"Sidebar|Menu\");");
 
         $count = new Twig_Node_Expression_Constant(5, 0);
         $body = new Twig_Node_Text('There is 1 pending task', 0);
@@ -141,7 +141,7 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $context = new Twig_Node_Text('Sidebar|Menu', 0);
         $notes = new Twig_Node_Text('Notes for translators', 0);
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $context, 0);
-        $tests[] = array($node, "// notes: Notes for translators\n".'echo strtr(npgettext("Sidebar|Menu", "There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
+        $tests[] = array($node, "// notes: Notes for translators\n".'echo strtr(twig_npgettext("There is 1 pending task", "There are %count% pending tasks", abs(5), "Sidebar|Menu"), array("%count%" => abs(5), ));');
 
         return $tests;
     }
