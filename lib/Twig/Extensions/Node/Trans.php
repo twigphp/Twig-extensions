@@ -45,9 +45,9 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         }
 
         if(null !== $context && null !== $plural){
-            $function = 'npgettext';
+            $function = 'twig_npgettext';
         }elseif(null !== $context){
-            $function = 'pgettext';
+            $function = 'twig_pgettext';
         }elseif(null !== $plural){
             $function = 'ngettext';
         }else{
@@ -65,39 +65,23 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
+                ->subcompile($msg)
             ;
-            if(null !== $context && null !== $plural){
+            if(null !== $plural){
                 $compiler
-                    ->string($context)
-                    ->raw(', ')
-                    ->subcompile($msg)
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
-                ;
-            }elseif(null !== $context){
-                $compiler
-                    ->string($context)
-                    ->raw(', ')
-                    ->subcompile($msg)
-                ;
-            }elseif(null !== $plural){
-                $compiler
-                    ->subcompile($msg)
-                    ->raw(', ')
-                    ->subcompile($msg1)
-                    ->raw(', abs(')
-                    ->subcompile($this->getNode('count'))
-                    ->raw(')')
-                ;
-            }else{
-                $compiler
-                    ->subcompile($msg)
                 ;
             }
-
+            if(null !== $context) {
+                $compiler
+                    ->raw(', ')
+                    ->string($context)
+                ;
+            }
             $compiler->raw('), array(');
 
             foreach ($vars as $var) {
@@ -122,39 +106,23 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         } else {
             $compiler
                 ->write('echo '.$function.'(')
+                ->subcompile($msg)
             ;
-            if(null !== $context && null !== $plural){
+            if(null !== $plural){
                 $compiler
-                    ->string($context)
-                    ->raw(', ')
-                    ->subcompile($msg)
                     ->raw(', ')
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->getNode('count'))
                     ->raw(')')
-                ;
-            }elseif(null !== $context){
-                $compiler
-                    ->string($context)
-                    ->raw(', ')
-                    ->subcompile($msg)
-                ;
-            }elseif(null !== $plural){
-                $compiler
-                    ->subcompile($msg)
-                    ->raw(', ')
-                    ->subcompile($msg1)
-                    ->raw(', abs(')
-                    ->subcompile($this->getNode('count'))
-                    ->raw(')')
-                ;
-            }else{
-                $compiler
-                    ->subcompile($msg)
                 ;
             }
-
+            if(null !== $context) {
+                $compiler
+                    ->raw(', ')
+                    ->string($context)
+                ;
+            }
             $compiler->raw(");\n");
         }
     }

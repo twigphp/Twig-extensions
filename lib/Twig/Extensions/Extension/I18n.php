@@ -28,7 +28,8 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getFilters()
     {
         return array(
-             new Twig_SimpleFilter('trans', 'gettext'),
+            new Twig_SimpleFilter('trans', 'gettext'),
+            new Twig_SimpleFilter('ptrans', 'twig_pgettext'),
         );
     }
 
@@ -43,16 +44,16 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 }
 
-if(!function_exists('pgettext')){
+if(!function_exists('twig_pgettext')){
     /**
      * Gets a translation checking the context.
      *
-     * @param string $context
      * @param string $original
+     * @param string $context
      *
      * @return string
      */
-    function pgettext($context, $original)
+    function twig_pgettext($original,$context)
     {
         $message = "{$context}\004{$original}";
         $translation = gettext($message);
@@ -61,18 +62,18 @@ if(!function_exists('pgettext')){
     }
 }
 
-if(!function_exists('npgettext')){
+if(!function_exists('twig_npgettext')){
     /**
      * Gets a translation checking the context and the plural form.
      *
-     * @param string $context
      * @param string $original
      * @param string $plural
      * @param string $value
+     * @param string $context
      *
      * @return string
      */
-    function npgettext($context, $original, $plural, $value)
+    function twig_npgettext($original, $plural, $value, $context)
     {
         $message = "{$context}\004{$original}";
         $translation = ngettext($message, $plural, $value);

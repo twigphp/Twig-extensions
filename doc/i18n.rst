@@ -117,7 +117,7 @@ To add context for translators, use the ``context`` block:
     {% endtrans %}
 
 You can use ``context`` with or without ``plural`` or ``notes``. Once you get your templates compiled you should
-configure the ``gettext`` parser to get something like this: ``xgettext --keyword="pgettext:1c,2" --keyword="npgettext:1c,2,3"``
+configure the ``gettext`` parser to get something like this: ``xgettext --keyword="twig_pgettext:1,2c" --keyword="twig_npgettext:1,2,4c"``
 
 Within an expression or in a tag, you can use the ``trans`` filter to translate
 simple strings or variables:
@@ -186,7 +186,7 @@ code:
 
 .. code-block:: text
 
-    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 --keyword="pgettext:1c,2" --keyword="npgettext:1c,2,3" -n --omit-header -L PHP /tmp/cache/*.php
+    xgettext --default-domain=messages -p ./locale --from-code=UTF-8 --keyword="twig_pgettext:1,2c" --keyword="twig_npgettext:1,2,4c" -n --omit-header -L PHP /tmp/cache/*.php
 
 Another workaround is to use `Twig Gettext Extractor`_ and extract the template
 strings right from `Poedit`_.
