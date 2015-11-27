@@ -27,4 +27,3 @@ matrix:
           env: deps=low
         - php: 7.0
     fast_finish: true
-    
