@@ -75,7 +75,7 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
             $attr .= ' ' . $attribute . '="' . $value . '"';
         }
 
-        return '<a href="' . $url . '"' . $attr . '>' . $link . '</a>';
+        return '<a href="' . urlencode($url) . '"' . $attr . '>' . $link . '</a>';
     }
 
     /**
@@ -102,7 +102,7 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
             $attr .= ' ' . $attribute . '="' . $value . '"';
         }
 
-        return '<a href="' . $url . '"' . $attr . '>' . $link . '</a>';
+        return '<a href="' . urlencode($url) . '"' . $attr . '>' . $link . '</a>';
     }
 
     /**
