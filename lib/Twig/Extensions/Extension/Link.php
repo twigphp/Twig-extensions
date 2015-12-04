@@ -75,7 +75,13 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
             $attr .= ' '.$attribute.'="'.$value.'"';
         }
 
-        return '<a href="'.urlencode($url).'"'.$attr.'>'.$link.'</a>';
+        $query = explode('?', $url, 2);
+
+        if (isset($query[1])) {
+            $url = $query[0].urlencode($query[1]);
+        }
+
+        return '<a href="'.$url.'"'.$attr.'>'.$link.'</a>';
     }
 
     /**
@@ -102,7 +108,13 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
             $attr .= ' '.$attribute.'="'.$value.'"';
         }
 
-        return '<a href="'.urlencode($url).'"'.$attr.'>'.$link.'</a>';
+        $parts = explode('?', $url, 2);
+
+        if (isset($parts[1])) {
+            $url = $parts[0].urlencode($parts[1]);
+        }
+
+        return '<a href="'.$url.'"'.$attr.'>'.$link.'</a>';
     }
 
     /**
