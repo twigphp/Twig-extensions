@@ -106,7 +106,7 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
     }
 
     /**
-     * Create a mail link from an e-mail address
+     * Create a mail link from an e-mail address.
      *
      * @param string $mail       input e-mail
      * @param array  $attributes html attributes e.g id, class
@@ -132,7 +132,7 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
         }
 
         if ($body) {
-            $params[] =  'body='.rawurlencode($body);
+            $params[] = 'body='.rawurlencode($body);
         }
 
         if ($params) {
@@ -174,7 +174,7 @@ class Twig_Extensions_Extension_Link extends Twig_Extension
         }
 
         if ($body) {
-            $params[] =  'body='.rawurlencode($body);
+            $params[] = 'body='.rawurlencode($body);
         }
 
         if ($params) {

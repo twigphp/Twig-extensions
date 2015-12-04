@@ -104,7 +104,7 @@ class Twig_Tests_Extension_LinkTest extends PHPUnit_Framework_TestCase
             ),
             array('https://github.com/twigphp/Twig', array('class' => 'mylinks', 'target' => '_blank'), true,
                 '<a href="https://github.com/twigphp/Twig" class="mylinks" target="_blank">https://github.com/twigphp/Twig</a>',
-            )
+            ),
         );
     }
 
@@ -122,7 +122,7 @@ class Twig_Tests_Extension_LinkTest extends PHPUnit_Framework_TestCase
             ),
             array('https://github.com/twigphp/Twig', 'Twig on GitHub', array('class' => 'mylinks', 'target' => '_blank'),
                 '<a href="https://github.com/twigphp/Twig" class="mylinks" target="_blank">Twig on GitHub</a>',
-            )
+            ),
         );
     }
 
