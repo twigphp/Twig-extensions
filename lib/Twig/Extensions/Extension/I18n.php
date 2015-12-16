@@ -10,6 +10,18 @@
  */
 class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
+    /** @var Twig_Extensions_Translator */
+    private $translator;
+
+    public function __construct(Twig_Extensions_Translator $translator = null)
+    {
+        if ($translator === null) {
+            $this->translator = new Twig_Extensions_NativeGettextTranslator();
+        } else {
+            $this->translator = $translator;
+        }
+    }
+
     /**
      * Returns the token parser instances to add to the existing list.
      *
@@ -28,7 +40,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getFilters()
     {
         return array(
-             new Twig_SimpleFilter('trans', 'gettext'),
+             new Twig_SimpleFilter('trans', array($this->translator, 'gettext')),
         );
     }
 
@@ -40,5 +52,13 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getName()
     {
         return 'i18n';
+    }
+
+    /**
+     * @return Twig_Extensions_Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
     }
 }
