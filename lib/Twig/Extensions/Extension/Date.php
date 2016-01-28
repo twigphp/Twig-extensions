@@ -101,7 +101,7 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
             return $this->translator->transChoice($id, $count, array('%count%' => $count), 'date');
         }
 
-        if ($count > 1) {
+        if (1 !== $count) {
             $unit .= 's';
         }
 
