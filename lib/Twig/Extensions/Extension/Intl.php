@@ -59,7 +59,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
-        $date->getTimezone()->getName(),
+        PHP_VERSION_ID >= 50500 ? $date->getTimezone() : $date->getTimezone()->getName(),
         IntlDateFormatter::GREGORIAN,
         $format
     );
