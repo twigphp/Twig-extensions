@@ -10,6 +10,17 @@
  */
 class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
+    /** @var string */
+    private $singularFunc;
+
+    /** @var string */
+    private $pluralFunc;
+
+    public function __construct($singularFunc = 'gettext', $pluralFunc = 'ngettext') {
+        $this->singularFunc = $singularFunc;
+        $this->pluralFunc = $pluralFunc;
+    }
+
     /**
      * Returns the token parser instances to add to the existing list.
      *
@@ -17,7 +28,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(new Twig_Extensions_TokenParser_Trans());
+        return array(new Twig_Extensions_TokenParser_Trans($singularFunc = $this->singularFunc, $pluralFunc = $this->pluralFunc));
     }
 
     /**
