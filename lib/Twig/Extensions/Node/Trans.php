@@ -16,9 +16,11 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
+    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null, $singularFunc = 'gettext', $pluralFunc = 'ngettext')
     {
         parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
+        $this->singularFunc = $singularFunc;
+        $this->pluralFunc = $pluralFunc;
     }
 
     /**
@@ -38,7 +40,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = null === $this->getNode('plural') ? 'gettext' : 'ngettext';
+        $function = null === $this->getNode('plural') ? $this->singularFunc : $this->pluralFunc;
 
         if (null !== $notes = $this->getNode('notes')) {
             $message = trim($notes->getAttribute('data'));

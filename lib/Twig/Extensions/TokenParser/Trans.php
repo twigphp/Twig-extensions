@@ -11,6 +11,18 @@
 class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
     /**
+     * Constructor, can override translation functions.
+     *
+     * @param string $singularFunc The name of a function with the interface of gettext
+     * @param string $pluralFunc   The name of a function with the interface of ngettext
+     */
+    public function __construct($singularFunc = 'gettext', $pluralFunc = 'ngettext')
+    {
+        $this->singularFunc = $singularFunc;
+        $this->pluralFunc = $pluralFunc;
+    }
+
+    /**
      * Parses a token and returns a node.
      *
      * @param Twig_Token $token A Twig_Token instance
@@ -51,7 +63,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 
         $this->checkTransString($body, $lineno);
 
-        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag(), $this->singularFunc, $this->pluralFunc);
     }
 
     public function decideForFork(Twig_Token $token)
