@@ -77,6 +77,8 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
         'currency' => NumberFormatter::TYPE_CURRENCY,
     );
 
+    if ($locale == NULL)
+        $locale = setlocale(LC_MESSAGES,0);
     $formatter = twig_get_number_formatter($locale, $style, $attributes);
 
     if (!isset($typeValues[$type])) {
