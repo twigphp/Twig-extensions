@@ -15,7 +15,7 @@ before_script:
     - if [ "$deps" = "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
     - if [ "$deps" = "no" ]; then composer install; fi;
 
-script: phpunit --configuration phpunit.xml
+script: phpunit --configuration phpunit.xml.dist
 
 matrix:
     include:
