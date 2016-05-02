@@ -1,8 +1,6 @@
 <?php
 
-namespace
-
-AppBundle\Twig\Extension;
+namespace AppBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\Container;
 use Twig_Extension;
