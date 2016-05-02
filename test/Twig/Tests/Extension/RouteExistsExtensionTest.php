@@ -1,4 +1,6 @@
-<?php namespace AppBundle\Tests\Twig\Extension;
+<?php namespace 
+
+AppBundle\Tests\Twig\Extension;
 
 use AppBundle\Twig\Extension\RouteExistsExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -16,7 +18,7 @@ class RouteExistsExtensionTest extends WebTestCase
     protected $routeExistsExtension;
 
     /**
-     * RouteExistsExtensionTest constructor
+     * RouteExistsExtensionTest constructor.
      *
      * Initialize a client so we can inject the container into the RouteExistsExtension
      */
@@ -30,20 +32,20 @@ class RouteExistsExtensionTest extends WebTestCase
     }
 
     /**
-     * Get sample data
+     * Get sample data.
      *
      * @return array
      */
     public function getRouteExistsExtensionTestData()
     {
         return [
-            '_profiler_home'            => true,        // should always exist (if not, change to one that does)
+            '_profiler_home' => true,        // should always exist (if not, change to one that does)
             'this_route_does_not_exist' => false,       // should never exist (if you use this route, change the value)
         ];
     }
 
     /**
-     * Filter test
+     * Filter test.
      *
      * @param array|null $data
      * @param array|null $expectedResults
@@ -52,7 +54,7 @@ class RouteExistsExtensionTest extends WebTestCase
     {
         $dataCount = count($data);
 
-        for ($i = 0; $i < $dataCount; $i++) {
+        for ($i = 0; $i < $dataCount; ++$i) {
             if($expectedResults[$i] === false){
                 $this->assertFalse($this->routeExistsExtension->routeExistsFilter($data[$i]));
             }elseif ($expectedResults[$i] === true){
@@ -62,7 +64,7 @@ class RouteExistsExtensionTest extends WebTestCase
     }
 
     /**
-     * An empty string should result in FALSE
+     * An empty string should result in FALSE.
      */
     public function testRouteExistsExtensionOnEmptyString()
     {
