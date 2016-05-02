@@ -31,6 +31,7 @@ class RouteExistsExtension extends Twig_Extension
      * @param $route
      *
      * @return bool
+     * 
      * @throws \Exception
      */
     public function routeExistsFilter($route)
