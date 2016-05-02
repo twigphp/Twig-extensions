@@ -15,6 +15,9 @@ class RouteExistsExtension extends Twig_Extension
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc} 
+     */
     public function getFilters()
     {
         return [
@@ -22,13 +25,28 @@ class RouteExistsExtension extends Twig_Extension
         ];
     }
 
+    /**
+     * Determine whether a route exists. If no value is passed ($route is empty()), return FALSE.
+     *
+     * @param $route
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function routeExistsFilter($route)
     {
         $router = $this->container->get('router');
 
+        if(empty($route)){
+            return false;
+        }
+
         return (null === $router->getRouteCollection()->get($route)) ? false : true;
     }
 
+    /**
+     * {@inheritdoc} 
+     */
     public function getName()
     {
         return 'app_route_exists_extension';
