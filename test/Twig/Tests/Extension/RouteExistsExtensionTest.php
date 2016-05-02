@@ -1,6 +1,6 @@
-<?php namespace 
+<?php
 
-AppBundle\Tests\Twig\Extension;
+namespace AppBundle\Tests\Twig\Extension;
 
 use AppBundle\Twig\Extension\RouteExistsExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
