@@ -1,8 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Twig\Extension;
-
-use AppBundle\Twig\Extension\HumanReadableBytes;
+require_once __DIR__.'../../../../lib/Twig/Extensions/Extension/HumanReadableBytes.php';
 
 class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
 {
