@@ -1,7 +1,5 @@
 <?php
 
-namespace AppBundle\Twig\Extension;
-
 use Twig_Error;
 use Twig_Extension;
 use Twig_SimpleFilter;
