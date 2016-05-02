@@ -1,4 +1,6 @@
-<?php namespace AppBundle\Tests\Twig\Extension;
+<?php 
+
+namespace AppBundle\Tests\Twig\Extension;
 
 use AppBundle\Twig\Extension\HumanReadableBytes;
 
@@ -16,7 +18,7 @@ class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
     public function getHumanReadableBytesTestData()
     {
         return [
-            'data'             => [
+            'data' => [
                 4868277,
                 21864948,
                 88667605,
@@ -26,54 +28,54 @@ class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
                 1153,
                 12673,
             ],
-            'parameters'       => [
+            'parameters' => [
                 [
-                    'decimal_places'      => null,
-                    'decimal_point'       => null,
+                    'decimal_places' => null,
+                    'decimal_point' => null,
                     'thousands_separator' => null,
-                    'format'              => null,
+                    'format' => null,
                 ],
                 [
-                    'decimal_places'      => 4,
-                    'decimal_point'       => ',',
+                    'decimal_places' => 4,
+                    'decimal_point' => ',',
                     'thousands_separator' => ' ',
-                    'format'              => '',
+                    'format' => '',
                 ],
                 [
-                    'decimal_places'      => 3,
-                    'decimal_point'       => '!',
+                    'decimal_places' => 3,
+                    'decimal_point' => '!',
                     'thousands_separator' => '|',
-                    'format'              => 'SI',
+                    'format' => 'SI',
                 ],
                 [
-                    'decimal_places'      => 2,
-                    'decimal_point'       => ',',
+                    'decimal_places' => 2,
+                    'decimal_point' => ',',
                     'thousands_separator' => '.',
-                    'format'              => 'IEC',
+                    'format' => 'IEC',
                 ],
                 [
-                    'decimal_places'      => 8,
-                    'decimal_point'       => '_',
+                    'decimal_places' => 8,
+                    'decimal_point' => '_',
                     'thousands_separator' => '*',
-                    'format'              => 'SI',
+                    'format' => 'SI',
                 ],
                 [
-                    'decimal_places'      => 0,
-                    'decimal_point'       => '',
+                    'decimal_places' => 0,
+                    'decimal_point' => '',
                     'thousands_separator' => '',
-                    'format'              => 'SI',
+                    'format' => 'SI',
                 ],
                 [
-                    'decimal_places'      => 3,
-                    'decimal_point'       => ' ',
+                    'decimal_places' => 3,
+                    'decimal_point' => ' ',
                     'thousands_separator' => '',
-                    'format'              => 'SI',
+                    'format' => 'SI',
                 ],
                 [
-                    'decimal_places'      => 6,
-                    'decimal_point'       => null,
+                    'decimal_places' => 6,
+                    'decimal_point' => null,
                     'thousands_separator' => null,
-                    'format'              => 'SI',
+                    'format' => 'SI',
                 ],
             ],
             'expected_results' => [
@@ -97,7 +99,7 @@ class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
 
         $dataCount = count($data['data']);
 
-        for ($i = 0; $i < $dataCount; $i++) {
+        for ($i = 0; $i < $dataCount; ++$i) {
             $test = $this->humanReadableBytesExtension->humanReadableBytesFilter(
                 $data['data'][$i],
                 $data['parameters'][$i]['decimal_places'],
