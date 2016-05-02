@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\Tests\Twig\Extension;
 
@@ -92,6 +92,7 @@ class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Run test; assert output is properly formatted.
      */
     public function testHumanReadableBytes()
     {
