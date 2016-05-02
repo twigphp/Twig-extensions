@@ -1,8 +1,10 @@
-<?php namespace AppBundle\Twig\Extension;
+<?php namespace 
+
+AppBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\Container;
-use \Twig_Extension;
-use \Twig_SimpleFilter;
+use Twig_Extension;
+use Twig_SimpleFilter;
 
 class RouteExistsExtension extends Twig_Extension
 {
