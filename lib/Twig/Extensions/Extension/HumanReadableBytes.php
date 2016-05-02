@@ -1,8 +1,10 @@
-<?php namespace AppBundle\Twig\Extension;
+<?php 
 
-use \Twig_Error;
-use \Twig_Extension;
-use \Twig_SimpleFilter;
+namespace AppBundle\Twig\Extension;
+
+use Twig_Error;
+use Twig_Extension;
+use Twig_SimpleFilter;
 
 class HumanReadableBytes extends Twig_Extension
 {
@@ -27,13 +29,13 @@ class HumanReadableBytes extends Twig_Extension
         return [
             new Twig_SimpleFilter('readBytes', [
                 $this,
-                'humanReadableBytesFilter'
+                'humanReadableBytesFilter',
             ]),
         ];
     }
 
     /**
-     * Return a human-readable string from numeric bytes input
+     * Return a human-readable string from numeric bytes input.
      *
      * @param        $bytes
      * @param int    $decimalPlaces
@@ -76,15 +78,15 @@ class HumanReadableBytes extends Twig_Extension
         }
 
         if ($bytes < $multipliers['K']) {
-            $readable = number_format($bytes, $decimalPlaces, $decimalPoint, $thousandsSeparator) . ' B';
+            $readable = number_format($bytes, $decimalPlaces, $decimalPoint, $thousandsSeparator).' B';
         } elseif ($bytes < $multipliers['M']) {
-            $readable = number_format($bytes / $multipliers['K'], $decimalPlaces, $decimalPoint, $thousandsSeparator) . ' K' . $suffix;
+            $readable = number_format($bytes / $multipliers['K'], $decimalPlaces, $decimalPoint, $thousandsSeparator).' K'.$suffix;
         } elseif ($bytes < $multipliers['G']) {
-            $readable = number_format($bytes / $multipliers['M'], $decimalPlaces, $decimalPoint, $thousandsSeparator) . ' M' . $suffix;
+            $readable = number_format($bytes / $multipliers['M'], $decimalPlaces, $decimalPoint, $thousandsSeparator).' M'.$suffix;
         } elseif ($bytes < $multipliers['T']) {
-            $readable = number_format($bytes / $multipliers['G'], $decimalPlaces, $decimalPoint, $thousandsSeparator) . ' G' . $suffix;
+            $readable = number_format($bytes / $multipliers['G'], $decimalPlaces, $decimalPoint, $thousandsSeparator).' G'.$suffix;
         } else {
-            $readable = number_format($bytes / $multipliers['T'], $decimalPlaces, $decimalPoint, $thousandsSeparator) . ' T' . $suffix;
+            $readable = number_format($bytes / $multipliers['T'], $decimalPlaces, $decimalPoint, $thousandsSeparator).' T'.$suffix;
         }
 
         return $readable;
