@@ -1,6 +1,6 @@
 <?php namespace AppBundle\Tests\Twig\Extension;
 
-use AppBundle\Twig\RouteExistsExtension;
+use AppBundle\Twig\Extension\RouteExistsExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RouteExistsExtensionTest extends WebTestCase
@@ -11,13 +11,13 @@ class RouteExistsExtensionTest extends WebTestCase
     protected $client;
 
     /**
-     * @var \AppBundle\Twig\RouteExistsExtension
+     * @var \AppBundle\Twig\Extension\RouteExistsExtension
      */
     protected $routeExistsExtension;
 
     /**
      * RouteExistsExtensionTest constructor
-     * 
+     *
      * Initialize a client so we can inject the container into the RouteExistsExtension
      */
     public function __construct()
@@ -25,7 +25,7 @@ class RouteExistsExtensionTest extends WebTestCase
         parent::__construct();
 
         $this->client = static::createClient();
-        
+
         $this->routeExistsExtension = new RouteExistsExtension($this->client->getContainer());
     }
 
