@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\Twig\Extension;
 
@@ -43,6 +43,7 @@ class HumanReadableBytes extends Twig_Extension
      * @param string $thousandsSeparator
      *
      * @return string
+     *
      * @throws \Twig_Error
      */
     public function humanReadableBytesFilter($bytes, $decimalPlaces = 2, $decimalPoint = '.', $thousandsSeparator = ',', $format = 'IEC')
