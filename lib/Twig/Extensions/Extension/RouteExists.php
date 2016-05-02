@@ -1,4 +1,6 @@
-<?php namespace 
+<?php
+
+namespace
 
 AppBundle\Twig\Extension;
 
