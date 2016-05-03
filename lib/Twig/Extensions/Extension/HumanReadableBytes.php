@@ -4,32 +4,32 @@ use Twig_Error;
 use Twig_Extension;
 use Twig_SimpleFilter;
 
-class HumanReadableBytes extends Twig_Extension
+class Twig_Extensions_Extension_HumanReadableBytes extends Twig_Extension
 {
-    const KILOBYTE = 1000;
-    const MEGABYTE = 1000 * self::KILOBYTE;
-    const GIGABYTE = 1000 * self::MEGABYTE;
-    const TERABYTE = 1000 * self::GIGABYTE;
+    define('KILOBYTE', 1000);
+    define('MEGABYTE', KILOBYTE * 1000);
+    define('GIGABYTE', MEGABYTE * 1000);
+    define('TERABYTE', GIGABYTE * 1000);
 
-    const KIBIBYTE = 1024;
-    const MEBIBYTE = 1024 * self::KIBIBYTE;
-    const GIBIBYTE = 1024 * self::MEBIBYTE;
-    const TEBIBYTE = 1024 * self::GIBIBYTE;
+    define('KIBIBYTE', 1024);
+    define('MEBIBYTE', KIBIBYTE * 1024);
+    define('GIBIBYTE', MEBIBYTE * 1024);
+    define('TEBIBYTE', GIBIBYTE * 1024);
 
-    const SUFFIX_SI = 'B';
-    const SUFFIX_IEC = 'iB';
+    define('SUFFIX_SI', 'B');
+    define('SUFFIX_IEC', 'iB');
 
     /**
      * {@inheritdoc}
      */
     public function getFilters()
     {
-        return [
-            new Twig_SimpleFilter('readBytes', [
+        return array(
+            new Twig_SimpleFilter('readBytes', array(
                 $this,
                 'humanReadableBytesFilter',
-            ]),
-        ];
+            )),
+        );
     }
 
     /**
@@ -50,29 +50,27 @@ class HumanReadableBytes extends Twig_Extension
             throw new Twig_Error('Data must be numeric');
         }
 
-        $multipliers = [];
-
         switch ($format) {
             case 'SI':
-                $multipliers = [
-                    'K' => self::KILOBYTE,
-                    'M' => self::MEGABYTE,
-                    'G' => self::GIGABYTE,
-                    'T' => self::TERABYTE,
-                ];
+                $multipliers = array(
+                    'K' => KILOBYTE,
+                    'M' => MEGABYTE,
+                    'G' => GIGABYTE,
+                    'T' => TERABYTE,
+                );
 
-                $suffix = self::SUFFIX_SI;
+                $suffix = SUFFIX_SI;
                 break;
             case 'IEC':
             default:
-                $multipliers = [
-                    'K' => self::KIBIBYTE,
-                    'M' => self::MEBIBYTE,
-                    'G' => self::GIBIBYTE,
-                    'T' => self::TEBIBYTE,
-                ];
+                $multipliers = array(
+                    'K' => KIBIBYTE,
+                    'M' => MEBIBYTE,
+                    'G' => GIBIBYTE,
+                    'T' => TEBIBYTE,
+                );
 
-                $suffix = self::SUFFIX_IEC;
+                $suffix = SUFFIX_IEC;
                 break;
         }
 
