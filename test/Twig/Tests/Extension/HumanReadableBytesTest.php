@@ -111,7 +111,6 @@ class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framewor
         $this->setExpectedResults();
     }
 
-
     /**
      * Tests defaults.
      */
