@@ -1,10 +1,10 @@
 <?php
 
-use Twig_Error;
-use Twig_Extension;
-use Twig_SimpleFilter;
+use \Twig_Error;
+use \Twig_Extension;
+use \Twig_SimpleFilter;
 
-class Twig_Extensions_Extension_HumanReadableBytes extends Twig_Extension
+class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
 {
     private $KILOBYTE = 1000;
     private $MEGABYTE = self::KILOBYTE * 1000;
