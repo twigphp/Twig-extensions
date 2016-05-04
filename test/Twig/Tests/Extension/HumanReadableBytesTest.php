@@ -1,6 +1,6 @@
 <?php
 
-class Twig_Extensions_Extension_HumanReadableBytesTest extends PHPUnit_Framework_TestCase
+class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Twig_Extensions_Extension_HumanReadableBytesTest
