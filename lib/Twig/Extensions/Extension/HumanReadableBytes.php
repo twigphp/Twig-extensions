@@ -41,7 +41,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('readBytes', array(
+            new \Twig_SimpleFilter('readBytes', array(
                 $this,
                 'humanReadableBytesFilter',
             )),
@@ -65,7 +65,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
         $this->setUnitValues();
         
         if (!is_numeric($bytes)) {
-            throw new Twig_Error('Data must be numeric');
+            throw new \Twig_Error('Data must be numeric');
         }
 
         switch ($format) {
