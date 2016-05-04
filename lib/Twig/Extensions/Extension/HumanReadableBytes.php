@@ -30,7 +30,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends TwigExtension
         $this->SUFFIX_SI = 'B';
         $this->SUFFIX_IEC = 'iB';
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -59,7 +59,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends TwigExtension
     public function humanReadableBytesFilter($bytes, $decimalPlaces = 2, $decimalPoint = '.', $thousandsSeparator = ',', $format = 'IEC')
     {
         $this->setUnitValues();
-        
+
         if (!is_numeric($bytes)) {
             throw new TwigError('Data must be numeric');
         }
