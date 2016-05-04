@@ -6,19 +6,19 @@ use Twig_SimpleFilter;
 
 class Twig_Extensions_Extension_HumanReadableBytes extends Twig_Extension
 {
-    define('KILOBYTE', 1000);
-    define('MEGABYTE', KILOBYTE * 1000);
-    define('GIGABYTE', MEGABYTE * 1000);
-    define('TERABYTE', GIGABYTE * 1000);
-
-    define('KIBIBYTE', 1024);
-    define('MEBIBYTE', KIBIBYTE * 1024);
-    define('GIBIBYTE', MEBIBYTE * 1024);
-    define('TEBIBYTE', GIBIBYTE * 1024);
-
-    define('SUFFIX_SI', 'B');
-    define('SUFFIX_IEC', 'iB');
-
+    private $KILOBYTE = 1000;
+    private $MEGABYTE = self::KILOBYTE * 1000;
+    private $GIGABYTE = self::MEGABYTE * 1000;
+    private $TERABYTE = self::GIGABYTE * 1000;
+    
+    private $KIBIBYTE = 1024;
+    private $MEBIBYTE = self::KIBIBYTE * 1024;
+    private $GIBIBYTE = self::MEBIBYTE * 1024;
+    private $TEBIBYTE = self::GIBIBYTE * 1024;
+    
+    private $SUFFIX_SI = 'B';
+    private $SUFFIX_IEC = 'iB';
+    
     /**
      * {@inheritdoc}
      */
@@ -53,24 +53,24 @@ class Twig_Extensions_Extension_HumanReadableBytes extends Twig_Extension
         switch ($format) {
             case 'SI':
                 $multipliers = array(
-                    'K' => KILOBYTE,
-                    'M' => MEGABYTE,
-                    'G' => GIGABYTE,
-                    'T' => TERABYTE,
+                    'K' => self::KILOBYTE,
+                    'M' => self::MEGABYTE,
+                    'G' => self::GIGABYTE,
+                    'T' => self::TERABYTE,
                 );
 
-                $suffix = SUFFIX_SI;
+                $suffix = self::SUFFIX_SI;
                 break;
             case 'IEC':
             default:
                 $multipliers = array(
-                    'K' => KIBIBYTE,
-                    'M' => MEBIBYTE,
-                    'G' => GIBIBYTE,
-                    'T' => TEBIBYTE,
+                    'K' => self::KIBIBYTE,
+                    'M' => self::MEBIBYTE,
+                    'G' => self::GIBIBYTE,
+                    'T' => self::TEBIBYTE,
                 );
 
-                $suffix = SUFFIX_IEC;
+                $suffix = self::SUFFIX_IEC;
                 break;
         }
 
