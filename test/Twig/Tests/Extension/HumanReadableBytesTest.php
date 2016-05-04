@@ -3,7 +3,7 @@
 class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Twig_Extensions_Extension_HumanReadableBytesTest
+     * @var Twig_Extensions_Extension_HumanReadableBytes
      */
     protected $humanReadableBytesExtension;
 
