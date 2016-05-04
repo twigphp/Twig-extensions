@@ -106,7 +106,7 @@ class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framewor
 
     public function setUp()
     {
-        $this->humanReadableBytesExtension = new HumanReadableBytes(); //Twig_Extensions_Extension_HumanReadableBytes();
+        $this->humanReadableBytesExtension = new Twig_Extensions_Extension_HumanReadableBytes();
         $this->setTestData();
         $this->setExpectedResults();
     }
