@@ -1,10 +1,10 @@
 <?php
 
 use \Twig_Error as TwigError;
-use \Twig_Extension;
-use \Twig_SimpleFilter;
+use \Twig_Extension as TwigExtension;
+use \Twig_SimpleFilter as TwigSimpleFilter;
 
-class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
+class Twig_Extensions_Extension_HumanReadableBytes extends TwigExtension
 {
     private $KILOBYTE;
     private $MEGABYTE;
@@ -41,7 +41,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('readBytes', array(
+            new TwigSimpleFilter('readBytes', array(
                 $this,
                 'humanReadableBytesFilter',
             )),
