@@ -6,18 +6,34 @@ use \Twig_SimpleFilter;
 
 class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
 {
-    private $KILOBYTE = 1000;
-    private $MEGABYTE = self::KILOBYTE * 1000;
-    private $GIGABYTE = self::MEGABYTE * 1000;
-    private $TERABYTE = self::GIGABYTE * 1000;
-    
-    private $KIBIBYTE = 1024;
-    private $MEBIBYTE = self::KIBIBYTE * 1024;
-    private $GIBIBYTE = self::MEBIBYTE * 1024;
-    private $TEBIBYTE = self::GIBIBYTE * 1024;
-    
-    private $SUFFIX_SI = 'B';
-    private $SUFFIX_IEC = 'iB';
+    private $KILOBYTE;
+    private $MEGABYTE;
+    private $GIGABYTE;
+    private $TERABYTE;
+
+    private $KIBIBYTE;
+    private $MEBIBYTE;
+    private $GIBIBYTE;
+    private $TEBIBYTE;
+
+    private $SUFFIX_SI;
+    private $SUFFIX_IEC;
+
+    private function setUnitValues()
+    {
+        $this->KILOBYTE = 1000;
+        $this->MEGABYTE = $this->KILOBYTE * 1000;
+        $this->GIGABYTE = $this->MEGABYTE * 1000;
+        $this->TERABYTE = $this->GIGABYTE * 1000;
+     
+        $this->KIBIBYTE = 1024;
+        $this->MEBIBYTE = $this->KIBIBYTE * 1024;
+        $this->GIBIBYTE = $this->MEBIBYTE * 1024;
+        $this->TEBIBYTE = $this->GIBIBYTE * 1024;
+
+        $this->SUFFIX_SI = 'B';
+        $this->SUFFIX_IEC = 'iB';
+    }
     
     /**
      * {@inheritdoc}
@@ -46,6 +62,8 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
      */
     public function humanReadableBytesFilter($bytes, $decimalPlaces = 2, $decimalPoint = '.', $thousandsSeparator = ',', $format = 'IEC')
     {
+        $this->setUnitValues();
+        
         if (!is_numeric($bytes)) {
             throw new Twig_Error('Data must be numeric');
         }
@@ -53,24 +71,24 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
         switch ($format) {
             case 'SI':
                 $multipliers = array(
-                    'K' => self::KILOBYTE,
-                    'M' => self::MEGABYTE,
-                    'G' => self::GIGABYTE,
-                    'T' => self::TERABYTE,
+                    'K' => $this->KILOBYTE,
+                    'M' => $this->MEGABYTE,
+                    'G' => $this->GIGABYTE,
+                    'T' => $this->TERABYTE,
                 );
 
-                $suffix = self::SUFFIX_SI;
+                $suffix = $this->SUFFIX_SI;
                 break;
             case 'IEC':
             default:
                 $multipliers = array(
-                    'K' => self::KIBIBYTE,
-                    'M' => self::MEBIBYTE,
-                    'G' => self::GIBIBYTE,
-                    'T' => self::TEBIBYTE,
+                    'K' => $this->KIBIBYTE,
+                    'M' => $this->MEBIBYTE,
+                    'G' => $this->GIBIBYTE,
+                    'T' => $this->TEBIBYTE,
                 );
 
-                $suffix = self::SUFFIX_IEC;
+                $suffix = $this->SUFFIX_IEC;
                 break;
         }
 
