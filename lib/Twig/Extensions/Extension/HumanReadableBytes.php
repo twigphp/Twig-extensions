@@ -10,12 +10,10 @@ class Twig_Extensions_Extension_HumanReadableBytes extends TwigExtension
     private $MEGABYTE;
     private $GIGABYTE;
     private $TERABYTE;
-
     private $KIBIBYTE;
     private $MEBIBYTE;
     private $GIBIBYTE;
     private $TEBIBYTE;
-
     private $SUFFIX_SI;
     private $SUFFIX_IEC;
 
@@ -25,12 +23,10 @@ class Twig_Extensions_Extension_HumanReadableBytes extends TwigExtension
         $this->MEGABYTE = $this->KILOBYTE * 1000;
         $this->GIGABYTE = $this->MEGABYTE * 1000;
         $this->TERABYTE = $this->GIGABYTE * 1000;
-     
         $this->KIBIBYTE = 1024;
         $this->MEBIBYTE = $this->KIBIBYTE * 1024;
         $this->GIBIBYTE = $this->MEBIBYTE * 1024;
         $this->TEBIBYTE = $this->GIBIBYTE * 1024;
-
         $this->SUFFIX_SI = 'B';
         $this->SUFFIX_IEC = 'iB';
     }
