@@ -1,6 +1,6 @@
 <?php
 
-use \Twig_Error;
+use \Twig_Error as TwigError;
 use \Twig_Extension;
 use \Twig_SimpleFilter;
 
@@ -65,7 +65,7 @@ class Twig_Extensions_Extension_HumanReadableBytes extends \Twig_Extension
         $this->setUnitValues();
         
         if (!is_numeric($bytes)) {
-            throw new \Twig_Error('Data must be numeric');
+            throw new TwigError('Data must be numeric');
         }
 
         switch ($format) {
