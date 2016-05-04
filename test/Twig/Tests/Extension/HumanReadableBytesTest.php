@@ -1,113 +1,132 @@
 <?php
 
-require_once __DIR__.'../../../../lib/Twig/Extensions/Extension/HumanReadableBytes.php';
-
-class HumanReadableBytesTest extends \PHPUnit_Framework_TestCase
+class Twig_Extensions_Extension_HumanReadableBytesTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Twig_Extensions_Extension_HumanReadableBytesTest
+     */
     protected $humanReadableBytesExtension;
 
-    public function __construct()
-    {
-        parent::__construct();
+    /**
+     * @var array
+     */
+    protected $humanReadableBytesTestData;
 
-        $this->humanReadableBytesExtension = new HumanReadableBytes();
+    /**
+     * @var array
+     */
+    protected $humanReadableBytesFormatTestData;
+
+    /**
+     * @var array
+     */
+    protected $humanReadableBytesDefaultExpectedResults;
+
+    /**
+     * @var array
+     */
+    protected $humanReadableBytesFormattedExpectedResults;
+
+    /**
+     * Sets test data.
+     */
+    protected function setTestData()
+    {
+        $this->humanReadableBytesTestData = array(
+            486827,
+            21864948,
+            11378925384,
+            4121781686582782,
+            713,
+        );
+
+        $this->humanReadableBytesFormatTestData = array(
+            array(
+                'decimalPlaces' => 3,
+                'decimalPoint' => ',',
+                'thousandsSeparator' => ' ',
+                'units' => 'SI',
+            ),
+            array(
+                'decimalPlaces' => null,
+                'decimalPoint' => null,
+                'thousandsSeparator' => null,
+                'units' => null,
+            ),
+            array(
+                'decimalPlaces' => 8,
+                'decimalPoint' => ' ',
+                'thousandsSeparator' => '.',
+                'units' => 'SI',
+            ),
+            array(
+                'decimalPlaces' => 4,
+                'decimalPoint' => '-',
+                'thousandsSeparator' => '_',
+                'units' => 'SI',
+            ),
+            array(
+                'decimalPlaces' => 2,
+                'decimalPoint' => '.',
+                'thousandsSeparator' => ',',
+                'units' => 'IEC',
+            ),
+        );
     }
 
-    public function getHumanReadableBytesTestData()
+    protected function setExpectedResults()
     {
-        return [
-            'data' => [
-                4868277,
-                21864948,
-                88667605,
-                11378925384,
-                4121781686582782,
-                713,
-                1153,
-                12673,
-            ],
-            'parameters' => [
-                [
-                    'decimal_places' => null,
-                    'decimal_point' => null,
-                    'thousands_separator' => null,
-                    'format' => null,
-                ],
-                [
-                    'decimal_places' => 4,
-                    'decimal_point' => ',',
-                    'thousands_separator' => ' ',
-                    'format' => '',
-                ],
-                [
-                    'decimal_places' => 3,
-                    'decimal_point' => '!',
-                    'thousands_separator' => '|',
-                    'format' => 'SI',
-                ],
-                [
-                    'decimal_places' => 2,
-                    'decimal_point' => ',',
-                    'thousands_separator' => '.',
-                    'format' => 'IEC',
-                ],
-                [
-                    'decimal_places' => 8,
-                    'decimal_point' => '_',
-                    'thousands_separator' => '*',
-                    'format' => 'SI',
-                ],
-                [
-                    'decimal_places' => 0,
-                    'decimal_point' => '',
-                    'thousands_separator' => '',
-                    'format' => 'SI',
-                ],
-                [
-                    'decimal_places' => 3,
-                    'decimal_point' => ' ',
-                    'thousands_separator' => '',
-                    'format' => 'SI',
-                ],
-                [
-                    'decimal_places' => 6,
-                    'decimal_point' => null,
-                    'thousands_separator' => null,
-                    'format' => 'SI',
-                ],
-            ],
-            'expected_results' => [
-                '5 MiB',
-                '20,8520 MiB',
-                '88!668 MB',
-                '10,60 GiB',
-                '4*121_78168658 TB',
-                '713 B',
-                '1 153 KB',
-                '12.673000 KB',
-            ],
-        ];
+        // defaults are:
+        //  2 decimal places,
+        //  "." decimal point,
+        //  "," thousands separator
+        //  IEC units
+
+        $this->humanReadableBytesDefaultExpectedResults = array(
+            '475.42 KiB',
+            '20.85 MiB',
+            '10.60 GiB',
+            '3,748.74 TiB',
+            '713 B',
+        );
+
+        $this->humanReadableBytesFormattedExpectedResults = array(
+            '486,827 KB',
+            '22 MB',
+            '11.37892538 GB',
+            '4_121-7817 TB',
+            '713.00 B',
+        );
+    }
+
+    public function setUp()
+    {
+        $this->humanReadableBytesExtension = new Twig_Extensions_Extension_HumanReadableBytes();
+        $this->setTestData();
+        $this->setExpectedResults();
+    }
+
+
+    /**
+     * Tests defaults.
+     */
+    public function testHumanReadableBytesConversion()
+    {
+        foreach ($this->humanReadableBytesTestData as $key => $value) {
+            $test = $this->humanReadableBytesExtension->humanReadableBytesFilter($value);
+            $this->assertEquals($test, $this->humanReadableBytesDefaultExpectedResults[$key]);
+        }
     }
 
     /**
      * Run test; assert output is properly formatted.
      */
-    public function testHumanReadableBytes()
+    public function testHumanReadableBytesFormatting()
     {
-        $data = $this->getHumanReadableBytesTestData();
-
-        $dataCount = count($data['data']);
-
-        for ($i = 0; $i < $dataCount; ++$i) {
-            $test = $this->humanReadableBytesExtension->humanReadableBytesFilter(
-                $data['data'][$i],
-                $data['parameters'][$i]['decimal_places'],
-                $data['parameters'][$i]['decimal_point'],
-                $data['parameters'][$i]['thousands_separator'],
-                $data['parameters'][$i]['format']
-            );
-
-            $this->assertEquals($test, $data['expected_results'][$i]);
+        foreach ($this->humanReadableBytesFormatTestData as $key => $value) {
+            $test = $this->humanReadableBytesExtension->humanReadableBytesFilter($value);
+            $this->assertEquals($test, $this->humanReadableBytesFormattedExpectedResults[$key]);
         }
     }
+
 }
