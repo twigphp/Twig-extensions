@@ -42,31 +42,36 @@ class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framewor
 
         $this->humanReadableBytesFormatTestData = array(
             array(
+                'bytes' => 486827,
                 'decimalPlaces' => 3,
                 'decimalPoint' => ',',
                 'thousandsSeparator' => ' ',
                 'units' => 'SI',
             ),
             array(
+                'bytes' => 21864948,
                 'decimalPlaces' => null,
                 'decimalPoint' => null,
                 'thousandsSeparator' => null,
                 'units' => null,
             ),
             array(
+                'bytes' => 11378925384,
                 'decimalPlaces' => 8,
                 'decimalPoint' => ' ',
                 'thousandsSeparator' => '.',
                 'units' => 'SI',
             ),
             array(
+                'bytes' => 4121781686582782,
                 'decimalPlaces' => 4,
                 'decimalPoint' => '-',
                 'thousandsSeparator' => '_',
                 'units' => 'SI',
             ),
             array(
-                'decimalPlaces' => 2,
+                'bytes' => 713,
+                'decimalPlaces' => 0,
                 'decimalPoint' => '.',
                 'thousandsSeparator' => ',',
                 'units' => 'IEC',
@@ -87,21 +92,21 @@ class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framewor
             '20.85 MiB',
             '10.60 GiB',
             '3,748.74 TiB',
-            '713 B',
+            '713.00 B',
         );
 
         $this->humanReadableBytesFormattedExpectedResults = array(
             '486,827 KB',
-            '22 MB',
-            '11.37892538 GB',
+            '21 MiB',
+            '11 37892538 GB',
             '4_121-7817 TB',
-            '713.00 B',
+            '713 B',
         );
     }
 
     public function setUp()
     {
-        $this->humanReadableBytesExtension = new Twig_Extensions_Extension_HumanReadableBytes();
+        $this->humanReadableBytesExtension = new HumanReadableBytes(); //Twig_Extensions_Extension_HumanReadableBytes();
         $this->setTestData();
         $this->setExpectedResults();
     }
@@ -124,7 +129,13 @@ class Twig_Extensions_Extension_HumanReadableBytesTest extends \PHPUnit_Framewor
     public function testHumanReadableBytesFormatting()
     {
         foreach ($this->humanReadableBytesFormatTestData as $key => $value) {
-            $test = $this->humanReadableBytesExtension->humanReadableBytesFilter($value);
+            $test = $this->humanReadableBytesExtension->humanReadableBytesFilter(
+                $value['bytes'],
+                $value['decimalPlaces'],
+                $value['decimalPoint'],
+                $value['thousandsSeparator'],
+                $value['units']
+            );
             $this->assertEquals($test, $this->humanReadableBytesFormattedExpectedResults[$key]);
         }
     }
