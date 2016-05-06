@@ -19,12 +19,12 @@ class grammarTest extends PHPUnit_Framework_TestCase
      */
     public static function setUpBeforeClass()
     {
-        if (extension_loaded("xdebug")) {
-            if (ini_get("xdebug.overload_var_dump") == 2) {
-                ini_set("xdebug.overload_var_dump", 1);
+        if (extension_loaded('xdebug')) {
+            if (ini_get('xdebug.overload_var_dump') == 2) {
+                ini_set('xdebug.overload_var_dump', 1);
             }
-            if (ini_get("xdebug.cli_color")) {
-                ini_set("xdebug.cli_color", 0);
+            if (ini_get('xdebug.cli_color')) {
+                ini_set('xdebug.cli_color', 0);
             }
         }
     }
