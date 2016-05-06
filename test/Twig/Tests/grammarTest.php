@@ -14,6 +14,22 @@ require_once dirname(__FILE__).'/SimpleTokenParser.php';
 class grammarTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * Reset "xdebug.overload_var_dump" if set to 2 to avoid filename output.
+     * Reset "xdebug.cli_color" if set to On outputs ASCII color codes.
+     */
+    public static function setUpBeforeClass()
+    {
+        if (extension_loaded("xdebug")) {
+            if (ini_get("xdebug.overload_var_dump") == 2) {
+                ini_set("xdebug.overload_var_dump", 1);
+            }
+            if (ini_get("xdebug.cli_color")) {
+                ini_set("xdebug.cli_color", 0);
+            }
+        }
+    }
+
+    /**
      * @dataProvider getTests
      */
     public function testGrammar($tag, $grammar, $template, $output, $exception)
