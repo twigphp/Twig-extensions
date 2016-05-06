@@ -11,6 +11,7 @@
 class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     private $delimiters = array();
+    private $normalize = false;
 
     /**
      * Constructor for I18n Extension
@@ -29,10 +30,12 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function __construct($options = array())
     {
         $options = array_merge(array(
-            'delimiters' => '%%'
+            'delimiters' => '%%',
+            'normalize' => false
         ), $options);
 
         $this->delimiters = $this->parseDelimiters($options['delimiters']);
+        $this->normalize = !!$options['normalize'];
     }
 
     /**
@@ -41,6 +44,14 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getDelimiters()
     {
         return $this->delimiters;
+    }
+
+    /**
+     * Returns the value of the current "normalize" config
+     */
+    public function getNormalize()
+    {
+        return $this->normalize;
     }
 
     /**

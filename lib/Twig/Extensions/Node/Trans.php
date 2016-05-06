@@ -16,7 +16,10 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    private $delims = null;
+    private $extension = null;
+
+    private $delims = array('%', '%');
+    private $normalize = false;
 
     public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
     {
@@ -30,13 +33,12 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        // Reset delims if not already initialized
-        if (is_null($this->delims)) {
-            $this->delims = array('%', '%');
+        // Reset default configuration from current environment
+        if (is_null($this->extension) && $compiler->getEnvironment()->hasExtension('i18n')) {
+            $this->extension = $compiler->getEnvironment()->getExtension('i18n');
 
-            if ($compiler->getEnvironment()->hasExtension('i18n')) {
-                $this->delims = $compiler->getEnvironment()->getExtension('i18n')->getDelimiters();
-            }
+            $this->delims = $this->extension->getDelimiters();
+            $this->normalize = $this->extension->getNormalize();
         }
 
         $compiler->addDebugInfo($this);
@@ -151,6 +153,46 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
+        return array(new Twig_Node(array(new Twig_Node_Expression_Constant($this->normalize ? $this->normalize($msg) : trim($msg), $body->getLine()))), $vars);
     }
+
+    /**
+     * Normalizes a string (removes spaces inside the string)
+     *
+     * Why?: For large translatable strings or strings spanning multiple lines,
+     * it is necessary to normalize the string so that translators doesn't get
+     * carriage returns or tab characters inside the string. Normalization is
+     * also needed to mantain the integrity of multiline strings and the
+     * indentation of the source file changed. Take for example:
+     *
+     *  Before (A):
+     *
+     *      {% trans %}
+     *          This is a translatable string
+     *          spanning multiple lines
+     *      {% endtrans %}
+     *
+     *  After (B):
+     *
+     *      {% if some_condition %}
+     *          {% trans %}
+     *              This is a translatable string
+     *              spanning multiple lines
+     *          {% endtrans %}
+     *      {% endif %}
+     *
+     * If the above example, we needed to add some condition and thus added
+     * indentation because of the "if". Then, the translatable string changes
+     * and to Gettext it is a different string because of the different spaces
+     * inside the sentence.
+     *
+     * @param string $msg The message string to be normalized
+     * @return string
+     *
+     */
+    private function normalize($msg)
+    {
+        return trim(preg_replace('/\s+/u', ' ', $msg));
+    }
+
 }

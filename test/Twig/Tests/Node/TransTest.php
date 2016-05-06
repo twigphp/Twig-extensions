@@ -119,6 +119,29 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
         $tests[] = array($node, sprintf('echo strtr(gettext("Hey [[name]], I have one apple"), array("[[name]]" => %s, ));', $this->getVariableGetter('name')), $test_env);
 
+        // With spaces to test it is correctly trimmed
+        $body = new Twig_Node(array(
+            new Twig_Node_Text('    Hello   there    ', 0),
+        ), array(), 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
+        $tests[] = array($node, 'echo gettext("Hello   there");');
+
+        // Using chr to inject returns and tabs to keep Fabbot.io happy :-)
+        $body = new Twig_Node(array(
+            new Twig_Node_Text('  '.chr(10).chr(13).chr(9).' Hello   there '.chr(10).chr(13).chr(9).' ', 0),
+        ), array(), 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
+        $tests[] = array($node, 'echo gettext("Hello   there");');
+
+        // String normalizing test
+        $test_env = new Twig_Environment(new Twig_Loader_Array(array()));
+        $test_env->addExtension(new Twig_Extensions_Extension_I18n(array('normalize' => true)));
+        $body = new Twig_Node(array(
+            new Twig_Node_Text('  '.chr(10).chr(13).chr(9).' Hello '.chr(10).chr(13).chr(9).' there '.chr(10).chr(13).chr(9).' ', 0),
+        ), array(), 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
+        $tests[] = array($node, 'echo gettext("Hello there");', $test_env);
+
         return $tests;
     }
 }
