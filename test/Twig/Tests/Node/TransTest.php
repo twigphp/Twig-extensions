@@ -108,6 +108,17 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, 0);
         $tests[] = array($node, "// notes: Notes for translators\n".'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
 
+        // with environment options
+        $test_env = new Twig_Environment(new Twig_Loader_Array(array()));
+        $test_env->addExtension(new Twig_Extensions_Extension_I18n(array('delimiters' => '[[]]')));
+        $body = new Twig_Node(array(
+            new Twig_Node_Text('Hey ', 0),
+            new Twig_Node_Print(new Twig_Node_Expression_Name('name', 0), 0),
+            new Twig_Node_Text(', I have one apple', 0),
+        ), array(), 0);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
+        $tests[] = array($node, sprintf('echo strtr(gettext("Hey [[name]], I have one apple"), array("[[name]]" => %s, ));', $this->getVariableGetter('name')), $test_env);
+
         return $tests;
     }
 }
