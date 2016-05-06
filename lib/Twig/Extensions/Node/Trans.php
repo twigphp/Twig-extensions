@@ -16,6 +16,8 @@
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
+    private $delims = null;
+
     public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
     {
         parent::__construct(array('count' => $count, 'body' => $body, 'plural' => $plural, 'notes' => $notes), array(), $lineno, $tag);
@@ -28,6 +30,15 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
+        // Reset delims if not already initialized
+        if (is_null($this->delims)) {
+            $this->delims = array('%', '%');
+
+            if ($compiler->getEnvironment()->hasExtension('i18n')) {
+                $this->delims = $compiler->getEnvironment()->getExtension('i18n')->getDelimiters();
+            }
+        }
+
         $compiler->addDebugInfo($this);
 
         list($msg, $vars) = $this->compileString($this->getNode('body'));
@@ -69,14 +80,14 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             foreach ($vars as $var) {
                 if ('count' === $var->getAttribute('name')) {
                     $compiler
-                        ->string('%count%')
+                        ->string($this->delims[0].'count'.$this->delims[1])
                         ->raw(' => abs(')
                         ->subcompile($this->getNode('count'))
                         ->raw('), ')
                     ;
                 } else {
                     $compiler
-                        ->string('%'.$var->getAttribute('name').'%')
+                        ->string($this->delims[0].$var->getAttribute('name').$this->delims[1])
                         ->raw(' => ')
                         ->subcompile($var)
                         ->raw(', ')
@@ -130,7 +141,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     while ($n instanceof Twig_Node_Expression_Filter) {
                         $n = $n->getNode('node');
                     }
-                    $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
+                    $msg .= sprintf('%s%s%s', $this->delims[0], $n->getAttribute('name'), $this->delims[1]);
                     $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getLine());
                 } else {
                     $msg .= $node->getAttribute('data');

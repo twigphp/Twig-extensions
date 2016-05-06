@@ -31,7 +31,7 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
     {
         $timezone = new DateTimeZone(date_default_timezone_get());
 
-        $coreExtension = $this->getMock('Twig_Extension_Core');
+        $coreExtension = $this->getMockBuilder('Twig_Extension_Core')->getMock();
         $coreExtension
             ->expects($this->any())
             ->method('getTimezone')
@@ -81,7 +81,7 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
      */
     public function testDiffCanReturnTranslatableString($expected, $translated, $date, $now)
     {
-        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
         $translator
             ->expects($this->once())
             ->method('transChoice')
