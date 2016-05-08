@@ -10,6 +10,8 @@
  */
 class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
+    private $allow_complex = false;
+
     /**
      * Parses a token and returns a node.
      *
@@ -49,7 +51,9 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        $this->checkTransString($body, $lineno);
+        if (!$this->allow_complex) {
+            $this->checkTransString($body, $lineno);
+        }
 
         return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
     }
@@ -74,6 +78,22 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
     public function getTag()
     {
         return 'trans';
+    }
+
+    /**
+     * Overrides Twig_TokenParser::setParser.
+     * Sets the parser associated with this token parser and extract
+     * configuration from the parser environment.
+     *
+     * @param Twig_Parser $parser A Twig_Parser instance
+     */
+    public function setParser(Twig_Parser $parser)
+    {
+        parent::setParser($parser);
+
+        if ($parser->getEnvironment()->hasExtension('i18n')) {
+            $this->allow_complex = $parser->getEnvironment()->getExtension('i18n')->getComplexVars();
+        }
     }
 
     protected function checkTransString(Twig_Node $body, $lineno)

@@ -12,6 +12,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     private $delimiters = array();
     private $normalize = false;
+    private $complex_vars = false;
 
     /**
      * Constructor for I18n Extension
@@ -26,16 +27,50 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
      *                              string containing the mask "%s" which marks
      *                              the position of the field (Eg: "{{|}}",
      *                              "[|]").
+     *
+     *  * normalize:                When true, activates normalization of
+     *    [default: false]          spaces inside the string. Turns all groups
+     *                              of consecutive "space characters" to a
+     *                              single space. ("space characters" as
+     *                              defined by the "\s" regexp character class)
+     *
+     *  * complex_vars:             When true, activates parsing and compiling
+     *    [default: false]          of "complex vars". Complex vars are those
+     *                              vars comprising property accessors, array
+     *                              accessors and filters. For example, a
+     *                              complex var might be: {{ user.name | upper }}
+     *
+     *                              The resulting variable name in the
+     *                              translatable string is inferred from the
+     *                              original variable expression, without
+     *                              filters. To avoid conflicts, repeated vars
+     *                              are appended with numbers in a serie.
+     *
+     *                              Examples:
+     *
+     *                              "{{ user.name | upper }} {{ user.name | lower }}"
+     *
+     *                              Gets a translatable string of:
+     *
+     *                              "%user_name% %user_name_2%"
+     *
+     *                              If a inferred variable name becomes too
+     *                              complex, you can use the filter "as" to
+     *                              create an alias. Example:
+     *
+     *                              {{ report.year.status | as("total") }}
      */
     public function __construct($options = array())
     {
         $options = array_merge(array(
             'delimiters' => '%%',
-            'normalize' => false
+            'normalize' => false,
+            'complex_vars' => false
         ), $options);
 
         $this->delimiters = $this->parseDelimiters($options['delimiters']);
         $this->normalize = !!$options['normalize'];
+        $this->complex_vars = !!$options['complex_vars'];
     }
 
     /**
@@ -52,6 +87,14 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     public function getNormalize()
     {
         return $this->normalize;
+    }
+
+    /**
+     * Returns the value of the current "complex_vars" config
+     */
+    public function getComplexVars()
+    {
+        return $this->complex_vars;
     }
 
     /**
@@ -104,6 +147,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     {
         return array(
              new Twig_SimpleFilter('trans', 'gettext'),
+             new Twig_SimpleFilter('as', null, array('node_class' => 'Twig_Extensions_Filter_As')),
         );
     }
 
