@@ -280,18 +280,52 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      *
      * @return string The new unique name
      */
-    protected function makeUnique($vars, $name, $expr)
+    protected function makeUnique(array $vars, $name, \Twig_Node $expr)
     {
         // Loop through until we get a free name. Note that the starting index
         // is "2" instead of "1". This gets us a good looking name series like
         // "name", "mame_2",... It would be ugly to have "name" and "name_1"
         $index = 2;
         $new_name = $name;
-        while (array_key_exists($new_name, $vars) && ($vars[$new_name] != $expr)) {
+        while (array_key_exists($new_name, $vars) && (!$this->isNodeSimilar($vars[$new_name], $expr))) {
             $new_name = $name.'_'.$index++;
         }
 
         return $new_name;
+    }
+
+    /**
+     * Checks that two nodes are similar. This includes deep comparing their
+     * child nodes. Two nodes are similar if they both share the same tags,
+     * attributes and their child nodes are also similar.
+     *
+     * This explicity leaves out the "lineno" attribute and the "specialVars"
+     * who in the context of the {%trans%} tag they must be equal.
+     *
+     * @param TwigNode $first  The first node, source of the comparison
+     * @param TwigNode $second The second node to compare against
+     *
+     * @return bool Returns True if both Nodes seems similar
+     */
+    protected function isNodeSimilar(\Twig_Node $first, \Twig_Node $second)
+    {
+        // First sign that the Nodes are not even similar. Fail fast...
+        if (($first->tag != $second->tag) || ($first->attributes != $second->attributes) || ($first->count() != $second->count())) {
+            return false;
+        }
+
+        // Iterate each node for similarity
+        foreach ($first->nodes as $key => $value) {
+            if (!$second->hasNode($key)) {
+                return false;
+            }
+            if (!$this->isNodeSimilar($value, $second->getNode($key))) {
+                return false;
+            }
+        }
+
+        // Ok, seems similar...
+        return true;
     }
 
 }
