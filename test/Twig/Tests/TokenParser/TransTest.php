@@ -58,14 +58,16 @@ class Twig_Tests_TokenParser_TransTest extends PHPUnit_Framework_TestCase
     /**
      * Parses a Twig source. Returns the parsed Node tree.
      *
-     * @param string $source The template source.
+     * @param string           $source      The template source.
      * @param Twig_Environment $environment The environment to use.
+     *
      * @return Twig_Node_Module The parsed template.
      */
     private function parseSource($source, $environment)
     {
         $lexer = new Twig_Lexer($environment);
         $parser = new Twig_Parser($environment);
+
         return $parser->parse($lexer->tokenize($source));
     }
 

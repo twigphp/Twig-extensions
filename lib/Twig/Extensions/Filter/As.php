@@ -21,7 +21,7 @@ class Twig_Extensions_Filter_As extends Twig_Node_Expression_Filter
 
     /**
      * Compile an "As" filter for I18n variable alias.
-     * This is a dummy filter, so it just need to pass compilation to its node
+     * This is a dummy filter, so it just need to pass compilation to its node.
      */
     public function compile(Twig_Compiler $compiler)
     {

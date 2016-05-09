@@ -10,7 +10,6 @@
  */
 class Twig_Tests_Extension_I18nTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider getDelimitersTests
      */

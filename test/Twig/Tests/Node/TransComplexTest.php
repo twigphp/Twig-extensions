@@ -27,7 +27,7 @@ class Twig_Tests_Node_TransComplexTest extends Twig_Test_NodeTestCase
         // able to use the "parseTrans" method.
         static::$environment = new Twig_Environment(new Twig_Loader_Array(array()), array(
             'autoescape' => false,
-            'optimizations' => Twig_NodeVisitor_Optimizer::OPTIMIZE_NONE
+            'optimizations' => Twig_NodeVisitor_Optimizer::OPTIMIZE_NONE,
         ));
         static::$environment->addExtension(new Twig_Extensions_Extension_I18n(array(
             'complex_vars' => true,
@@ -75,6 +75,7 @@ class Twig_Tests_Node_TransComplexTest extends Twig_Test_NodeTestCase
      * don't have to recreate it manually using new Twig_Node_Trans(...), etc.
      *
      * @param string $source The template source.
+     *
      * @return Twig_Node_Module The parsed template.
      */
     private function parseTrans($source)

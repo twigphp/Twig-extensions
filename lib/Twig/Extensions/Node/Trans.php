@@ -170,7 +170,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     }
 
     /**
-     * Normalizes a string (removes spaces inside the string)
+     * Normalizes a string (removes spaces inside the string).
      *
      * Why?: For large translatable strings or strings spanning multiple lines,
      * it is necessary to normalize the string so that translators doesn't get
@@ -199,10 +199,10 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      * and to Gettext it is a different string because of the different spaces
      * inside the sentence.
      *
-     * @param string $msg The message string to be normalized.
+     * @param string $msg  The message string to be normalized.
      * @param string $glue The character used to replace spaces.
-     * @return string The normalized string.
      *
+     * @return string The normalized string.
      */
     protected function normalizeString($msg, $glue = ' ')
     {
@@ -215,6 +215,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      * try to guess a name from the expression itself.
      *
      * @param Twig_Node $expr Expression to guess name from.
+     *
      * @return string Proposed name.
      */
     protected function guessNameFromExpression(\Twig_Node $expr)
@@ -241,7 +242,9 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      * is too complex to guess a name, it throws a Twig_Error_Syntax.
      *
      * @param Twig_Node $node The starting node to extract names from.
+     *
      * @return array Array of names guessed up to this node.
+     *
      * @throws Twig_Error_Syntax
      */
     protected function extractNames(\Twig_Node $node)
@@ -271,9 +274,10 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      * name already exists and its expressions are different. In other words,
      * we only add serial numbers to variables who uses different filters, etc.
      *
-     * @param array $vars The existing variables array
-     * @param string $name The proposed new name
+     * @param array    $vars The existing variables array
+     * @param string   $name The proposed new name
      * @param TwigNode $expr The expression for this variable
+     *
      * @return string The new unique name
      */
     protected function makeUnique($vars, $name, $expr)

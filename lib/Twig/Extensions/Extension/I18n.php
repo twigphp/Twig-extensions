@@ -15,9 +15,9 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     private $complex_vars = false;
 
     /**
-     * Constructor for I18n Extension
+     * Constructor for I18n Extension.
      *
-     * @param array     $options    Set of options for this Extension instance.
+     * @param array $options Set of options for this Extension instance.
      *
      * Available options:
      *
@@ -65,16 +65,16 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
         $options = array_merge(array(
             'delimiters' => '%%',
             'normalize' => false,
-            'complex_vars' => false
+            'complex_vars' => false,
         ), $options);
 
         $this->delimiters = $this->parseDelimiters($options['delimiters']);
-        $this->normalize = !!$options['normalize'];
-        $this->complex_vars = !!$options['complex_vars'];
+        $this->normalize = (bool) $options['normalize'];
+        $this->complex_vars = (bool) $options['complex_vars'];
     }
 
     /**
-     * Returns the delimiters array for field placeholders in strings
+     * Returns the delimiters array for field placeholders in strings.
      */
     public function getDelimiters()
     {
@@ -82,7 +82,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 
     /**
-     * Returns the value of the current "normalize" config
+     * Returns the value of the current "normalize" config.
      */
     public function getNormalize()
     {
@@ -90,7 +90,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 
     /**
-     * Returns the value of the current "complex_vars" config
+     * Returns the value of the current "complex_vars" config.
      */
     public function getComplexVars()
     {
@@ -99,7 +99,8 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
 
     /**
      * Parses the $dels to configure our "delimiters" property.
-     * Three syntax for delimiter patterns are allowed:
+     *
+     * Three syntax for delimiter patterns are allowed.
      *
      *  1) String pattern including a "|" character that marks the position of
      *     the variable name. Eg: "%|%", "start|end".
@@ -118,11 +119,12 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
 
         if (is_string($dels) && !(strlen($dels) % 2)) {
             $mid = ceil(strlen($dels) / 2);
+
             return array(substr($dels, 0, $mid), substr($dels, $mid));
         }
 
         if (is_array($dels) && (count($dels) == 2)) {
-            return array((string)$dels[0], (string)$dels[1]);
+            return array((string) $dels[0], (string) $dels[1]);
         }
 
         throw new Twig_Error('Pattern "'.$dels.'" not allowed as delimiters.');

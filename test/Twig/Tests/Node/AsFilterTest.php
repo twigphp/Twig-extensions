@@ -11,7 +11,6 @@
 
 class Twig_Tests_Node_AsFilterTest extends Twig_Test_NodeTestCase
 {
-
     public function testThrowsAtInvalidArgumentsWhenParsing()
     {
         $this->setExpectedException('Twig_Error_Syntax');
@@ -26,6 +25,7 @@ class Twig_Tests_Node_AsFilterTest extends Twig_Test_NodeTestCase
     {
         $env = new Twig_Environment(new Twig_Loader_Array(array()));
         $env->addExtension(new Twig_Extensions_Extension_I18n());
+
         return $env;
     }
 
@@ -54,6 +54,7 @@ class Twig_Tests_Node_AsFilterTest extends Twig_Test_NodeTestCase
     {
         $name = new Twig_Node_Expression_Constant($tag, 1);
         $arguments = new Twig_Node($arguments);
+
         return $tag == 'as'
             ? new Twig_Extensions_Filter_As($node, $name, $arguments, 1)
             : new Twig_Node_Expression_Filter($node, $name, $arguments, 1);
