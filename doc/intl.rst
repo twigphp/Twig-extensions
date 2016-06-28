@@ -65,6 +65,19 @@ representating the number.
     Internally, Twig uses the PHP `NumberFormatter::create()`_ function for
     the number.
 
+``localizednumberpattern``
+--------------------------
+
+Use the ``localizednumberpattern`` filter to format numbers using a pattern.
+
+.. code-block:: jinja
+
+    {{ product.rating|localizednumberpattern('0.0') }}
+
+.. note::
+
+    Prefer using ``localizednumber`` since it will localize the pattern.
+
 Arguments
 ~~~~~~~~~
 

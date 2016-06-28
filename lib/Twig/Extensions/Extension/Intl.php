@@ -28,6 +28,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
         return array(
             new Twig_SimpleFilter('localizeddate', 'twig_localized_date_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('localizednumber', 'twig_localized_number_filter'),
+            new Twig_SimpleFilter('localizednumberpattern', 'twig_localized_number_pattern_filter'),
             new Twig_SimpleFilter('localizedcurrency', 'twig_localized_currency_filter'),
         );
     }
@@ -78,6 +79,25 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     );
 
     $formatter = twig_get_number_formatter($locale, $style);
+
+    if (!isset($typeValues[$type])) {
+        throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
+    }
+
+    return $formatter->format($number, $typeValues[$type]);
+}
+
+function twig_localized_number_pattern_filter($number, $pattern, $type = 'default', $locale = null)
+{
+    static $typeValues = array(
+        'default' => NumberFormatter::TYPE_DEFAULT,
+        'int32' => NumberFormatter::TYPE_INT32,
+        'int64' => NumberFormatter::TYPE_INT64,
+        'double' => NumberFormatter::TYPE_DOUBLE,
+        'currency' => NumberFormatter::TYPE_CURRENCY,
+    );
+
+    $formatter = NumberFormatter::create($locale, NumberFormatter::PATTERN_DECIMAL, $pattern);
 
     if (!isset($typeValues[$type])) {
         throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
