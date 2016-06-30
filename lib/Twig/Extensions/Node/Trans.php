@@ -140,6 +140,8 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
+        $msg = str_replace(array("\n", "\r"), " ", trim($msg));
+        $msg = preg_replace('/\s+/u', " ", $msg);
+        return array(new Twig_Node(array(new Twig_Node_Expression_Constant($msg, $body->getLine()))), $vars);
     }
 }
