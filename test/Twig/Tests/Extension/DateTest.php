@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Date.php';
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
@@ -20,18 +19,11 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
      */
     private $env;
 
-    public static function setUpBeforeClass()
-    {
-        if (!class_exists('Twig_Extensions_Extension_Date')) {
-            self::markTestSkipped('Unable to find class Twig_Extensions_Extension_Date.');
-        }
-    }
-
     public function setUp()
     {
         $timezone = new DateTimeZone(date_default_timezone_get());
 
-        $coreExtension = $this->getMock('Twig_Extension_Core');
+        $coreExtension = $this->getMockBuilder('Twig_Extension_Core')->getMock();
         $coreExtension
             ->expects($this->any())
             ->method('getTimezone')
@@ -81,7 +73,7 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
      */
     public function testDiffCanReturnTranslatableString($expected, $translated, $date, $now)
     {
-        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
         $translator
             ->expects($this->once())
             ->method('transChoice')
