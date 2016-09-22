@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by stof at 2016-05-19T14:07:23Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-05-19T14:12:27Z
+
+I think the build failure is not related. I checked all documents for this violation. BTW, is there any twig linter out there? All I found is linters for syntax, but none for coding style.
+
+---------------------------------------------------------------------------
+
+by stof at 2016-05-19T14:38:51Z
+
+Linters for coding styles are harder to write, because the Twig parser provides an AST, which does not allow to check coding styles (Whitespaces don't appear from the AST. Documentation code snippets you edited here still produce the same AST). Twig even discards whitespaces at the lexer level, making the TokenStream unsuited for code style checkings (unlike the PHP lexing, as used by PHP-CS-Fixer).
+So producing a coding style checker for Twig either requires rewriting a different lexer for Twig (a hard work) or using some regexp-based linting (hard to make it reliable too).
+
+The failure is indeed unrelated. The CI is currently failing for PHP 7.
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-05-19T14:48:40Z
+
+Thanks for the detailed and crystal clear explanation @stof ! Maybe forking the existing lexer so that it does not discard whitespaces (by pushing a new token at [this line](https://github.com/twigphp/Twig/blob/1.x/lib/Twig/Lexer.php#L224) ?) when asked so would be the way to go for anyone willing to create such a linter? Still not very easy though I guess…
+
+---------------------------------------------------------------------------
+
+by stof at 2016-05-19T14:53:10Z
+
+pushing a new token would then force the parser to discard whitespace tokens all the time when looking for a sequence of tokens. This would make it very hard to build something useful (linting based on a token stream only is not easy to implement btw)
+
+---------------------------------------------------------------------------
+
+by greg0ire at 2016-05-19T14:58:23Z
+
+Ok well, good luck to anyone willing to take on this task!
