@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------
+
+by stof at 2016-04-04T17:17:17Z
+
+Please also update the documentation of the extension
+
+---------------------------------------------------------------------------
+
+by llmuculusll at 2016-04-04T17:40:28Z
+
+As soon as accepting the pull request I will update the documentation.
+
+---------------------------------------------------------------------------
+
+by stof at 2016-04-04T17:57:35Z
+
+Given that the documentation is inside the same git repository, the doc update must be done in the PR itself
+
+---------------------------------------------------------------------------
+
+by llmuculusll at 2016-04-07T16:00:42Z
+
+I updated documentation.
