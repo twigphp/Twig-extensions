@@ -19,9 +19,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -33,9 +31,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * {@inheritdoc}
      */
     public function getName()
     {

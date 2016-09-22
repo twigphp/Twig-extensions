@@ -8,12 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     /**
-     * Returns the token parser instances to add to the existing list.
-     *
-     * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
+     * {@inheritdoc}
      */
     public function getTokenParsers()
     {
@@ -21,9 +20,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 
     /**
-     * Returns a list of filters to add to the existing list.
-     *
-     * @return array An array of filters
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -33,9 +30,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * {@inheritdoc}
      */
     public function getName()
     {

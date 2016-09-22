@@ -7,15 +7,15 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
+ */
+
+/**
  * @author Henrik Bjornskov <hb@peytz.dk>
  */
 class Twig_Extensions_Extension_Text extends Twig_Extension
 {
     /**
-     * Returns a list of filters.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -26,9 +26,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
     }
 
     /**
-     * Name of this extension.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
