@@ -51,17 +51,12 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         'full' => IntlDateFormatter::FULL,
     );
 
-    $calendarValues = array(
-        'gregorian' => IntlDateFormatter::GREGORIAN,
-        'traditional' => IntlDateFormatter::TRADITIONAL,
-    );
-
     $formatter = IntlDateFormatter::create(
         $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
         $date->getTimezone()->getName(),
-        $calendarValues[$calendar],
+        'gregorian' === $calendar ? IntlDateFormatter::GREGORIAN : IntlDateFormatter::TRADITIONAL,
         $format
     );
 
