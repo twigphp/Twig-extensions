@@ -12,7 +12,7 @@
 /**
  * Represents a trans node.
  *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
@@ -33,9 +33,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     }
 
     /**
-     * Compiles the node to PHP.
-     *
-     * @param Twig_Compiler $compiler A Twig_Compiler instance
+     * {@inheritdoc}
      */
     public function compile(Twig_Compiler $compiler)
     {
