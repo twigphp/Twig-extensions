@@ -1,0 +1,76 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-08-07T12:31:46Z
+
+Passing the DatetimeZone to the IntlDateFormatter is supported only in PHP 5.5+
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-07T12:35:42Z
+
+Ok you're right ! What do you suggest about my issue ? Check the version of PHP and fix the problem for the users of PHP 5.5+ ?
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-07T12:37:25Z
+
+btw, you should add a test covering your use case to avoid regressions
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-07T12:38:17Z
+
+Yes of course, I just used the default the github's edition mode to have a feedback about my suggest.
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-07T13:13:25Z
+
+however, I agree there is an issue to be fixed here. DateTimeZone returns ``+03:00`` as timezone name while the ICU identifier expected by Intl is ``GMT+03:00``.
+So passing a DateTimeZone name directly can lead to troubles.
+
+so for PHP 5.5+, I suggest passing the DateTimeZone object, yes
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-07T13:35:36Z
+
+Thanks, I'll fix and test it.
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-07T14:34:19Z
+
+I'm sad to do my tests using ``en`` env, because the function accept a ``null`` locale by default, but travis has an ``en`` environment.
+
+I don't know how to handle the case of php hhvm :(
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-12T08:40:54Z
+
+As suggested @nicolas-grekas in https://github.com/symfony/symfony/pull/15489, I skipped the HHVM tests and fixed some coding standards. Alls going well for me @fabpot cc @stof
+
+---------------------------------------------------------------------------
+
+by fabpot at 2015-08-12T11:25:15Z
+
+:+1:
+
+---------------------------------------------------------------------------
+
+by stof at 2015-08-12T11:56:35Z
+
+@rgazelot in your case, you could simply use a timezone name which is supported in HHVM too.
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-08-12T12:51:02Z
+
+@stof I added a specific test for HHVM with a supported timezone (to avoid the incompatibility that you reported here https://github.com/facebook/hhvm/issues/5875). Now, for all PHP 5.5+ and HHVM, a ``DateTimeZone`` object is given in fourth argument of ``IntlDateFormatter::create()``. For the other and older cases, the timezone's name is currently used.
+
+---------------------------------------------------------------------------
+
+by rgazelot at 2015-12-04T21:23:34Z
+
+@stof What about this PR? I extended the ``Intl`` class in my project to override the ``twig_localized_date_filter()`` method, but I want to remove this ugly thing.
