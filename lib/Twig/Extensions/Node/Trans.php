@@ -159,6 +159,6 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      */
     protected function getTransFunction($plural = false)
     {
-        return !$plural ? 'gettext' : 'ngettext';
+        return $plural ? 'ngettext' : 'gettext';
     }
 }
