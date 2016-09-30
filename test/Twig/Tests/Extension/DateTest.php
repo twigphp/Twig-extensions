@@ -21,21 +21,7 @@ class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $timezone = new DateTimeZone(date_default_timezone_get());
-
-        $coreExtension = $this->getMockBuilder('Twig_Extension_Core')->getMock();
-        $coreExtension
-            ->expects($this->any())
-            ->method('getTimezone')
-            ->will($this->returnValue($timezone));
-
-        $this->env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-        $this->env
-            ->expects($this->any())
-            ->method('getExtension')
-            ->with('core')
-            ->will($this->returnValue($coreExtension))
-        ;
+        $this->env = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
     }
 
     /**
