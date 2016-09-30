@@ -47,7 +47,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $vars = array_merge($vars, $vars1);
         }
 
-        $function = !$this->hasNode('plural') ? 'gettext' : 'ngettext';
+        $function = $this->getTransFunction($this->hasNode('plural'));
 
         if ($this->hasNode('notes')) {
             $message = trim($this->getNode('notes')->getAttribute('data'));
@@ -150,5 +150,15 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         }
 
         return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
+    }
+
+    /**
+     * @param bool $plural Return plural or singular function to use
+     *
+     * @return string
+     */
+    protected function getTransFunction($plural)
+    {
+        return $plural ? 'ngettext' : 'gettext';
     }
 }
