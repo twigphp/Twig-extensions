@@ -151,7 +151,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
         return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getLine()))), $vars);
     }
-    
+
     /**
      * @param bool $plural Return plural or singular function to use
      *
