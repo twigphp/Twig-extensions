@@ -17,16 +17,6 @@
 abstract class Twig_Extensions_Template_DisplayCallGraphTemplate extends Twig_Template
 {
     /**
-     * @var string[]
-     */
-    protected $templateBlackList = array();
-
-    /**
-     * @var string[]
-     */
-    protected $blockBlackList = array();
-
-    /**
      * {@inheritdoc}
      */
     public function display(array $context, array $blocks = array())
@@ -65,7 +55,7 @@ abstract class Twig_Extensions_Template_DisplayCallGraphTemplate extends Twig_Te
      */
     protected function isTemplateEnabled()
     {
-        foreach ($this->templateBlackList as $prefix) {
+        foreach ($this->getTemplateBlackList() as $prefix) {
             if (false !== strpos($this->getTemplateName(), $prefix)) {
                 return false;
             }
@@ -83,7 +73,7 @@ abstract class Twig_Extensions_Template_DisplayCallGraphTemplate extends Twig_Te
      */
     protected function isBlockEnabled($name)
     {
-        foreach ($this->blockBlackList as $prefix) {
+        foreach ($this->getBlockBlackList() as $prefix) {
             if (false !== strpos($name, $prefix)) {
                 return false;
             }
@@ -113,6 +103,16 @@ abstract class Twig_Extensions_Template_DisplayCallGraphTemplate extends Twig_Te
     }
 
     /**
+     * The list of black listed templates.
+     *
+     * @return array
+     */
+    protected function getTemplateBlackList()
+    {
+        return array();
+    }
+
+    /**
      * Delimiter for the start of a block.
      *
      * @return string
@@ -130,5 +130,15 @@ abstract class Twig_Extensions_Template_DisplayCallGraphTemplate extends Twig_Te
     protected function getBlockEnd()
     {
         return '</div>';
+    }
+
+    /**
+     * The list of black listed blocks.
+     *
+     * @return array
+     */
+    protected function getBlockBlackList()
+    {
+        return array();
     }
 }
