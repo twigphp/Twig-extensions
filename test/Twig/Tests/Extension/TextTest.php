@@ -46,4 +46,23 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
             array('This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'),
         );
     }
+
+    /**
+     * @dataProvider getRepeatTestData
+     */
+    public function testRepeat($input, $length, $expectedOutput)
+    {
+        $output = twig_repeat_filter($input, $length);
+        $this->assertEquals($expectedOutput, $output);
+    }
+
+    public function getRepeatTestData()
+    {
+        return array(
+            array('.', 2, '..'),
+            array('.', 6, '......'),
+            array('==', 2, '===='),
+            array('.', 0, ''),
+        );
+    }
 }
