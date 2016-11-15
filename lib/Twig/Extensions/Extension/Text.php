@@ -55,24 +55,43 @@ if (function_exists('mb_get_info')) {
 
     function twig_wordwrap_filter(Twig_Environment $env, $value, $length = 80, $separator = "\n", $preserve = false)
     {
-        $sentences = array();
-
         $previous = mb_regex_encoding();
         mb_regex_encoding($env->getCharset());
 
-        $pieces = mb_split($separator, $value);
-        mb_regex_encoding($previous);
+        $lines = mb_split($separator, $value);
 
-        foreach ($pieces as $piece) {
-            while (!$preserve && mb_strlen($piece, $env->getCharset()) > $length) {
-                $sentences[] = mb_substr($piece, 0, $length, $env->getCharset());
-                $piece = mb_substr($piece, $length, 2048, $env->getCharset());
+        foreach ($lines as &$line) {
+            $line = rtrim($line);
+            if (mb_strlen($line, $env->getCharset()) <= $length) {
+                continue;
             }
 
-            $sentences[] = $piece;
+            $words = explode(' ', $line);
+            $line = '';
+            $actual = '';
+            foreach ($words as $word) {
+                if (mb_strlen($actual.$word, $env->getCharset()) <= $length) {
+                    $actual .= $word.' ';
+                } else {
+                    if ('' !== $actual) {
+                        $line .= rtrim($actual).$separator;
+                    }
+                    $actual = $word;
+                    if (!$preserve) {
+                        while (mb_strlen($actual, $env->getCharset()) > $length) {
+                            $line .= mb_substr($actual, 0, $length).$separator;
+                            $actual = mb_substr($actual, $length);
+                        }
+                    }
+                    $actual .= ' ';
+                }
+            }
+            $line .= trim($actual);
         }
 
-        return implode($separator, $sentences);
+        mb_regex_encoding($previous);
+
+        return implode($separator, $lines);
     }
 } else {
     function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')

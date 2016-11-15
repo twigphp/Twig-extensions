@@ -46,4 +46,23 @@ class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
             array('This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'),
         );
     }
+
+    /**
+     * @dataProvider getWordWrapTestData
+     */
+    public function testWordWrap($input, $length, $preserve, $separator, $expectedOutput)
+    {
+        $output = twig_wordwrap_filter($this->env, $input, $length, $separator, $preserve);
+
+        $this->assertEquals($expectedOutput, $output);
+    }
+
+    public function getWordWrapTestData()
+    {
+        return array(
+            array('This is a very long sentence.', 10, false, '___', 'This is a___very long___sentence.'),
+            array('This is a very long sentence.', 3, false, '___', 'Thi___s___is___a___ver___y___lon___g___sen___ten___ce.'),
+            array('This is a very long sentence.', 3, true, '___', 'This___is___a___very___long___sentence.'),
+        );
+    }
 }
