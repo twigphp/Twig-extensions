@@ -11,4 +11,4 @@ More Information
 
 Read the `documentation`_ for more information.
 
-.. _documentation: http://twig.sensiolabs.org/doc/extensions/index.html
+.. _documentation: http://twig-extensions.readthedocs.io/
