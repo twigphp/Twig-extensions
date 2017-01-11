@@ -44,4 +44,45 @@ class Twig_Tests_Extension_ArrayTest extends PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    /**
+     * @dataProvider getUnsetFilterTestData
+     */
+    public function testUnsetFilter($array, $key, $expectedResult)
+    {
+        $result = twig_unset_filter($array, $key);
+
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    public function getUnsetFilterTestData()
+    {
+        return array(
+            array(
+                array('a', 'b'),
+                1,
+                array('a'),
+            ),
+            array(
+                array('a' => 1, 'b' => 2),
+                'a',
+                array('b' => 2),
+            ),
+            array(
+                array('a' => 1, 'b' => 2),
+                'c',
+                array('a' => 1, 'b' => 2),
+            ),
+            array(
+                array('a' => 1),
+                'a',
+                array(),
+            ),
+            array(
+                array(),
+                'a',
+                array(),
+            ),
+        );
+    }
 }
