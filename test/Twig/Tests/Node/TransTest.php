@@ -34,6 +34,19 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $this->assertEquals($plural, $node->getNode('plural'));
     }
 
+    /**
+     * copy/paste from Twig 1.20, as newer version use assertStringMatchesFormat
+     * see https://github.com/twigphp/Twig/commit/f379e8141c8820143c2da91ff5279b641d563f8c
+     * which break for this test provider.
+     */
+    public function assertNodeCompilation($source, Twig_Node $node, Twig_Environment $environment = null)
+    {
+        $compiler = $this->getCompiler($environment);
+        $compiler->compile($node);
+
+        $this->assertEquals($source, trim($compiler->getSource()));
+    }
+
     public function getTests()
     {
         $tests = array();
