@@ -35,9 +35,12 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
 }
 
 if (function_exists('mb_get_info')) {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...', $strip_tags = false)
     {
         if (mb_strlen($value, $env->getCharset()) > $length) {
+            if ($strip_tags) {
+                $value = strip_tags($value);
+            }
             if ($preserve) {
                 // If breakpoint is on the last word, return the value without separator.
                 if (false === ($breakpoint = mb_strpos($value, ' ', $length, $env->getCharset()))) {
@@ -75,9 +78,12 @@ if (function_exists('mb_get_info')) {
         return implode($separator, $sentences);
     }
 } else {
-    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...')
+    function twig_truncate_filter(Twig_Environment $env, $value, $length = 30, $preserve = false, $separator = '...', $strip_tags = false)
     {
         if (strlen($value) > $length) {
+            if ($strip_tags) {
+                $value = strip_tags($value);
+            }
             if ($preserve) {
                 if (false !== ($breakpoint = strpos($value, ' ', $length))) {
                     $length = $breakpoint;
