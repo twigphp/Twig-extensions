@@ -29,4 +29,3 @@ function twig_locale_primary_language($locale = null)
 
     return Locale::getPrimaryLanguage($locale);
 }
-
