@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.10" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0               http://pear.php.net/dtd/tasks-1.0.xsd               http://pear.php.net/dtd/package-2.0               http://pear.php.net/dtd/package-2.0.xsd">
+  <name>Twig_Extensions</name>
+  <channel>pear.twig-project.org</channel>
+  <summary>Twig Extensions</summary>
+  <description>Twig Extensions</description>
+  <lead>
+    <name>Fabien Potencier</name>
+    <user/>
+    <email>fabien.potencier@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>2012-08-09</date>
+  <time>23:39:23</time>
+  <version>
+    <release>1.9.1</release>
+    <api>1.9.1</api>
+  </version>
+  <stability>
+    <release>stable</release>
+    <api>stable</api>
+  </stability>
+  <license>PHP</license>
+  <notes>-</notes>
+  <contents>
+    <dir name="/">
+      <file name="doc/debug.rst" role="doc" md5sum="b05570861b86caa7d3df7f7e95ab2413"/>
+      <file name="doc/index.rst" role="doc" md5sum="23003a7d81d4749c8b51d7654e572835"/>
+      <file name="doc/i18n.rst" role="doc" md5sum="bd7cbffd5c3d762bc60c8bb58491332b"/>
+      <file name="doc/text.rst" role="doc" md5sum="186294a942c0cedda3fe4bab57e60ba3"/>
+      <file name="lib/Twig/Extensions/Grammar.php" role="php" md5sum="020a844f29944c21706c24d69d564d5a"/>
+      <file name="lib/Twig/Extensions/Extension/Intl.php" role="php" md5sum="451e0cb58470663c096b6d82c78f6bdb"/>
+      <file name="lib/Twig/Extensions/Extension/I18n.php" role="php" md5sum="f72566489e9e3be7414b05143a13729c"/>
+      <file name="lib/Twig/Extensions/Extension/Text.php" role="php" md5sum="bdef87046c8cc2a204a44d9f85a4e39f"/>
+      <file name="lib/Twig/Extensions/Extension/Debug.php" role="php" md5sum="def6277bffd98d5fa5ce772e8d159531"/>
+      <file name="lib/Twig/Extensions/Autoloader.php" role="php" md5sum="4874ac2d9e7859b9c4385578cb854e45"/>
+      <file name="lib/Twig/Extensions/Node/Trans.php" role="php" md5sum="8ea61cfd88630e7c7bc9b0728073d498"/>
+      <file name="lib/Twig/Extensions/Node/Debug.php" role="php" md5sum="856e4435fea345862115da543aa7bba1"/>
+      <file name="lib/Twig/Extensions/Grammar/Tag.php" role="php" md5sum="3ebfd864789e381ca28a6273f92c11f1"/>
+      <file name="lib/Twig/Extensions/Grammar/Body.php" role="php" md5sum="a46361ffb0db6d5a078196260d3ba276"/>
+      <file name="lib/Twig/Extensions/Grammar/Number.php" role="php" md5sum="04633c134ca0fcc78ca8de9ce6961881"/>
+      <file name="lib/Twig/Extensions/Grammar/Boolean.php" role="php" md5sum="1778d69bb729c58ee9d92b0f4812110b"/>
+      <file name="lib/Twig/Extensions/Grammar/Hash.php" role="php" md5sum="2db658d5329aa5e89757f358793831a7"/>
+      <file name="lib/Twig/Extensions/Grammar/Arguments.php" role="php" md5sum="2b467e197fe93feeb0289557572d9d14"/>
+      <file name="lib/Twig/Extensions/Grammar/Optional.php" role="php" md5sum="70d11a4a276ca9793832763500221ab2"/>
+      <file name="lib/Twig/Extensions/Grammar/Expression.php" role="php" md5sum="ec15bd1bc4f577c8a21201bf620b412b"/>
+      <file name="lib/Twig/Extensions/Grammar/Array.php" role="php" md5sum="bdf35dbffcd81b2ebe7e37ef29d7c0d7"/>
+      <file name="lib/Twig/Extensions/Grammar/Constant.php" role="php" md5sum="fef07e432ef11442838d37261baa650b"/>
+      <file name="lib/Twig/Extensions/Grammar/Switch.php" role="php" md5sum="e701ee79e44746d5ebc42d83bf8ce025"/>
+      <file name="lib/Twig/Extensions/SimpleTokenParser.php" role="php" md5sum="090edcea28dfd2faab3be992790a2ca1"/>
+      <file name="lib/Twig/Extensions/GrammarInterface.php" role="php" md5sum="516a4055a319ce8e94a22361a8310345"/>
+      <file name="lib/Twig/Extensions/TokenParser/Trans.php" role="php" md5sum="4de9d83fbeb5092ed5105ead695319c6"/>
+      <file name="lib/Twig/Extensions/TokenParser/Debug.php" role="php" md5sum="c3fe447e47bce82a1105749eb41e03bd"/>
+    </dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.3</min>
+      </php>
+      <pearinstaller>
+        <min>1.4</min>
+      </pearinstaller>
+    </required>
+  </dependencies>
+  <phprelease>
+    <filelist>
+      <install name="doc/debug.rst" as="debug.rst"/>
+      <install name="doc/index.rst" as="index.rst"/>
+      <install name="doc/i18n.rst" as="i18n.rst"/>
+      <install name="doc/text.rst" as="text.rst"/>
+      <install name="lib/Twig/Extensions/Grammar.php" as="Twig/Extensions/Grammar.php"/>
+      <install name="lib/Twig/Extensions/Extension/Intl.php" as="Twig/Extensions/Extension/Intl.php"/>
+      <install name="lib/Twig/Extensions/Extension/I18n.php" as="Twig/Extensions/Extension/I18n.php"/>
+      <install name="lib/Twig/Extensions/Extension/Text.php" as="Twig/Extensions/Extension/Text.php"/>
+      <install name="lib/Twig/Extensions/Extension/Debug.php" as="Twig/Extensions/Extension/Debug.php"/>
+      <install name="lib/Twig/Extensions/Autoloader.php" as="Twig/Extensions/Autoloader.php"/>
+      <install name="lib/Twig/Extensions/Node/Trans.php" as="Twig/Extensions/Node/Trans.php"/>
+      <install name="lib/Twig/Extensions/Node/Debug.php" as="Twig/Extensions/Node/Debug.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Tag.php" as="Twig/Extensions/Grammar/Tag.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Body.php" as="Twig/Extensions/Grammar/Body.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Number.php" as="Twig/Extensions/Grammar/Number.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Boolean.php" as="Twig/Extensions/Grammar/Boolean.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Hash.php" as="Twig/Extensions/Grammar/Hash.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Arguments.php" as="Twig/Extensions/Grammar/Arguments.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Optional.php" as="Twig/Extensions/Grammar/Optional.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Expression.php" as="Twig/Extensions/Grammar/Expression.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Array.php" as="Twig/Extensions/Grammar/Array.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Constant.php" as="Twig/Extensions/Grammar/Constant.php"/>
+      <install name="lib/Twig/Extensions/Grammar/Switch.php" as="Twig/Extensions/Grammar/Switch.php"/>
+      <install name="lib/Twig/Extensions/SimpleTokenParser.php" as="Twig/Extensions/SimpleTokenParser.php"/>
+      <install name="lib/Twig/Extensions/GrammarInterface.php" as="Twig/Extensions/GrammarInterface.php"/>
+      <install name="lib/Twig/Extensions/TokenParser/Trans.php" as="Twig/Extensions/TokenParser/Trans.php"/>
+      <install name="lib/Twig/Extensions/TokenParser/Debug.php" as="Twig/Extensions/TokenParser/Debug.php"/>
+    </filelist>
+  </phprelease>
+</package>
