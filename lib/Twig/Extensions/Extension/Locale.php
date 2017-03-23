@@ -32,7 +32,7 @@ class Twig_Extensions_Extension_Locale extends Twig_Extension
 
 function twig_locale_primary_language($locale = null)
 {
-    $locale = $locale !== null ? $locale : Locale::getDefault();
+    $locale = $locale == null ? Locale::getDefault() : $locale;
 
     return Locale::getPrimaryLanguage($locale);
 }
