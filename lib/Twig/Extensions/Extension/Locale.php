@@ -15,6 +15,13 @@
  */
 class Twig_Extensions_Extension_Locale extends Twig_Extension
 {
+    public function __construct()
+    {
+        if (!class_exists('Locale')) {
+            throw new RuntimeException('The PHP intl extension or the symfony/intl replacement layer needed to use the locale extension.');
+        }
+    }
+
     public function getFunctions()
     {
         return array(
