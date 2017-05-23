@@ -9,10 +9,16 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/SimpleTokenParser.php';
-
+/**
+ * @group legacy
+ */
 class grammarTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        require_once __DIR__.'/SimpleTokenParser.php';
+    }
+
     /**
      * @dataProvider getTests
      */

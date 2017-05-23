@@ -15,7 +15,8 @@
         "twig/twig": "~1.27|~2.0"
     },
     "require-dev": {
-        "symfony/translation": "~2.3"
+        "symfony/phpunit-bridge": "~3.3@dev",
+        "symfony/translation": "~2.3|~3.0"
     },
     "suggest": {
         "symfony/translation": "Allow the time_diff output to be translated"
@@ -23,7 +24,6 @@
     "autoload": {
         "psr-0": { "Twig_Extensions_": "lib/" }
     },
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "1.5-dev"
