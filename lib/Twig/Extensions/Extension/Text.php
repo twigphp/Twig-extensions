@@ -95,3 +95,5 @@ if (function_exists('mb_get_info')) {
         return wordwrap($value, $length, $separator, !$preserve);
     }
 }
+
+class_alias('Twig_Extensions_Extension_Text', 'Twig\Extensions\TextExtension', false);

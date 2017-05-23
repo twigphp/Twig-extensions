@@ -22,7 +22,8 @@
         "symfony/translation": "Allow the time_diff output to be translated"
     },
     "autoload": {
-        "psr-0": { "Twig_Extensions_": "lib/" }
+        "psr-0": { "Twig_Extensions_": "lib/" },
+        "psr-4": { "Twig\\Extensions\\": "src/" }
     },
     "extra": {
         "branch-alias": {

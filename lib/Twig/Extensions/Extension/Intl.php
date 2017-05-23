@@ -129,3 +129,5 @@ function twig_get_number_formatter($locale, $style)
 
     return $formatter;
 }
+
+class_alias('Twig_Extensions_Extension_Intl', 'Twig\Extensions\IntlExtension', false);

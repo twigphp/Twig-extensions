@@ -84,3 +84,5 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         }
     }
 }
+
+class_alias('Twig_Extensions_TokenParser_Trans', 'Twig\Extensions\TokenParser\TransTokenParser', false);

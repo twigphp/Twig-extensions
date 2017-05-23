@@ -9,10 +9,14 @@
  * file that was distributed with this source code.
  */
 
+@trigger_error('The "Twig_Extensions_Autoloader" class is deprecated since version 1.5. Use Composer instead.', E_USER_DEPRECATED);
+
 /**
  * Autoloads Twig Extensions classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * @deprecated since version 1.5, use Composer instead.
  */
 class Twig_Extensions_Autoloader
 {
