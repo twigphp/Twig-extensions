@@ -47,11 +47,11 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
     /**
      * Filter for converting dates to a time ago string like Facebook and Twitter has.
      *
-     * @param Twig_Environment $env  A Twig_Environment instance.
-     * @param string|DateTime  $date A string or DateTime object to convert.
+     * @param Twig_Environment $env  a Twig_Environment instance
+     * @param string|DateTime  $date a string or DateTime object to convert
      * @param string|DateTime  $now  A string or DateTime object to compare with. If none given, the current time will be used.
      *
-     * @return string The converted time.
+     * @return string the converted time
      */
     public function diff(Twig_Environment $env, $date, $now = null)
     {

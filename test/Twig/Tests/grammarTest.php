@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__).'/SimpleTokenParser.php';
+require_once __DIR__.'/SimpleTokenParser.php';
 
 class grammarTest extends PHPUnit_Framework_TestCase
 {

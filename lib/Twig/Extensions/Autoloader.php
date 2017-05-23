@@ -27,7 +27,7 @@ class Twig_Extensions_Autoloader
     /**
      * Handles autoloading of classes.
      *
-     * @param string $class A class name.
+     * @param string $class a class name
      *
      * @return bool Returns true if the class has been loaded
      */
@@ -37,7 +37,7 @@ class Twig_Extensions_Autoloader
             return;
         }
 
-        if (file_exists($file = dirname(__FILE__).'/../../'.str_replace('_', '/', $class).'.php')) {
+        if (file_exists($file = __DIR__.'/../../'.str_replace('_', '/', $class).'.php')) {
             require $file;
         }
     }

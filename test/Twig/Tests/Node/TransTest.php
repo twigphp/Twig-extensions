@@ -12,7 +12,7 @@
 class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
 {
     /**
-     * @covers Twig_Node_Trans::__construct
+     * @covers \Twig_Node_Trans::__construct
      */
     public function testConstructor()
     {
