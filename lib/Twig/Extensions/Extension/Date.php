@@ -97,3 +97,5 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
         return 'date';
     }
 }
+
+class_alias('Twig_Extensions_Extension_Date', 'Twig\Extensions\DateExtension', false);
