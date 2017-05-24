@@ -19,14 +19,7 @@ class Twig_Tests_Extension_IntlTest extends PHPUnit_Framework_TestCase
     {
         class_exists('Twig_Extensions_Extension_Intl');
         $env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
-
-        if (defined('HHVM_VERSION_ID')) {
-            $timezone = 'Europe/Paris';
-        } else {
-            $timezone = '+01:00';
-        }
-
-        $date = twig_localized_date_filter($env, new DateTime('2015-01-01T00:00:00', new DateTimeZone('UTC')), 'short', 'long', 'en', $timezone);
+        $date = twig_localized_date_filter($env, new DateTime('2015-01-01T00:00:00', new DateTimeZone('UTC')), 'short', 'long', 'en', '+01:00');
         $this->assertEquals('1/1/15 1:00:00 AM GMT+01:00', $date);
     }
 }
