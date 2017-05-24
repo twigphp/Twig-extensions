@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2017-05-23T14:39:20Z
+
+hmm, for the Travis setup, we would need #205 first as it fixes the CI setup regarding the PHPUnit version being used.
+
+---------------------------------------------------------------------------
+
+by nicolas-grekas at 2017-05-24T06:16:34Z
+
+Updated: the aliasing strategy is now compatible with Composer class maps.
