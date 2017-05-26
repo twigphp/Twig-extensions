@@ -161,6 +161,16 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     {
         return $plural ? 'ngettext' : 'gettext';
     }
+
+    /**
+     * @param bool $plural Return plural or singular function to use
+     *
+     * @return string
+     */
+    protected function getTransFunction($plural)
+    {
+        return $plural ? 'ngettext' : 'gettext';
+    }
 }
 
 class_alias('Twig_Extensions_Node_Trans', 'Twig\Extensions\Node\TransNode', false);
