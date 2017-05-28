@@ -9,6 +9,7 @@ Twig Extensions
     intl
     array
     date
+    bitwise_shift
 
 The Twig Extensions is a library that provides several useful extensions
 for Twig. You can find it's code at `GitHub.com/twigphp/Twig-extensions`_.
@@ -34,6 +35,8 @@ command line:
 
 * :doc:`Array <array>`: Provides useful filters for array manipulation;
 
-* :doc:`Date <date>`: Adds a filter for rendering the difference between dates.
+* :doc:`Date <date>`: Adds a filter for rendering the difference between dates;
+
+* :doc:`BitwiseShift <bitwise_shift>`: Adds operators for bitwise shifting.
 
 .. _`GitHub.com/twigphp/Twig-extensions`: https://github.com/twigphp/Twig-extensions
