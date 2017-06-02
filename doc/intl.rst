@@ -16,17 +16,16 @@ If you're using symfony, just register extension:
 v < 3.3::
 
     intl.twig_extension:
-          class: Twig\Extensions\IntlExtension
-          public: false
-          tags:
-              - { name: twig.extension }
+      class: Twig\Extensions\IntlExtension
+      public: false
+      tags:
+          - { name: twig.extension }
 v >= 3.3::
 
     Twig\Extensions\IntlExtension:
-          public: false
-          tags: [ 'twig.extension' ]
+      public: false
+      tags: [ 'twig.extension' ]
               
-
 ``localizeddate``
 -----------------
 
