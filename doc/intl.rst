@@ -10,6 +10,22 @@ First, :ref:`install the Extensions library<extensions-install>`. Next, add
 the extension to Twig::
 
     $twig->addExtension(new Twig_Extensions_Extension_Intl());
+    
+If you're using symfony, just register extension:  
+
+v < 3.3::
+
+    intl.twig_extension:
+          class: Twig\Extensions\IntlExtension
+          public: false
+          tags:
+              - { name: twig.extension }
+v >= 3.3::
+
+    Twig\Extensions\IntlExtension:
+          public: false
+          tags: [ 'twig.extension' ]
+              
 
 ``localizeddate``
 -----------------
