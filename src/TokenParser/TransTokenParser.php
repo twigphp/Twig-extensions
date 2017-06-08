@@ -2,7 +2,7 @@
 
 namespace Twig\Extensions\TokenParser;
 
-require __DIR__.'/../../lib/Twig/Extensions/TokenParser/Trans.php';
+class_exists('Twig_Extensions_TokenParser_Trans');
 
 if (\false) {
     class TransTokenParser extends \Twig_Extensions_TokenParser_Trans

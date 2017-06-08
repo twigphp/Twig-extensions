@@ -2,7 +2,7 @@
 
 namespace Twig\Extensions;
 
-require __DIR__.'/../lib/Twig/Extensions/Extension/Intl.php';
+class_exists('Twig_Extensions_Extension_Intl');
 
 if (\false) {
     class IntlExtension extends \Twig_Extensions_Extension_Intl
