@@ -62,7 +62,7 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
         // Get the difference between the two DateTime objects.
         $diff = $date->diff($now);
 
-        if (is_null($format)) {
+        if (null === $format) {
             // Check for each interval if it appears in the $diff object.
             foreach (self::$units as $attribute => $unit) {
                 $count = $diff->$attribute;
@@ -71,11 +71,11 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
                     return $this->getPluralizedInterval($count, $diff->invert, $unit);
                 }
             }
+
             return '';
         } else {
             return $diff->format($format);
         }
-        
     }
 
     protected function getPluralizedInterval($count, $invert, $unit)
