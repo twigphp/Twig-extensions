@@ -19,6 +19,12 @@ Use the ``time_diff`` filter to render the difference between a date and now.
 The example above will output a string like ``4 seconds ago``  or ``in 1 month``,
 depending on the filtered date.
 
+.. code-block:: jinja
+
+    {{ user.birth_date|time_diff("now", '%y years old') }}
+
+The example above will output a string like ``28 years old``.	
+	
 .. note::
 
     Internally, Twig uses the PHP ``DateTime::diff()`` method for calculating the
@@ -32,6 +38,9 @@ Arguments
 
 * ``now``: The date that should be used as now. Can be a string or
   a DateTime instance. Do not set this argument to use current date.
+
+* ``format``: The optional format string to replace the legacy output by a 
+  formatted string. The format string is same as input of PHP DateInterval.
 
 Translation
 ~~~~~~~~~~~

@@ -53,7 +53,7 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
      *
      * @return string the converted time
      */
-    public function diff(Twig_Environment $env, $date, $now = null)
+    public function diff(Twig_Environment $env, $date, $now = null, $format = null)
     {
         // Convert both dates to DateTime instances.
         $date = twig_date_converter($env, $date);
@@ -62,16 +62,20 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
         // Get the difference between the two DateTime objects.
         $diff = $date->diff($now);
 
-        // Check for each interval if it appears in the $diff object.
-        foreach (self::$units as $attribute => $unit) {
-            $count = $diff->$attribute;
+        if (is_null($format)) {
+            // Check for each interval if it appears in the $diff object.
+            foreach (self::$units as $attribute => $unit) {
+                $count = $diff->$attribute;
 
-            if (0 !== $count) {
-                return $this->getPluralizedInterval($count, $diff->invert, $unit);
+                if (0 !== $count) {
+                    return $this->getPluralizedInterval($count, $diff->invert, $unit);
+                }
             }
+            return '';
+        } else {
+            return $diff->format($format);
         }
-
-        return '';
+        
     }
 
     protected function getPluralizedInterval($count, $invert, $unit)
