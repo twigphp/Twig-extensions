@@ -82,14 +82,12 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     return $formatter->format($number, $typeValues[$type]);
 }
 
-function twig_localized_currency_filter($number, $currency = null, $locale = null, $digits = true)
+function twig_localized_currency_filter($number, $currency = null, $digits = 2, $locale = null)
 {
     $formatter = twig_get_number_formatter($locale, 'currency');
 
-    if (!$digits) {
-        $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
-    }
-    
+    $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $digits);
+
     return $formatter->formatCurrency($number, $currency);
 }
 
@@ -105,7 +103,7 @@ function twig_get_number_formatter($locale, $style)
 {
     static $formatter, $currentStyle;
 
-    $locale = $locale !== null ? $locale : Locale::getDefault();
+    $locale = null !== $locale ? $locale : Locale::getDefault();
 
     if ($formatter && $formatter->getLocale() === $locale && $currentStyle === $style) {
         // Return same instance of NumberFormatter if parameters are the same
