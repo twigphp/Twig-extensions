@@ -8,8 +8,7 @@ cache:
         - $HOME/.composer/cache/files
 
 env:
-    globals:
-        - deps=no
+    - deps=no
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -19,8 +18,6 @@ before_script:
     - if [ "$deps" = "no" ]; then composer install; fi;
 
 script:
-    - pwd
-    - ls -lR
     - ./vendor/bin/simple-phpunit
 
 matrix:
