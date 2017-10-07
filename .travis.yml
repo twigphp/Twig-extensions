@@ -18,7 +18,10 @@ before_script:
     - if [ "$deps" = "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
     - if [ "$deps" = "no" ]; then composer install; fi;
 
-script: ./vendor/bin/simple-phpunit
+script:
+    - pwd
+    - ls -lR
+    - ./vendor/bin/simple-phpunit
 
 matrix:
     include:
