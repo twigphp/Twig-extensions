@@ -51,11 +51,24 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         'full' => IntlDateFormatter::FULL,
     );
 
+    if (PHP_VERSION_ID < 50500) {
+        $formatter = IntlDateFormatter::create(
+            $locale,
+            $formatValues[$dateFormat],
+            $formatValues[$timeFormat],
+            $date->getTimezone()->getName(),
+            'gregorian' === $calendar ? IntlDateFormatter::GREGORIAN : IntlDateFormatter::TRADITIONAL,
+            $format
+        );
+
+        return $formatter->format($date->getTimestamp());
+    }
+
     $formatter = IntlDateFormatter::create(
         $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
-        PHP_VERSION_ID >= 50500 ? $date->getTimezone() : $date->getTimezone()->getName(),
+        IntlTimeZone::createTimeZone($date->getTimezone()->getName()),
         'gregorian' === $calendar ? IntlDateFormatter::GREGORIAN : IntlDateFormatter::TRADITIONAL,
         $format
     );
@@ -101,7 +114,7 @@ function twig_get_number_formatter($locale, $style)
 {
     static $formatter, $currentStyle;
 
-    $locale = $locale !== null ? $locale : Locale::getDefault();
+    $locale = null !== $locale ? $locale : Locale::getDefault();
 
     if ($formatter && $formatter->getLocale() === $locale && $currentStyle === $style) {
         // Return same instance of NumberFormatter if parameters are the same
