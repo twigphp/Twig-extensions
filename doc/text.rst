@@ -13,6 +13,17 @@ First, :ref:`install the Extensions library<extensions-install>`. Next, add
 the extension to Twig::
 
     $twig->addExtension(new Twig_Extensions_Extension_Text());
+    
+Or as service:
+
+.. code-block:: jinja
+
+    // app/config/config.yml
+    services:
+     twig.extension.text:
+         class: Twig_Extensions_Extension_Text
+         tags:
+             - { name: twig.extension }
 
 Wrapping Words
 --------------
