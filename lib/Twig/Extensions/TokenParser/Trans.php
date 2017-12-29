@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
     private $allow_complex = false;
 
     /**
-     * Parses a token and returns a node.
-     *
-     * @param Twig_Token $token A Twig_Token instance
-     *
-     * @return Twig_Node A Twig_Node instance
+     * {@inheritdoc}
      */
     public function parse(Twig_Token $token)
     {
@@ -69,11 +66,7 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
     }
 
     /**
-     * Gets the tag name associated with this token parser.
-     *
-     * @param string The tag name
-     * 
-     * @return string
+     * {@inheritdoc}
      */
     public function getTag()
     {
@@ -91,8 +84,13 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
     {
         parent::setParser($parser);
 
-        if ($parser->getEnvironment()->hasExtension('i18n')) {
-            $this->allow_complex = $parser->getEnvironment()->getExtension('i18n')->getComplexVars();
+        // Hack to allow to read the private environment from the $parser.
+        // I don't get why it was decided to deprecate the "getEnvironment"
+        // from the parser, but... whatever.
+        $env = \Closure::bind(function() {return $this->env; }, $parser, get_class($parser))->call($parser);
+
+        if ($env->hasExtension('Twig_Extensions_Extension_I18n')) {
+            $this->allow_complex = $env->getExtension('Twig_Extensions_Extension_I18n')->getComplexVars();
         }
     }
 
@@ -111,3 +109,5 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
         }
     }
 }
+
+class_alias('Twig_Extensions_TokenParser_Trans', 'Twig\Extensions\TokenParser\TransTokenParser', false);

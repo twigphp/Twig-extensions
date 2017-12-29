@@ -8,6 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+@trigger_error('The grammar feature is deprecated since version 1.5 and will be removed in 2.0.', E_USER_DEPRECATED);
+
+/**
+ * @deprecated since version 1.5
+ */
 abstract class Twig_Extensions_SimpleTokenParser extends Twig_TokenParser
 {
     /**

@@ -8,6 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+/**
+ * @deprecated since version 1.5
+ */
 class Twig_Extensions_Grammar_Body extends Twig_Extensions_Grammar
 {
     protected $end;

@@ -7,15 +7,15 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
+ */
+
+/**
  * @author Ricard Clau <ricard.clau@gmail.com>
  */
 class Twig_Extensions_Extension_Array extends Twig_Extension
 {
     /**
-     * Returns a list of filters.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilters()
     {
@@ -25,10 +25,9 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
 
         return $filters;
     }
+
     /**
-     * Name of this extension.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -53,3 +52,5 @@ function twig_shuffle_filter($array)
 
     return $array;
 }
+
+class_alias('Twig_Extensions_Extension_Array', 'Twig\Extensions\ArrayExtension', false);

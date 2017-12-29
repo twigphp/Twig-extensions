@@ -67,8 +67,7 @@ class Twig_Tests_TokenParser_TransTest extends PHPUnit_Framework_TestCase
     {
         $lexer = new Twig_Lexer($environment);
         $parser = new Twig_Parser($environment);
-
-        return $parser->parse($lexer->tokenize($source));
+        return $parser->parse($lexer->tokenize(new Twig_Source($source, uniqid())));
     }
 
 }

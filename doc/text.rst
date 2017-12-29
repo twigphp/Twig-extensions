@@ -21,7 +21,7 @@ Use the ``wordwrap`` filter to split your text in lines with equal length.
 
 .. code-block:: jinja
 
-    {{ "Lorem ipsum dolor sit amet, consectetur adipiscing" | wordwrap(10) }}
+    {{ "Lorem ipsum dolor sit amet, consectetur adipiscing"|wordwrap(10) }}
 
 This example would print::
 
@@ -35,7 +35,7 @@ The default separator is "\\n", but you can easily change that by providing one:
 
 .. code-block:: jinja
 
-    {{ "Lorem ipsum dolor sit amet, consectetur adipiscing" | wordwrap(10, "zz\n") }}
+    {{ "Lorem ipsum dolor sit amet, consectetur adipiscing"|wordwrap(10, "zz\n") }}
 
 This would result in::
 
@@ -52,7 +52,7 @@ Use the ``truncate`` filter to cut off a string after limit is reached
 
 .. code-block:: jinja
 
-    {{ "Hello World!" | truncate(5) }}
+    {{ "Hello World!"|truncate(5) }}
 
 The example would output ``Hello...``, as ``...`` is the default separator.
 
@@ -62,7 +62,7 @@ will print out the whole Word.
 
 .. code-block:: jinja
 
-    {{ "Hello World!" | truncate(7, true) }}
+    {{ "Hello World!"|truncate(7, true) }}
 
 Here ``Hello World!`` would be printed.
 
@@ -71,6 +71,6 @@ your desired separator.
 
 .. code-block:: jinja
 
-    {{ "Hello World!" | truncate(7, false, "??") }}
+    {{ "Hello World!"|truncate(7, false, "??") }}
 
 This example would print ``Hello W??``.

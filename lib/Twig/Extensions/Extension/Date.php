@@ -29,48 +29,29 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
      */
     private $translator;
 
-    /**
-     * Constructor.
-     *
-     * @param TranslatorInterface $translator A TranslatorInterface instance.
-     */
     public function __construct(TranslatorInterface $translator = null)
     {
         $this->translator = $translator;
     }
 
     /**
-     * Returns a list of filters.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('time_diff', array($this, 'diff'), array(
-                'needs_environment' => true,
-            )),
+            new Twig_SimpleFilter('time_diff', array($this, 'diff'), array('needs_environment' => true)),
         );
-    }
-
-    /**
-     * Name of this extension.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'date';
     }
 
     /**
      * Filter for converting dates to a time ago string like Facebook and Twitter has.
      *
-     * @param Twig_Environment $env  A Twig_Environment instance.
-     * @param string|DateTime  $date A string or DateTime object to convert.
+     * @param Twig_Environment $env  a Twig_Environment instance
+     * @param string|DateTime  $date a string or DateTime object to convert
      * @param string|DateTime  $now  A string or DateTime object to compare with. If none given, the current time will be used.
      *
-     * @return string The converted time.
+     * @return string the converted time
      */
     public function diff(Twig_Environment $env, $date, $now = null)
     {
@@ -107,4 +88,14 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
 
         return $invert ? "in $count $unit" : "$count $unit ago";
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'date';
+    }
 }
+
+class_alias('Twig_Extensions_Extension_Date', 'Twig\Extensions\DateExtension', false);

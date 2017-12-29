@@ -18,7 +18,7 @@ class Twig_Tests_Node_AsFilterTest extends Twig_Test_NodeTestCase
         $env = $this->getEnvironment();
         $lexer = new Twig_Lexer($env);
         $parser = new Twig_Parser($env);
-        $parser->parse($lexer->tokenize('{{ user | as(name) }}'));
+        $parser->parse($lexer->tokenize(new Twig_Source('{{ user | as(name) }}', uniqid())));
     }
 
     public function getEnvironment()

@@ -9,10 +9,16 @@
  * file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__).'/SimpleTokenParser.php';
-
+/**
+ * @group legacy
+ */
 class grammarTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        require_once __DIR__.'/SimpleTokenParser.php';
+    }
+
     /**
      * Reset "xdebug.overload_var_dump" if set to 2 to avoid filename output.
      * Reset "xdebug.cli_color" if set to On outputs ASCII color codes.
