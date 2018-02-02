@@ -14,7 +14,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     public function __construct()
     {
         if (!class_exists('IntlDateFormatter')) {
-            throw new RuntimeException('The intl extension is needed to use intl-based filters.');
+            throw new RuntimeException('The native PHP intl extension (http://php.net/manual/en/book.intl.php) is needed to use intl-based filters.');
         }
     }
 
