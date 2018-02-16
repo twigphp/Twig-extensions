@@ -143,6 +143,8 @@ Arguments
 .. _`IntlDateFormatter::MEDIUM`:      http://php.net/manual/en/class.intldateformatter.php#intldateformatter.constants.medium
 .. _`IntlDateFormatter::LONG`:        http://php.net/manual/en/class.intldateformatter.php#intldateformatter.constants.long
 .. _`IntlDateFormatter::FULL`:        http://php.net/manual/en/class.intldateformatter.php#intldateformatter.constants.full
+.. _`IntlDateFormatter::GREGORIAN`:   http://php.net/IntlDateFormatter#intldateformatter.constants.gregorian
+.. _`IntlDateFormatter::TRADITIONAL`: http://php.net/IntlDateFormatter#intldateformatter.constants.traditional
 .. _`ICU user guide`:                 http://userguide.icu-project.org/formatparse/datetime
 .. _`NumberFormatter::create()`:      http://php.net/manual/en/numberformatter.create.php
 .. _`NumberFormatter::DECIMAL`:       http://php.net/manual/en/class.numberformatter.php#numberformatter.constants.decimal
