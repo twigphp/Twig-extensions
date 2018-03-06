@@ -64,7 +64,6 @@ For the following calendars should use 'traditional':
     * Indian
     * Islamic
     * Hebrew
-    * Indian
     * Coptic
     * Ethiopic
 
