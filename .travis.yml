@@ -8,15 +8,14 @@ cache:
         - $HOME/.composer/cache/files
 
 env:
-    globals:
-        - deps=no
+    - DEPS=no
 
 before_install:
     - phpenv config-rm xdebug.ini
 
 before_script:
-    - if [ "$deps" = "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
-    - if [ "$deps" = "no" ]; then composer install; fi;
+    - if [ "$DEPS" == "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
+    - if [ "$DEPS" == "no" ]; then composer install; fi;
 
 script: |
     if [[ $TRAVIS_PHP_VERSION = 7.* || $TRAVIS_PHP_VERSION = nightly ]]; then
@@ -32,7 +31,7 @@ matrix:
         - php: 5.4
         - php: 5.5
         - php: 5.6
-          env: deps=low
+          env: DEPS=low
         - php: 7.0
         - php: 7.1
         - php: 7.2
