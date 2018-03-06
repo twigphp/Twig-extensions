@@ -10,7 +10,7 @@
  */
 require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Array.php';
 
-class Twig_Tests_Extension_ArrayTest extends PHPUnit_Framework_TestCase
+class Twig_Tests_Extension_ArrayTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider getShuffleFilterTestData

@@ -12,7 +12,7 @@
 /**
  * @group legacy
  */
-class Twig_Tests_SimpleTokenParserTest extends PHPUnit_Framework_TestCase
+class Twig_Tests_SimpleTokenParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider getTests

@@ -12,7 +12,7 @@
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class Twig_Tests_Extension_DateTest extends PHPUnit_Framework_TestCase
+class Twig_Tests_Extension_DateTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TwigEnvironment

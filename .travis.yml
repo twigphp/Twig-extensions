@@ -18,7 +18,12 @@ before_script:
     - if [ "$deps" = "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
     - if [ "$deps" = "no" ]; then composer install; fi;
 
-script: ./vendor/bin/simple-phpunit
+script: |
+    if [[ $TRAVIS_PHP_VERSION = 7.* || $TRAVIS_PHP_VERSION = nightly ]]; then
+        SYMFONY_PHPUNIT_VERSION=6.1 ./vendor/bin/simple-phpunit
+    else
+        ./vendor/bin/simple-phpunit
+    fi
 
 matrix:
     include:
