@@ -90,7 +90,7 @@ representating the number.
 Arguments
 ~~~~~~~~~
 
-* ``style``: Optional date format (default: 'decimal'). Choose one of these formats:
+* ``style``: Optional number format (default: 'decimal'). Choose one of these formats:
 
   * 'decimal':    `NumberFormatter::DECIMAL`_
   * 'currency':   `NumberFormatter::CURRENCY`_
