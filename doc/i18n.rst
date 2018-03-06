@@ -12,6 +12,21 @@ To use it, first, :ref:`install the Extensions library<extensions-install>`.
 You need to register this extension before using the ``trans`` block::
 
     $twig->addExtension(new Twig_Extensions_Extension_I18n());
+    
+If you're using symfony, just register extension:  
+
+v < 3.3::
+
+    i18n.twig_extension:
+      class: Twig\Extensions\I18nExtension
+      public: false
+      tags:
+          - { name: twig.extension }
+v >= 3.3::
+
+    Twig\Extensions\I18nExtension:
+      public: false
+      tags: [ 'twig.extension' ]
 
 Note that you must configure the ``gettext`` extension before rendering any
 internationalized template. Here is a simple configuration example from the
