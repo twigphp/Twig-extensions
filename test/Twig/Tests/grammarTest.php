@@ -12,7 +12,7 @@
 /**
  * @group legacy
  */
-class grammarTest extends PHPUnit_Framework_TestCase
+class grammarTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {

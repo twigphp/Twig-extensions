@@ -12,11 +12,11 @@
         }
     ],
     "require": {
-        "twig/twig": "~1.27|~2.0"
+        "twig/twig": "^1.27|^2.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "~3.3@dev",
-        "symfony/translation": "~2.3|~3.0"
+        "symfony/phpunit-bridge": "^3.4",
+        "symfony/translation": "^2.7|^3.4"
     },
     "suggest": {
         "symfony/translation": "Allow the time_diff output to be translated"
