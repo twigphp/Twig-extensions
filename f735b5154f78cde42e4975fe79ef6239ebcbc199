@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by lyrixx at 2017-10-31T14:37:35Z
+
+Oh, master is broken. And this project supports very old PHP version.
+
+@nicolas-grekas could you clean-up this projet ? :D
+
+---------------------------------------------------------------------------
+
+by patrick-99 at 2017-12-04T10:38:19Z
+
+I fixed travis.yml but my pull request is not taken yet.
