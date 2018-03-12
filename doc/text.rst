@@ -5,6 +5,7 @@ The Text extension provides the following filters:
 
 * ``truncate``
 * ``wordwrap``
+* ``repeat``
 
 Installation
 ------------
@@ -74,3 +75,20 @@ your desired separator.
     {{ "Hello World!"|truncate(7, false, "??") }}
 
 This example would print ``Hello W??``.
+
+Repeating Strings
+-----------------
+
+Use the ``repeat`` filter to repeat the given string. The first parameter is the multiplier.
+
+.. code-block:: jinja
+
+    {{ "-"|repeat(5) }}
+
+The example would print ``-----``
+
+.. code-block:: jinja
+
+    {{ "-"|repeat(1) }}
+
+The example would return ``-``

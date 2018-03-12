@@ -22,6 +22,7 @@ class Twig_Extensions_Extension_Text extends Twig_Extension
         return array(
             new Twig_SimpleFilter('truncate', 'twig_truncate_filter', array('needs_environment' => true)),
             new Twig_SimpleFilter('wordwrap', 'twig_wordwrap_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('repeat', 'twig_repeat_filter'),
         );
     }
 
@@ -94,6 +95,19 @@ if (function_exists('mb_get_info')) {
     {
         return wordwrap($value, $length, $separator, !$preserve);
     }
+}
+
+/**
+ * Repeats a string.
+ *
+ * @param string $string input string
+ * @param int    $repeat repeat count
+ *
+ * @return string
+ */
+function twig_repeat_filter($string, $repeat)
+{
+    return str_repeat($string, $repeat);
 }
 
 class_alias('Twig_Extensions_Extension_Text', 'Twig\Extensions\TextExtension', false);
