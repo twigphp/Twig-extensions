@@ -9,6 +9,7 @@ cache:
 
 env:
     - DEPS=no
+    - INSTALL_PACKAGE_VERSIONS=no
 
 before_install:
     - phpenv config-rm xdebug.ini
@@ -16,6 +17,7 @@ before_install:
 before_script:
     - if [ "$DEPS" == "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
     - if [ "$DEPS" == "no" ]; then composer install; fi;
+    - if [ "$INSTALL_PACKAGE_VERSIONS" == "yes" ]; then composer require --dev ocramius/package-versions jean85/pretty-package-versions; fi;
 
 script: |
     ./vendor/bin/simple-phpunit
@@ -29,6 +31,9 @@ matrix:
         - php: 5.6
           env: DEPS=low
         - php: 7.0
+          env: INSTALL_PACKAGE_VERSIONS=yes
         - php: 7.1
+          env: INSTALL_PACKAGE_VERSIONS=yes
         - php: 7.2
+          env: INSTALL_PACKAGE_VERSIONS=yes
     fast_finish: true

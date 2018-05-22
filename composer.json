@@ -19,7 +19,9 @@
         "symfony/translation": "^2.7|^3.4"
     },
     "suggest": {
-        "symfony/translation": "Allow the time_diff output to be translated"
+        "symfony/translation": "Allow the time_diff output to be translated",
+        "ocramius/package-versions": "Allows using package_version Twig function",
+        "jean85/pretty-package-versions": "Allows using pretty_package_version Twig function"
     },
     "autoload": {
         "psr-0": { "Twig_Extensions_": "lib/" },
