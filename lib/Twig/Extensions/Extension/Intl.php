@@ -41,6 +41,8 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
 
 function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null, $calendar = 'gregorian')
 {
+    static $formattersCache;
+
     $date = twig_date_converter($env, $date, $timezone);
 
     $formatValues = array(
@@ -51,27 +53,26 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         'full' => IntlDateFormatter::FULL,
     );
 
-    if (PHP_VERSION_ID < 50500) {
-        $formatter = IntlDateFormatter::create(
-            $locale,
-            $formatValues[$dateFormat],
-            $formatValues[$timeFormat],
-            $date->getTimezone()->getName(),
-            'gregorian' === $calendar ? IntlDateFormatter::GREGORIAN : IntlDateFormatter::TRADITIONAL,
-            $format
-        );
-
-        return $formatter->format($date->getTimestamp());
-    }
-
-    $formatter = IntlDateFormatter::create(
+    $formatterParams = [
         $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
-        IntlTimeZone::createTimeZone($date->getTimezone()->getName()),
+        $date->getTimezone()->getName(),
         'gregorian' === $calendar ? IntlDateFormatter::GREGORIAN : IntlDateFormatter::TRADITIONAL,
         $format
-    );
+    ];
+
+    $hashedFormat = md5(serialize($formatterParams));
+
+    if ($formattersCache && isset($formattersCache[$hashedFormat])) {
+        $formatter = $formattersCache[$hashedFormat];
+    } else {
+        if (PHP_VERSION_ID >= 50500) {
+            $formatterParams[3] = IntlTimeZone::createTimeZone($date->getTimezone()->getName());
+        }
+        $formatter = call_user_func_array([IntlDateFormatter::class, 'create'], $formatterParams);
+        $formattersCache[$hashedFormat] = $formatter;
+    }
 
     return $formatter->format($date->getTimestamp());
 }
