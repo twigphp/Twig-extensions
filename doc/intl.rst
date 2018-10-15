@@ -27,7 +27,11 @@ by the `strtotime`_ function), `DateTime`_ instances, or `Unix timestamps`_.
 .. note::
 
     Internally, Twig uses the PHP `IntlDateFormatter::create()`_ function for
-    the date.
+    the date. These formatters are cached for performance, but only first 5.
+    If you want to use more formatters many times on the same environment,
+    you should increase ``maxDateFormattersCached`` property::
+
+    $twig->getExtension(Twig_Extensions_Extension_Intl::class)->maxDateFormattersCached = 32
 
 Arguments
 ~~~~~~~~~

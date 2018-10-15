@@ -11,6 +11,8 @@
 
 class Twig_Extensions_Extension_Intl extends Twig_Extension
 {
+    public $maxDateFormattersCached = 5;
+
     public function __construct()
     {
         if (!class_exists('IntlDateFormatter')) {
@@ -42,6 +44,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
 function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null, $calendar = 'gregorian')
 {
     static $formattersCache;
+    static $cacheFull = false;
 
     $date = twig_date_converter($env, $date, $timezone);
 
@@ -71,7 +74,11 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
             $formatterParams[3] = IntlTimeZone::createTimeZone($date->getTimezone()->getName());
         }
         $formatter = call_user_func_array([IntlDateFormatter::class, 'create'], $formatterParams);
-        $formattersCache[$hashedFormat] = $formatter;
+        if (!$cacheFull && count($formattersCache) < $env->getExtension(Twig_Extensions_Extension_Intl::class)->maxDateFormattersCached) {
+            $formattersCache[$hashedFormat] = $formatter;
+        } else {
+            $cacheFull = true;
+        }
     }
 
     return $formatter->format($date->getTimestamp());
