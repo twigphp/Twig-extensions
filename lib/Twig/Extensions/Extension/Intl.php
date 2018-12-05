@@ -51,7 +51,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
         'full' => IntlDateFormatter::FULL,
     );
 
-    if (PHP_VERSION_ID < 50500) {
+    if (PHP_VERSION_ID < 50500 || !class_exists('IntlTimeZone')) {
         $formatter = IntlDateFormatter::create(
             $locale,
             $formatValues[$dateFormat],
