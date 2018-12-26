@@ -95,9 +95,11 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     return $formatter->format($number, $typeValues[$type]);
 }
 
-function twig_localized_currency_filter($number, $currency = null, $locale = null)
+function twig_localized_currency_filter($number, $currency = null, $fractionDigits = 2, $locale = null)
 {
     $formatter = twig_get_number_formatter($locale, 'currency');
+
+    $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, (int)$fractionDigits);
 
     return $formatter->formatCurrency($number, $currency);
 }
