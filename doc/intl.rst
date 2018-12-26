@@ -117,7 +117,7 @@ Use the ``localizedcurrency`` filter to format a currency value into a localized
 
 .. code-block:: jinja
 
-    {{ product.price|localizedcurrency('EUR') }}
+    {{ product.price|localizedcurrency('EUR', 2) }}
 
 .. note::
 
@@ -128,6 +128,8 @@ Arguments
 ~~~~~~~~~
 
 * ``currency``: The 3-letter ISO 4217 currency code indicating the currency to use.
+
+* ``fractionDigits``: Sets the maximum number of digits allowed in the fraction portion of a number. Default: 2.
 
 * ``locale``: The locale used for the format. If ``NULL`` is given, Twig will
   use ``Locale::getDefault()``
