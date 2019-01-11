@@ -3,6 +3,7 @@ The Array Extension
 
 The Array extensions provides the following filters:
 
+* ``merge_recursive``
 * ``shuffle``
 
 Installation

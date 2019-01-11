@@ -20,6 +20,7 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
     public function getFilters()
     {
         $filters = array(
+             new Twig_SimpleFilter('merge_recursive', 'twig_array_merge_recursive'),
              new Twig_SimpleFilter('shuffle', 'twig_shuffle_filter'),
         );
 
@@ -33,6 +34,45 @@ class Twig_Extensions_Extension_Array extends Twig_Extension
     {
         return 'array';
     }
+}
+
+/**
+ * Recursivly merges an array with another one.
+ *
+ * <pre>
+ *  {% set items = { 'fruits': ['apple', 'orange'], 'car': 'peugeot' } %}
+ *
+ *  {% set items = items|merge_recursive({ 'fruits': 'banana', 'car': [ 'renault', 'citroen' ] }) %}
+ *
+ *  {# items now contains { 'fruits': ['apple', 'orange', 'banana'], 'car': [ 'peugeot', 'renault', 'citroen' ] } #}
+ * </pre>
+ *
+ * @param array|Traversable $arr1 An array
+ * @param array|Traversable $arr2 An array
+ *
+ * @return array The merged array
+ */
+function twig_array_merge_recursive($arr1, $arr2)
+{
+    if (!is_iterable($arr1)) {
+        throw new Twig_Error_Runtime(
+            sprintf(
+                'The merge_recursive filter only works with arrays or "Traversable", got "%s" as first argument.',
+                gettype($arr1)
+            )
+        );
+    }
+
+    if (!is_iterable($arr2)) {
+        throw new Twig_Error_Runtime(
+            sprintf(
+                'The merge_recursive filter only works with arrays or "Traversable", got "%s" as second argument.',
+                gettype($arr2)
+            )
+        );
+    }
+
+    return array_merge_recursive(twig_recursive_cast_to_array($arr1), twig_recursive_cast_to_array($arr2));
 }
 
 /**
@@ -51,6 +91,22 @@ function twig_shuffle_filter($array)
     shuffle($array);
 
     return $array;
+}
+
+/**
+ * @internal
+ */
+function twig_recursive_cast_to_array($input)
+{
+    if ($input instanceof Traversable) {
+        return array_map('twig_recursive_cast_to_array', iterator_to_array($input));
+    }
+
+    if (is_array($input)) {
+        return array_map('twig_recursive_cast_to_array', $input);
+    }
+
+    return $input;
 }
 
 class_alias('Twig_Extensions_Extension_Array', 'Twig\Extensions\ArrayExtension', false);
