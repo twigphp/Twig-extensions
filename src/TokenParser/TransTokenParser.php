@@ -22,9 +22,6 @@ use Twig\TokenParser\AbstractTokenParser;
 
 class TransTokenParser extends AbstractTokenParser
 {
-    /**
-     * {@inheritdoc}
-     */
     public function parse(Token $token)
     {
         $lineno = $token->getLine();
@@ -72,15 +69,12 @@ class TransTokenParser extends AbstractTokenParser
         return $token->test('endtrans');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTag()
     {
         return 'trans';
     }
 
-    protected function checkTransString(Node $body, $lineno)
+    private function checkTransString(Node $body, $lineno)
     {
         foreach ($body as $i => $node) {
             if (
