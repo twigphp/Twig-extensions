@@ -24,30 +24,30 @@ class ArrayExtensionTest extends TestCase
     public function testShuffleFilter($data, $expectedElements)
     {
         foreach ($expectedElements as $element) {
-            $this->assertTrue(in_array($element, \twig_shuffle_filter($data), true)); // assertContains() would not consider the type
+            $this->assertTrue(\in_array($element, \twig_shuffle_filter($data), true)); // assertContains() would not consider the type
         }
     }
 
     public function testShuffleFilterOnEmptyArray()
     {
-        $this->assertEquals(array(), \twig_shuffle_filter(array()));
+        $this->assertEquals([], \twig_shuffle_filter([]));
     }
 
     public function getShuffleFilterTestData()
     {
-        return array(
-            array(
-                array(1, 2, 3),
-                array(1, 2, 3),
-            ),
-            array(
-                array('a' => 'apple', 'b' => 'orange', 'c' => 'citrus'),
-                array('apple', 'orange', 'citrus'),
-            ),
-            array(
-                new \ArrayObject(array('apple', 'orange', 'citrus')),
-                array('apple', 'orange', 'citrus'),
-            ),
-        );
+        return [
+            [
+                [1, 2, 3],
+                [1, 2, 3],
+            ],
+            [
+                ['a' => 'apple', 'b' => 'orange', 'c' => 'citrus'],
+                ['apple', 'orange', 'citrus'],
+            ],
+            [
+                new \ArrayObject(['apple', 'orange', 'citrus']),
+                ['apple', 'orange', 'citrus'],
+            ],
+        ];
     }
 }

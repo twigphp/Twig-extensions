@@ -19,7 +19,7 @@ class I18nExtension extends AbstractExtension
 {
     public function getTokenParsers()
     {
-        return array(new TransTokenParser());
+        return [new TransTokenParser()];
     }
 
     /**
@@ -27,8 +27,8 @@ class I18nExtension extends AbstractExtension
      */
     public function getFilters()
     {
-        return array(
+        return [
              new TwigFilter('trans', 'gettext'),
-        );
+        ];
     }
 }

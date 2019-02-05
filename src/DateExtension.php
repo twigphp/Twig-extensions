@@ -11,8 +11,8 @@
 
 namespace Twig\Extensions;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -22,14 +22,14 @@ use Twig\TwigFilter;
  */
 class DateExtension extends AbstractExtension
 {
-    public static $units = array(
+    public static $units = [
         'y' => 'year',
         'm' => 'month',
         'd' => 'day',
         'h' => 'hour',
         'i' => 'minute',
         's' => 'second',
-    );
+    ];
 
     private $translator;
 
@@ -45,16 +45,16 @@ class DateExtension extends AbstractExtension
 
     public function getFilters()
     {
-        return array(
-            new TwigFilter('time_diff', array($this, 'diff'), array('needs_environment' => true)),
-        );
+        return [
+            new TwigFilter('time_diff', [$this, 'diff'], ['needs_environment' => true]),
+        ];
     }
 
     /**
      * Filters for converting dates to a time ago string like Facebook and Twitter has.
      *
-     * @param string|DateTime  $date a string or DateTime object to convert
-     * @param string|DateTime  $now  A string or DateTime object to compare with. If none given, the current time will be used.
+     * @param string|DateTime $date a string or DateTime object to convert
+     * @param string|DateTime $now  A string or DateTime object to compare with. If none given, the current time will be used.
      *
      * @return string the converted time
      */
@@ -84,7 +84,7 @@ class DateExtension extends AbstractExtension
         if ($this->translator) {
             $id = sprintf('diff.%s.%s', $invert ? 'in' : 'ago', $unit);
 
-            return $this->translator->transChoice($id, $count, array('%count%' => $count), 'date');
+            return $this->translator->transChoice($id, $count, ['%count%' => $count], 'date');
         }
 
         if (1 !== $count) {

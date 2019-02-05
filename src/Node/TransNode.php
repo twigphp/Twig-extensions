@@ -11,14 +11,14 @@
 
 namespace Twig\Extensions\Node;
 
+use Twig\Compiler;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\TempNameExpression;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
-use Twig\Compiler;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -27,7 +27,7 @@ class TransNode extends Node
 {
     public function __construct(Node $body, Node $plural = null, AbstractExpression $count = null, Node $notes = null, $lineno, $tag = null)
     {
-        $nodes = array('body' => $body);
+        $nodes = ['body' => $body];
         if (null !== $count) {
             $nodes['count'] = $count;
         }
@@ -38,7 +38,7 @@ class TransNode extends Node
             $nodes['notes'] = $notes;
         }
 
-        parent::__construct($nodes, array(), $lineno, $tag);
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
@@ -62,7 +62,7 @@ class TransNode extends Node
             $message = trim($this->getNode('notes')->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
-            $message = str_replace(array("\n", "\r"), ' ', $message);
+            $message = str_replace(["\n", "\r"], ' ', $message);
             $compiler->write("// notes: {$message}\n");
         }
 
@@ -126,11 +126,11 @@ class TransNode extends Node
     private function compileString(Node $body): array
     {
         if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
-            return array($body, array());
+            return [$body, []];
         }
 
-        $vars = array();
-        if (count($body)) {
+        $vars = [];
+        if (\count($body)) {
             $msg = '';
 
             foreach ($body as $node) {
@@ -149,7 +149,7 @@ class TransNode extends Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Node(array(new ConstantExpression(trim($msg), $body->getTemplateLine()))), $vars);
+        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
     private function getTransFunction(bool $plural): string

@@ -11,7 +11,6 @@
 
 namespace Twig\Tests\Extension;
 
-use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Extensions\TextExtension;
 
@@ -42,13 +41,13 @@ class TextExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function getTruncateTestData()
     {
-        return array(
-            array('This is a very long sentence.', 2, false, '...', 'Th...'),
-            array('This is a very long sentence.', 6, false, '...', 'This i...'),
-            array('This is a very long sentence.', 2, true, '...', 'This...'),
-            array('This is a very long sentence.', 2, true, '[...]', 'This[...]'),
-            array('This is a very long sentence.', 23, false, '...', 'This is a very long sen...'),
-            array('This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'),
-        );
+        return [
+            ['This is a very long sentence.', 2, false, '...', 'Th...'],
+            ['This is a very long sentence.', 6, false, '...', 'This i...'],
+            ['This is a very long sentence.', 2, true, '...', 'This...'],
+            ['This is a very long sentence.', 2, true, '[...]', 'This[...]'],
+            ['This is a very long sentence.', 23, false, '...', 'This is a very long sen...'],
+            ['This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'],
+        ];
     }
 }

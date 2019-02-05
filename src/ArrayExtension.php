@@ -21,9 +21,9 @@ namespace Twig\Extensions
     {
         public function getFilters()
         {
-            return array(
+            return [
                 new TwigFilter('shuffle', '\twig_shuffle_filter'),
-            );
+            ];
         }
     }
 }

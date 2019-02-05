@@ -81,37 +81,37 @@ class DateExtensionTest extends TestCase
 
     public function getDiffAgoTestData()
     {
-        return array(
-            array('1 second ago', 'diff.ago.second', '24-07-2014 17:28:01', '24-07-2014 17:28:02'),
-            array('5 seconds ago', 'diff.ago.second', '24-07-2014 17:28:01', '24-07-2014 17:28:06'),
-            array('1 minute ago', 'diff.ago.minute', '24-07-2014 17:28:01', '24-07-2014 17:29:01'),
-            array('5 minutes ago', 'diff.ago.minute', '24-07-2014 17:28:01', '24-07-2014 17:33:03'),
-            array('1 hour ago', 'diff.ago.hour', '24-07-2014 17:28:01', '24-07-2014 18:29:01'),
-            array('9 hours ago', 'diff.ago.hour', '24-07-2014 17:28:01', '25-07-2014 02:33:03'),
-            array('1 day ago', 'diff.ago.day', '23-07-2014', '24-07-2014'),
-            array('5 days ago', 'diff.ago.day', '19-07-2014', '24-07-2014'),
-            array('1 month ago', 'diff.ago.month', '23-07-2014', '24-08-2014'),
-            array('6 months ago', 'diff.ago.month', '19-07-2014', '24-01-2015'),
-            array('1 year ago', 'diff.ago.year', '19-07-2014', '20-08-2015'),
-            array('3 years ago', 'diff.ago.year', '19-07-2014', '20-08-2017'),
-        );
+        return [
+            ['1 second ago', 'diff.ago.second', '24-07-2014 17:28:01', '24-07-2014 17:28:02'],
+            ['5 seconds ago', 'diff.ago.second', '24-07-2014 17:28:01', '24-07-2014 17:28:06'],
+            ['1 minute ago', 'diff.ago.minute', '24-07-2014 17:28:01', '24-07-2014 17:29:01'],
+            ['5 minutes ago', 'diff.ago.minute', '24-07-2014 17:28:01', '24-07-2014 17:33:03'],
+            ['1 hour ago', 'diff.ago.hour', '24-07-2014 17:28:01', '24-07-2014 18:29:01'],
+            ['9 hours ago', 'diff.ago.hour', '24-07-2014 17:28:01', '25-07-2014 02:33:03'],
+            ['1 day ago', 'diff.ago.day', '23-07-2014', '24-07-2014'],
+            ['5 days ago', 'diff.ago.day', '19-07-2014', '24-07-2014'],
+            ['1 month ago', 'diff.ago.month', '23-07-2014', '24-08-2014'],
+            ['6 months ago', 'diff.ago.month', '19-07-2014', '24-01-2015'],
+            ['1 year ago', 'diff.ago.year', '19-07-2014', '20-08-2015'],
+            ['3 years ago', 'diff.ago.year', '19-07-2014', '20-08-2017'],
+        ];
     }
 
     public function getDiffInTestData()
     {
-        return array(
-            array('in 1 second', 'diff.in.second', '24-07-2014 17:28:02', '24-07-2014 17:28:01'),
-            array('in 5 seconds', 'diff.in.second', '24-07-2014 17:28:06', '24-07-2014 17:28:01'),
-            array('in 1 minute', 'diff.in.minute', '24-07-2014 17:29:01', '24-07-2014 17:28:01'),
-            array('in 5 minutes', 'diff.in.minute', '24-07-2014 17:33:03', '24-07-2014 17:28:01'),
-            array('in 1 hour', 'diff.in.hour', '24-07-2014 18:29:01', '24-07-2014 17:28:01'),
-            array('in 9 hours', 'diff.in.hour', '25-07-2014 02:33:03', '24-07-2014 17:28:01'),
-            array('in 1 day', 'diff.in.day', '24-07-2014', '23-07-2014'),
-            array('in 5 days', 'diff.in.day', '24-07-2014', '19-07-2014'),
-            array('in 1 month', 'diff.in.month', '24-08-2014', '23-07-2014'),
-            array('in 6 months', 'diff.in.month', '24-01-2015', '19-07-2014'),
-            array('in 1 year', 'diff.in.year', '20-08-2015', '19-07-2014'),
-            array('in 3 years', 'diff.in.year', '20-08-2017', '19-07-2014'),
-        );
+        return [
+            ['in 1 second', 'diff.in.second', '24-07-2014 17:28:02', '24-07-2014 17:28:01'],
+            ['in 5 seconds', 'diff.in.second', '24-07-2014 17:28:06', '24-07-2014 17:28:01'],
+            ['in 1 minute', 'diff.in.minute', '24-07-2014 17:29:01', '24-07-2014 17:28:01'],
+            ['in 5 minutes', 'diff.in.minute', '24-07-2014 17:33:03', '24-07-2014 17:28:01'],
+            ['in 1 hour', 'diff.in.hour', '24-07-2014 18:29:01', '24-07-2014 17:28:01'],
+            ['in 9 hours', 'diff.in.hour', '25-07-2014 02:33:03', '24-07-2014 17:28:01'],
+            ['in 1 day', 'diff.in.day', '24-07-2014', '23-07-2014'],
+            ['in 5 days', 'diff.in.day', '24-07-2014', '19-07-2014'],
+            ['in 1 month', 'diff.in.month', '24-08-2014', '23-07-2014'],
+            ['in 6 months', 'diff.in.month', '24-01-2015', '19-07-2014'],
+            ['in 1 year', 'diff.in.year', '20-08-2015', '19-07-2014'],
+            ['in 3 years', 'diff.in.year', '20-08-2017', '19-07-2014'],
+        ];
     }
 }
