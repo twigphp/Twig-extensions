@@ -1,11 +1,34 @@
 <?php
 
+/*
+ * This file is part of Twig.
+ *
+ * (c) 2010-2019 Fabien Potencier
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Twig\Extensions;
 
-class_exists('Twig_Extensions_Extension_I18n');
+use Twig\Extension\AbstractExtension;
+use Twig\Extensions\TokenParser\TransTokenParser;
+use Twig\TwigFilter;
 
-if (\false) {
-    class I18nExtension extends \Twig_Extensions_Extension_I18n
+class I18nExtension extends AbstractExtension
+{
+    public function getTokenParsers()
     {
+        return array(new TransTokenParser());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return array(
+             new TwigFilter('trans', 'gettext'),
+        );
     }
 }

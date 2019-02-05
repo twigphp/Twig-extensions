@@ -9,16 +9,21 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Text.php';
+namespace Twig\Tests\Extension;
 
-class Twig_Tests_Extension_TextTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Extensions\TextExtension;
+
+class_exists(TextExtension::class);
+
+class TextExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var TwigEnvironment */
     private $env;
 
     public function setUp()
     {
-        $this->env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
+        $this->env = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
         $this->env
             ->expects($this->any())
             ->method('getCharset')
@@ -31,7 +36,7 @@ class Twig_Tests_Extension_TextTest extends \PHPUnit\Framework\TestCase
      */
     public function testTruncate($input, $length, $preserve, $separator, $expectedOutput)
     {
-        $output = twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
+        $output = \twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
         $this->assertEquals($expectedOutput, $output);
     }
 

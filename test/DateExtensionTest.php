@@ -9,19 +9,24 @@
  * file that was distributed with this source code.
  */
 
+namespace Twig\Tests\Extension;
+
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
+use Twig\Extensions\DateExtension;
+use Twig\Loader\LoaderInterface;
+
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
  */
-class Twig_Tests_Extension_DateTest extends \PHPUnit\Framework\TestCase
+class DateExtensionTest extends TestCase
 {
-    /**
-     * @var TwigEnvironment
-     */
     private $env;
 
     public function setUp()
     {
-        $this->env = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $this->env = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
     }
 
     /**
@@ -29,13 +34,13 @@ class Twig_Tests_Extension_DateTest extends \PHPUnit\Framework\TestCase
      */
     public function testDiffWithStringsFromGivenNow($expected, $translated, $date, $now)
     {
-        $extension = new Twig_Extensions_Extension_Date();
+        $extension = new DateExtension();
         $this->assertEquals($expected, $extension->diff($this->env, $date, $now));
     }
 
     public function testDiffWithStringsFromNow()
     {
-        $extension = new Twig_Extensions_Extension_Date();
+        $extension = new DateExtension();
         $this->assertRegExp('/^[0-9]+ (second|minute|hour|day|month|year)s* ago$/', $extension->diff($this->env, '24-07-2014'));
     }
 
@@ -44,14 +49,14 @@ class Twig_Tests_Extension_DateTest extends \PHPUnit\Framework\TestCase
      */
     public function testDiffWithDateTimeFromGivenNow($expected, $translated, $date, $now)
     {
-        $extension = new Twig_Extensions_Extension_Date();
-        $this->assertEquals($expected, $extension->diff($this->env, new DateTime($date), new DateTime($now)));
+        $extension = new DateExtension();
+        $this->assertEquals($expected, $extension->diff($this->env, new \DateTime($date), new \DateTime($now)));
     }
 
     public function testDiffWithDateTimeFromNow()
     {
-        $extension = new Twig_Extensions_Extension_Date();
-        $this->assertRegExp('/^[0-9]+ (second|minute|hour|day|month|year)s* ago$/', $extension->diff($this->env, new DateTime('24-07-2014')));
+        $extension = new DateExtension();
+        $this->assertRegExp('/^[0-9]+ (second|minute|hour|day|month|year)s* ago$/', $extension->diff($this->env, new \DateTime('24-07-2014')));
     }
 
     /**
@@ -59,13 +64,13 @@ class Twig_Tests_Extension_DateTest extends \PHPUnit\Framework\TestCase
      */
     public function testDiffCanReturnTranslatableString($expected, $translated, $date, $now)
     {
-        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
+        $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
         $translator
             ->expects($this->once())
             ->method('transChoice')
             ->with($translated);
 
-        $extension = new Twig_Extensions_Extension_Date($translator);
+        $extension = new DateExtension($translator);
         $extension->diff($this->env, $date, $now);
     }
 

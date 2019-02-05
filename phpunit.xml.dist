@@ -13,13 +13,13 @@
 >
     <testsuites>
         <testsuite name="Twig Extensions Test Suite">
-            <directory>./test/Twig/</directory>
+            <directory>./test/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">./lib/Twig/</directory>
+            <directory suffix=".php">./src/</directory>
         </whitelist>
     </filter>
 </phpunit>

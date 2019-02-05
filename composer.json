@@ -24,6 +24,9 @@
     "autoload": {
         "psr-4": { "Twig\\Extensions\\": "src/" }
     },
+    "autoload-dev": {
+        "psr-4": { "Twig\\Tests\\Extensions\\": "test/" }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0-dev"
