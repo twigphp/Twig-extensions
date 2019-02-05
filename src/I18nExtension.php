@@ -22,9 +22,6 @@ class I18nExtension extends AbstractExtension
         return [new TransTokenParser()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [

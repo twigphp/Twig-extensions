@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": "^7.1.3",
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.0",
+        "symfony/polyfill-mbstring": "^1.10"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^4.2",
