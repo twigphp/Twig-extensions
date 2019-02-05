@@ -79,7 +79,7 @@ class DateExtension extends AbstractExtension
         return '';
     }
 
-    protected function getPluralizedInterval($count, $invert, $unit)
+    private function getPluralizedInterval($count, $invert, $unit)
     {
         if ($this->translator) {
             $id = sprintf('diff.%s.%s', $invert ? 'in' : 'ago', $unit);
