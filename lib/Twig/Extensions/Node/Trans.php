@@ -259,16 +259,20 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     protected function extractNames(\Twig_Node $node)
     {
         switch (get_class($node)) {
+            case 'Twig\Node\Expression\GetAttrExpression':
             case 'Twig_Node_Expression_GetAttr':
                 return array_merge(
                     $this->extractNames($node->getNode('node')),
                     $this->extractNames($node->getNode('attribute'))
                 );
 
+            case 'Twig\Node\Expression\NameExpression':
+            case 'Twig\Node\Expression\TempNameExpression':
             case 'Twig_Node_Expression_Name':
             case 'Twig_Node_Expression_TempName':
                 return array($node->getAttribute('name'));
 
+            case 'Twig\Node\Expression\ConstantExpression':
             case 'Twig_Node_Expression_Constant':
                 // Constants may have spaces in it. Normalize it!
                 return array($this->normalizeString($node->getAttribute('value'), '_'));
