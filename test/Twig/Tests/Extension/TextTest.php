@@ -11,7 +11,7 @@
 
 require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Text.php';
 
-class Twig_Tests_Extension_TextTest extends PHPUnit_Framework_TestCase
+class Twig_Tests_Extension_TextTest extends \PHPUnit\Framework\TestCase
 {
     /** @var TwigEnvironment */
     private $env;
