@@ -70,7 +70,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     if ($formattersCache && isset($formattersCache[$hashedFormat])) {
         $formatter = $formattersCache[$hashedFormat];
     } else {
-        if (PHP_VERSION_ID >= 50500) {
+        if (PHP_VERSION_ID >= 50500 && class_exists('IntlTimeZone')) {
             $formatterParams[3] = IntlTimeZone::createTimeZone($date->getTimezone()->getName());
         }
         $formatter = call_user_func_array([IntlDateFormatter::class, 'create'], $formatterParams);
