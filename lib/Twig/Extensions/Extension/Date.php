@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\IdentityTranslator;
 
 /**
  * @author Robin van der Vleuten <robinvdvleuten@gmail.com>
@@ -31,6 +32,11 @@ class Twig_Extensions_Extension_Date extends Twig_Extension
 
     public function __construct(TranslatorInterface $translator = null)
     {
+        // Ignore the IdentityTranslator, otherwise the parameters won't be replaced properly
+        if ($translator instanceof IdentityTranslator) {
+            $translator = null;
+        }
+
         $this->translator = $translator;
     }
 

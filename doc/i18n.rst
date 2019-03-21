@@ -135,10 +135,21 @@ Extracting Template Strings
 ---------------------------
 
 If you use the Twig I18n extension, you will probably need to extract the
-template strings at some point. Unfortunately, the ``xgettext`` utility does
-not understand Twig templates natively. But there is a simple workaround: as
-Twig converts templates to PHP files, you can use ``xgettext`` on the template
-cache instead.
+template strings at some point.
+
+Using Poedit 2
+~~~~~~~~~~~~~~
+
+Poedit 2 has native support for extracting from Twig files and no extra
+setup is necessary (Pro version).
+
+Using ``xgettext`` or Poedit 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Unfortunately, the ``xgettext`` utility does not understand Twig templates
+natively and neither do tools based on it such as free versions of Poedit.
+But there is a simple workaround: as Twig converts templates to
+PHP files, you can use ``xgettext`` on the template cache instead.
 
 Create a script that forces the generation of the cache for all your
 templates. Here is a simple example to get you started::
