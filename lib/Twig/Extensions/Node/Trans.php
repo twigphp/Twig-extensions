@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Node\Expression;
+
 /**
  * Represents a trans node.
  *
@@ -258,28 +260,23 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      */
     protected function extractNames(\Twig_Node $node)
     {
-        switch (get_class($node)) {
-            case 'Twig\Node\Expression\GetAttrExpression':
-            case 'Twig_Node_Expression_GetAttr':
-                return array_merge(
-                    $this->extractNames($node->getNode('node')),
-                    $this->extractNames($node->getNode('attribute'))
-                );
-
-            case 'Twig\Node\Expression\NameExpression':
-            case 'Twig\Node\Expression\TempNameExpression':
-            case 'Twig_Node_Expression_Name':
-            case 'Twig_Node_Expression_TempName':
-                return array($node->getAttribute('name'));
-
-            case 'Twig\Node\Expression\ConstantExpression':
-            case 'Twig_Node_Expression_Constant':
-                // Constants may have spaces in it. Normalize it!
-                return array($this->normalizeString($node->getAttribute('value'), '_'));
-
-            default:
-                throw new Twig_Error_Syntax('Sorry, the expression is too complex to use as "trans" value as is. Please use an "as" filter.', $node->getTemplateLine());
+        if ($node instanceof Expression\GetAttrExpression) {
+            return array_merge(
+                $this->extractNames($node->getNode('node')),
+                $this->extractNames($node->getNode('attribute'))
+            );
         }
+
+        if (($node instanceof Expression\NameExpression) || ($node instanceof Expression\TempNameExpression)) {
+            return array($node->getAttribute('name'));
+        }
+
+        if ($node instanceof Expression\ConstantExpression) {
+            // Constants may have spaces in it. Normalize it!
+            return array($this->normalizeString($node->getAttribute('value'), '_'));
+        }
+
+        throw new Twig_Error_Syntax('Sorry, the expression is too complex to use as "trans" variable as is. Please consider using an "as" filter.', $node->getTemplateLine());
     }
 
     /**
