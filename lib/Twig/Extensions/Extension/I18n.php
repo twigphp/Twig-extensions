@@ -13,7 +13,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     private $delimiters = array();
     private $normalize = false;
-    private $complex_vars = false;
+    private $complexVars = false;
 
     /**
      * Constructor for I18n Extension.
@@ -71,7 +71,7 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
 
         $this->delimiters = $this->parseDelimiters($options['delimiters']);
         $this->normalize = (bool) $options['normalize'];
-        $this->complex_vars = (bool) $options['complex_vars'];
+        $this->complexVars = (bool) $options['complex_vars'];
     }
 
     /**
@@ -91,11 +91,11 @@ class Twig_Extensions_Extension_I18n extends Twig_Extension
     }
 
     /**
-     * Returns the value of the current "complex_vars" config.
+     * Returns the value of the current "complexVars" config.
      */
     public function getComplexVars()
     {
-        return $this->complex_vars;
+        return $this->complexVars;
     }
 
     /**

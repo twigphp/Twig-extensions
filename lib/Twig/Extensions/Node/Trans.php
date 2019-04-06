@@ -22,7 +22,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
     private $delims = array('%', '%');
     private $normalize = false;
-    private $complex_vars = false;
+    private $complexVars = false;
 
     public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
     {
@@ -51,7 +51,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
 
             $this->delims = $this->extension->getDelimiters();
             $this->normalize = $this->extension->getNormalize();
-            $this->complex_vars = $this->extension->getComplexVars();
+            $this->complexVars = $this->extension->getComplexVars();
         }
 
         $compiler->addDebugInfo($this);
@@ -92,7 +92,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler->raw('), array(');
 
             foreach ($vars as $name => $var) {
-                if (!$this->complex_vars) {
+                if (!$this->complexVars) {
                     $name = $var->getAttribute('name');
                 }
 
@@ -154,7 +154,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                 }
 
                 if ($node instanceof Twig_Node_Print) {
-                    if ($this->complex_vars) {
+                    if ($this->complexVars) {
                         $expr = $node->getNode('expr');
                         $name = $this->guessNameFromExpression($expr);
                         $unique = $this->makeUnique($vars, $name, $expr);
