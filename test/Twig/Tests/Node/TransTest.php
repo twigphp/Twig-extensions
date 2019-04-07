@@ -108,18 +108,17 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $node = new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, 0);
         $tests[] = array($node, "// notes: Notes for translators\n".'echo strtr(ngettext("There is 1 pending task", "There are %count% pending tasks", abs(5)), array("%count%" => abs(5), ));');
 
-        // with environment options
-        $test_env = new Twig_Environment(new Twig_Loader_Array(array()));
-        $test_env->addExtension(new Twig_Extensions_Extension_I18n(array('delimiters' => '[[]]')));
+        // with different delimiters
+        $delimiter_options = new Twig_Extensions_Node_Trans_Options(array('delimiters' => '[[]]'));
         $body = new Twig_Node(array(
             new Twig_Node_Text('Hey ', 0),
             new Twig_Node_Print(new Twig_Node_Expression_Name('name', 0), 0),
             new Twig_Node_Text(', I have one apple', 0),
         ), array(), 0);
-        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
-        $tests[] = array($node, sprintf('echo strtr(gettext("Hey [[name]], I have one apple"), array("[[name]]" => %s, ));', $this->getVariableGetter('name')), $test_env);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0, null, $delimiter_options);
+        $tests[] = array($node, sprintf('echo strtr(gettext("Hey [[name]], I have one apple"), array("[[name]]" => %s, ));', $this->getVariableGetter('name')));
 
-        // With spaces to test it is correctly trimmed
+        // With spaces to test it is correctly trimmed (but NOT normalized)
         $body = new Twig_Node(array(
             new Twig_Node_Text('    Hello   there    ', 0),
         ), array(), 0);
@@ -134,13 +133,12 @@ class Twig_Tests_Node_TransTest extends Twig_Test_NodeTestCase
         $tests[] = array($node, 'echo gettext("Hello   there");');
 
         // String normalizing test
-        $test_env = new Twig_Environment(new Twig_Loader_Array(array()));
-        $test_env->addExtension(new Twig_Extensions_Extension_I18n(array('normalize' => true)));
+        $normalize_options = new Twig_Extensions_Node_Trans_Options(array('normalize' => true));
         $body = new Twig_Node(array(
             new Twig_Node_Text('  '.chr(10).chr(13).chr(9).' Hello '.chr(10).chr(13).chr(9).' there '.chr(10).chr(13).chr(9).' ', 0),
         ), array(), 0);
-        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0);
-        $tests[] = array($node, 'echo gettext("Hello there");', $test_env);
+        $node = new Twig_Extensions_Node_Trans($body, null, null, null, 0, null, $normalize_options);
+        $tests[] = array($node, 'echo gettext("Hello there");');
 
         return $tests;
     }

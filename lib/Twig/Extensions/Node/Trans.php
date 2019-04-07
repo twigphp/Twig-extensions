@@ -18,13 +18,17 @@ use Twig\Node\Expression;
  */
 class Twig_Extensions_Node_Trans extends Twig_Node
 {
-    private $extension = null;
+    /**
+     * Holds the current options from I18n extension.
+     *
+     * @see Twig_Extensions_Node_Trans_Options
+     */
+    private $options;
 
-    private $delims = array('%', '%');
-    private $normalize = false;
-    private $complexVars = false;
-
-    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null, $options = null)
     {
         $nodes = array('body' => $body);
         if (null !== $count) {
@@ -36,6 +40,11 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         if (null !== $notes) {
             $nodes['notes'] = $notes;
         }
+        if (null !== $options) {
+            $this->options = $options;
+        } else {
+            $this->options = new Twig_Extensions_Node_Trans_Options();
+        }
 
         parent::__construct($nodes, array(), $lineno, $tag);
     }
@@ -45,16 +54,10 @@ class Twig_Extensions_Node_Trans extends Twig_Node
      */
     public function compile(Twig_Compiler $compiler)
     {
-        // Reset default configuration from current environment
-        if (is_null($this->extension) && $compiler->getEnvironment()->hasExtension('Twig_Extensions_Extension_I18n')) {
-            $this->extension = $compiler->getEnvironment()->getExtension('Twig_Extensions_Extension_I18n');
-
-            $this->delims = $this->extension->getDelimiters();
-            $this->normalize = $this->extension->getNormalize();
-            $this->complexVars = $this->extension->getComplexVars();
-        }
-
         $compiler->addDebugInfo($this);
+
+        $delims = $this->options->getDelimiters();
+        $complex = $this->options->getComplexVars();
 
         $vars = array();
         list($msg, $vars) = $this->compileString($this->getNode('body'), $vars);
@@ -92,20 +95,20 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $compiler->raw('), array(');
 
             foreach ($vars as $name => $var) {
-                if (!$this->complexVars) {
+                if (!$complex) {
                     $name = $var->getAttribute('name');
                 }
 
                 if (('count' === $name) && $this->hasNode('plural')) {
                     $compiler
-                        ->string($this->delims[0].'count'.$this->delims[1])
+                        ->string($delims[0].'count'.$delims[1])
                         ->raw(' => abs(')
                         ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
                         ->raw('), ')
                     ;
                 } else {
                     $compiler
-                        ->string($this->delims[0].$name.$this->delims[1])
+                        ->string($delims[0].$name.$delims[1])
                         ->raw(' => ')
                         ->subcompile($var)
                         ->raw(', ')
@@ -146,6 +149,8 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         }
 
         if (count($body)) {
+            $delims = $this->options->getDelimiters();
+            $complex = $this->options->getComplexVars();
             $msg = '';
 
             foreach ($body as $node) {
@@ -154,19 +159,19 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                 }
 
                 if ($node instanceof Twig_Node_Print) {
-                    if ($this->complexVars) {
+                    if ($complex) {
                         $expr = $node->getNode('expr');
                         $name = $this->guessNameFromExpression($expr);
                         $unique = $this->makeUnique($vars, $name, $expr);
 
-                        $msg .= sprintf('%s%s%s', $this->delims[0], $unique, $this->delims[1]);
+                        $msg .= sprintf('%s%s%s', $delims[0], $unique, $delims[1]);
                         $vars[$unique] = $expr;
                     } else {
                         $n = $node->getNode('expr');
                         while ($n instanceof Twig_Node_Expression_Filter) {
                             $n = $n->getNode('node');
                         }
-                        $msg .= sprintf('%s%s%s', $this->delims[0], $n->getAttribute('name'), $this->delims[1]);
+                        $msg .= sprintf('%s%s%s', $delims[0], $n->getAttribute('name'), $delims[1]);
                         $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getTemplateLine());
                     }
                 } else {
@@ -177,7 +182,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant($this->normalize ? $this->normalizeString($msg) : trim($msg), $body->getTemplateLine()))), $vars);
+        return array(new Twig_Node(array(new Twig_Node_Expression_Constant($this->options->getNormalize() ? $this->normalizeString($msg) : trim($msg), $body->getTemplateLine()))), $vars);
     }
 
     /**
@@ -294,7 +299,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     {
         // Loop through until we get a free name. Note that the starting index
         // is "2" instead of "1". This gets us a good looking name series like
-        // "name", "mame_2",... It would be ugly to have "name" and "name_1"
+        // "name", "name_2",... It would be ugly to have "name" and "name_1"
         $index = 2;
         $new_name = $name;
         while (array_key_exists($new_name, $vars) && (!$this->isNodeSimilar($vars[$new_name], $expr))) {

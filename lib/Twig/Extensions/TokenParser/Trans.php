@@ -11,7 +11,20 @@
 
 class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
-    private $allow_complex = false;
+    /**
+     * Holds the current options from I18n extension.
+     *
+     * @see Twig_Extensions_Node_Trans_Options
+     */
+    private $options;
+
+    /**
+     *
+     */
+    public function __construct(Twig_Extensions_Node_Trans_Options $options = null)
+    {
+        $this->options = is_null($options) ? new Twig_Extensions_Node_Trans_Options() : $options;
+    }
 
     /**
      * {@inheritdoc}
@@ -48,11 +61,11 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        if (!$this->allow_complex) {
+        if (!$this->options->getComplexVars()) {
             $this->checkTransString($body, $lineno);
         }
 
-        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag(), $this->options);
     }
 
     public function decideForFork(Twig_Token $token)
@@ -71,27 +84,6 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
     public function getTag()
     {
         return 'trans';
-    }
-
-    /**
-     * Overrides Twig_TokenParser::setParser.
-     * Sets the parser associated with this token parser and extract
-     * configuration from the parser environment.
-     *
-     * @param Twig_Parser $parser A Twig_Parser instance
-     */
-    public function setParser(Twig_Parser $parser)
-    {
-        parent::setParser($parser);
-
-        // Hack to allow to read the private environment from the $parser.
-        // I don't get why it was decided to deprecate the "getEnvironment"
-        // from the parser, but... whatever.
-        $env = \Closure::bind(function() {return $this->env; }, $parser, get_class($parser))->call($parser);
-
-        if ($env->hasExtension('Twig_Extensions_Extension_I18n')) {
-            $this->allow_complex = $env->getExtension('Twig_Extensions_Extension_I18n')->getComplexVars();
-        }
     }
 
     protected function checkTransString(Twig_Node $body, $lineno)
