@@ -14,8 +14,8 @@
         "twig/twig": "^1.27|^2.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^3.4",
-        "symfony/translation": "^2.7|^3.4|^4.2"
+        "symfony/phpunit-bridge": "^3.4|^4.2|^4.3",
+        "symfony/translation": "^2.7|^3.4|^4.2|^4.3"
     },
     "suggest": {
         "symfony/translation": "Allow the time_diff output to be translated"
