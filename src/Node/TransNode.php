@@ -12,6 +12,7 @@
 namespace Twig\Extensions\Node;
 
 use Twig\Compiler;
+use Twig\Node\CheckToStringNode;
 use Twig\Node\Expression\AbstractExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
@@ -135,6 +136,9 @@ class TransNode extends Node
                     $n = $node->getNode('expr');
                     while ($n instanceof FilterExpression) {
                         $n = $n->getNode('node');
+                    }
+                    while ($n instanceof CheckToStringNode) {
+                        $n = $n->getNode('expr');
                     }
                     $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
                     $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
