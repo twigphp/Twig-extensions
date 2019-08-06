@@ -5,7 +5,9 @@ The *Date* extension provides the ``time_diff`` filter.
 
 You need to register this extension before using the ``time_diff`` filter::
 
-    $twig->addExtension(new Twig_Extensions_Extension_Date());
+    use Twig\Extensions\DateExtension;
+
+    $twig->addExtension(new DateExtension());
 
 ``time_diff``
 -------------

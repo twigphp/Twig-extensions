@@ -11,4 +11,6 @@ Installation
 First, :ref:`install the Extensions library<extensions-install>`. Next, add
 the extension to Twig::
 
-    $twig->addExtension(new Twig_Extensions_Extension_Array());
+    use Twig\Extensions\ArrayExtension;
+
+    $twig->addExtension(new ArrayExtension());

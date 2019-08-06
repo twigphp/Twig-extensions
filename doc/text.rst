@@ -12,7 +12,9 @@ Installation
 First, :ref:`install the Extensions library<extensions-install>`. Next, add
 the extension to Twig::
 
-    $twig->addExtension(new Twig_Extensions_Extension_Text());
+    use Twig\Extensions\TextExtension;
+
+    $twig->addExtension(new TextExtension());
 
 Wrapping Words
 --------------
