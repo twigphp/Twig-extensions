@@ -28,7 +28,7 @@ class IntlExtensionTest extends TestCase
     {
         $env = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
         $date = \twig_localized_date_filter($env, new \DateTime('2015-01-01T00:00:00', new \DateTimeZone('UTC')), 'short', 'long', 'en', '+01:00');
-        $this->assertEquals('1/1/15 1:00:00 AM GMT+01:00', $date);
+        $this->assertEquals('1/1/15, 12:00:00 AM GMT', $date);
     }
 
     /**

@@ -26,7 +26,7 @@ class TextExtensionTest extends \PHPUnit\Framework\TestCase
         $this->env
             ->expects($this->any())
             ->method('getCharset')
-            ->will($this->returnValue('utf-8'))
+            ->willReturn('utf-8')
         ;
     }
 
