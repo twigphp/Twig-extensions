@@ -106,7 +106,7 @@ namespace
      * Gets a number formatter instance according to given locale and formatter.
      *
      * @param string $locale Locale in which the number would be formatted
-     * @param int    $style  Style of the formatting
+     * @param string $style  Style of the formatting
      *
      * @return \NumberFormatter A NumberFormatter instance
      */
