@@ -75,6 +75,22 @@ result to a variable:
         Hello {{ name }}!
     {% endtrans %}
 
+.. caution::
+
+    The embedded values are not automatically escaped. You need to escape them
+    yourself using the `|e` filter:
+
+.. code-block:: jinja
+
+    {% set unsafe_var = "<script>alert('Hello from XSS')</script>" %}
+    {% set safe_var = unsafe_var|e %}
+
+    {% trans %}
+        Not escaped: {{ unsafe_var }}
+
+        Escaped: {{ safe_var }}
+    {% endtrans %}
+
 To pluralize a translatable string, use the ``plural`` block:
 
 .. code-block:: jinja
