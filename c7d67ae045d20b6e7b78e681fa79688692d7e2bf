@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2019-08-06T09:25:16Z
+
+Fixing this in 2.0 instead (doing it in 1.x is more or less the equivalent or re-doing what I've done in 2.0).
