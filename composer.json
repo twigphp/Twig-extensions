@@ -16,8 +16,8 @@
         "symfony/polyfill-mbstring": "^1.10"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^4.2",
-        "symfony/translation": "^3.4|^4.2"
+        "symfony/phpunit-bridge": "^4.2|^5.0",
+        "symfony/translation": "^3.4|^4.2|^5.0"
     },
     "suggest": {
         "symfony/translation": "Allow the time_diff output to be translated"
