@@ -74,6 +74,23 @@ class DateExtensionTest extends TestCase
         $extension->diff($this->env, $date, $now);
     }
 
+    public function testDiffWithSameDateTime()
+    {
+        $date = new \DateTime('05-09-2019 10:29:05');
+
+        $extension = new DateExtension();
+        $this->assertEquals('now', $extension->diff($this->env, $date, $date));
+
+        $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
+        $translator
+            ->expects($this->once())
+            ->method('trans')
+            ->with('diff.empty')
+            ->willReturn('diff.empty');
+        $extension = new DateExtension($translator);
+        $this->assertEquals('diff.empty', $extension->diff($this->env, $date, $date));
+    }
+
     public function getDiffTestData()
     {
         return array_merge($this->getDiffAgoTestData(), $this->getDiffInTestData());

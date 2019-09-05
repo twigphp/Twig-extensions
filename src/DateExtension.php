@@ -76,7 +76,7 @@ class DateExtension extends AbstractExtension
             }
         }
 
-        return '';
+        return $this->translator ? $this->translator->trans('diff.empty', [], 'date') : 'now';
     }
 
     private function getPluralizedInterval($count, $invert, $unit)
