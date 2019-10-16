@@ -43,22 +43,13 @@ class DT2ClockExtension extends AbstractExtension
             "🕧",  // U+1F567  CLOCK FACE TWELVE-THIRTY
         ];
 
-        $hour = (float) $datetime->format('g');
-        $minute = (float) $datetime->format('i');
+        $hours = (float) $datetime->format('g');
+        $minutes = (float) $datetime->format('i');
 
-        // Round to increments of 30
-        $roundedMinute = round($minute / 30) * 30;
-        $decimalMinute = $roundedMinute / 100;
+        $decimalHour = $hours + ($minutes / 60);
+
+        $clockIndex = (int) round($decimalHour * 2) - 2;
         
-        // Convert to half point (0, 0.5, 1)
-        $usableMinute = round($decimalMinute * 1.667, 1);
-
-        // -2 because `$clocks` index obviously starts at 0
-        // *2 because half an hour increments
-        $clockIndex = (int) (round($hour + $usableMinute, 1) * 2) - 2;
-
-        $clockIcon = $clocks[$clockIndex];
-
-        return $clockIcon;
+        return $clocks[$clockIndex];
     }
 }
