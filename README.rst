@@ -16,7 +16,7 @@ extensions.
   filters: use the Twig intl extra extension:
   `format_date <https://twig.symfony.com/doc/3.x/filters/format_date.html>`_,
   `format_number <https://twig.symfony.com/doc/3.x/filters/format_number.html>`_,
-  `format_currency https://twig.symfony.com/doc/3.x/filters/format_currency.html>`_,
+  `format_currency <https://twig.symfony.com/doc/3.x/filters/format_currency.html>`_,
   ...
 
 * *TextExtension*: ``truncate``, ``wordwrap`` filters: use the Twig string extra
