@@ -8,7 +8,7 @@ extensions.
 
 * *DateExtension*: ``time_diff`` filter -> no equivalent
 
-* *I18Extension*: ``trans`` filter -> use the `trans
+* *I18nExtension*: ``trans`` filter -> use the `trans
   <https://symfony.com/doc/current/reference/twig_reference.html#trans>`_ filter
   from the Symfony Translator extension (symfony/twig-bridge)
 
