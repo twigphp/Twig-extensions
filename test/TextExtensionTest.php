@@ -20,7 +20,7 @@ class TextExtensionTest extends \PHPUnit\Framework\TestCase
 {
     private $env;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->env = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
         $this->env
