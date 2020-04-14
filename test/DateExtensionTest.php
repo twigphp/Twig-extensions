@@ -12,7 +12,8 @@
 namespace Twig\Tests\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extensions\DateExtension;
 use Twig\Loader\LoaderInterface;
@@ -67,7 +68,7 @@ class DateExtensionTest extends TestCase
         $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
         $translator
             ->expects($this->once())
-            ->method('transChoice')
+            ->method('trans')
             ->with($translated);
 
         $extension = new DateExtension($translator);
