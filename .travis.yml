@@ -15,6 +15,7 @@ before_install:
 
 before_script:
     - if [ "$DEPS" == "low" ]; then composer --prefer-lowest --prefer-stable update; fi;
+    - if [ "$DEPS" == "4.x" ]; then composer require --dev symfony/translation:"^4.2"; fi
     - if [ "$DEPS" == "no" ]; then composer install; fi;
 
 script: |
@@ -24,5 +25,7 @@ matrix:
     include:
         - php: 7.1
           env: DEPS=low
+        - php: 7.1
+          env: DEPS=4.x
         - php: 7.2
     fast_finish: true
