@@ -12,7 +12,8 @@
 namespace Twig\Extensions;
 
 use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -33,8 +34,12 @@ class DateExtension extends AbstractExtension
 
     private $translator;
 
-    public function __construct(TranslatorInterface $translator = null)
+    public function __construct($translator = null)
     {
+        if (!$translator instanceof LegacyTranslatorInterface && !$translator instanceof TranslatorInterface) {
+            throw new \TypeError(sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, TranslatorInterface::class, \is_object($translator) ? \get_class($translator) : \gettype($translator)));
+        }
+
         // Ignore the IdentityTranslator, otherwise the parameters won't be replaced properly
         if ($translator instanceof IdentityTranslator) {
             $translator = null;
@@ -84,7 +89,9 @@ class DateExtension extends AbstractExtension
         if ($this->translator) {
             $id = sprintf('diff.%s.%s', $invert ? 'in' : 'ago', $unit);
 
-            return $this->translator->transChoice($id, $count, ['%count%' => $count], 'date');
+            return $this->translator instanceof TranslatorInterface
+                ? $this->translator->trans($id, ['%count%' => $count], 'date')
+                : $this->translator->transChoice($id, $count, ['%count%' => $count], 'date');
         }
 
         if (1 !== $count) {
