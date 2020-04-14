@@ -65,14 +65,39 @@ class DateExtensionTest extends TestCase
      */
     public function testDiffCanReturnTranslatableString($expected, $translated, $date, $now)
     {
+        if (!interface_exists(TranslatorInterface::class)) {
+            $this->markTestSkipped(sprintf('Interface "%s" does not exist', TranslatorInterface::class));
+        }
+
         $translator = $this->getMockBuilder(TranslatorInterface::class)->getMock();
         $translator
             ->expects($this->once())
             ->method('trans')
-            ->with($translated);
+            ->with($translated)
+            ->willReturn($expected);
 
         $extension = new DateExtension($translator);
-        $extension->diff($this->env, $date, $now);
+        $this->assertSame($expected, $extension->diff($this->env, $date, $now));
+    }
+
+    /**
+     * @dataProvider getDiffTestData()
+     */
+    public function testDiffCanReturnTranslatableStringLegacy($expected, $translated, $date, $now)
+    {
+        if (!interface_exists(LegacyTranslatorInterface::class)) {
+            $this->markTestSkipped(sprintf('Interface "%s" does not exist', LegacyTranslatorInterface::class));
+        }
+
+        $translator = $this->getMockBuilder(LegacyTranslatorInterface::class)->getMock();
+        $translator
+            ->expects($this->once())
+            ->method('transChoice')
+            ->with($translated)
+            ->willReturn($expected);
+
+        $extension = new DateExtension($translator);
+        $this->assertSame($expected, $extension->diff($this->env, $date, $now));
     }
 
     public function getDiffTestData()
