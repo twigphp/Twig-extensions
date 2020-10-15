@@ -12,6 +12,21 @@
 class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 {
     /**
+     * Holds the current options from I18n extension.
+     *
+     * @see Twig_Extensions_Node_Trans_Options
+     */
+    private $options;
+
+    /**
+     *
+     */
+    public function __construct(Twig_Extensions_Node_Trans_Options $options = null)
+    {
+        $this->options = is_null($options) ? new Twig_Extensions_Node_Trans_Options() : $options;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function parse(Twig_Token $token)
@@ -46,9 +61,11 @@ class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
 
         $stream->expect(Twig_Token::BLOCK_END_TYPE);
 
-        $this->checkTransString($body, $lineno);
+        if (!$this->options->getComplexVars()) {
+            $this->checkTransString($body, $lineno);
+        }
 
-        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
+        return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag(), $this->options);
     }
 
     public function decideForFork(Twig_Token $token)

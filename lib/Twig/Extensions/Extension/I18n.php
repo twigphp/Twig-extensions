@@ -12,11 +12,29 @@
 class Twig_Extensions_Extension_I18n extends Twig_Extension
 {
     /**
+     * Holds the current options for I18n extension.
+     *
+     * @see Twig_Extensions_Node_Trans_Options
+     */
+    private $options;
+
+    /**
+     * Constructor for I18n Extension.
+     *
+     * @param array $options Set of options for this Extension instance.
+     * @see Twig_Extensions_Node_Trans_Options
+     */
+    public function __construct($options = array())
+    {
+        $this->options = new Twig_Extensions_Node_Trans_Options($options);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTokenParsers()
     {
-        return array(new Twig_Extensions_TokenParser_Trans());
+        return array(new Twig_Extensions_TokenParser_Trans($this->options));
     }
 
     /**
