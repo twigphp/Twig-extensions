@@ -1,0 +1,20 @@
+name: "Lint"
+
+on:
+    push:
+    pull_request:
+
+jobs:
+    doctor-rst:
+        name: DOCtor-RST
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Checkout code"
+              uses: actions/checkout@v2
+
+            - name: "Lint docs"
+              uses: docker://oskarstark/doctor-rst
+              with:
+                  args: --short
+              env:
+                  DOCS_DIR: 'doc/'
