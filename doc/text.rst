@@ -59,7 +59,7 @@ Use the ``truncate`` filter to cut off a string after limit is reached
 The example would output ``Hello...``, as ``...`` is the default separator.
 
 You can also tell truncate to preserve whole words by setting the second
-parameter to ``true``. If the last Word is on the the separator, truncate
+parameter to ``true``. If the last Word is on the separator, truncate
 will print out the whole Word.
 
 .. code-block:: jinja
