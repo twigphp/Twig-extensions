@@ -80,7 +80,7 @@ result to a variable:
     The embedded values are not automatically escaped. You need to escape them
     yourself using the `|e` filter:
 
-.. code-block:: twig
+.. code-block:: html+twig
 
     {% set unsafe_var = "<script>alert('Hello from XSS')</script>" %}
     {% set safe_var = unsafe_var|e %}
