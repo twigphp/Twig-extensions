@@ -24,7 +24,7 @@ class DateExtensionTest extends TestCase
 {
     private $env;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->env = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
     }

@@ -57,7 +57,7 @@ jobs:
             - if: matrix.deps == 'low'
               run: composer --prefer-lowest --prefer-stable update
 
-            - if: matrix.deps = 'no'
+            - if: matrix.deps == 'no'
               run: composer update
 
             - name: "Install PHPUnit"
