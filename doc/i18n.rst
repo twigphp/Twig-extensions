@@ -181,10 +181,10 @@ templates. Here is a simple example to get you started::
     $loader = new FilesystemLoader($tplDir);
 
     // force auto-reload to always have the latest version of the template
-    $twig = new Environment($loader, array(
+    $twig = new Environment($loader, [
         'cache' => $tmpDir,
-        'auto_reload' => true
-    ));
+        'auto_reload' => true,
+    ]);
     $twig->addExtension(new I18nExtension());
     // configure Twig the way you want
 
