@@ -19,7 +19,7 @@ the extension to Twig::
 Use the ``localizeddate`` filter to format dates into a localized string
 representating the date.
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {{ post.published_at|localizeddate('medium', 'none', locale) }}
 
@@ -79,7 +79,7 @@ Examples might include locale="fa_IR@calendar=PERSIAN".
 Use the ``localizednumber`` filter to format numbers into a localized string
 representating the number.
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {{ product.quantity|localizednumber }}
 
@@ -117,7 +117,7 @@ Arguments
 
 Use the ``localizedcurrency`` filter to format a currency value into a localized string.
 
-.. code-block:: jinja
+.. code-block:: twig
 
     {{ product.price|localizedcurrency('EUR') }}
 
