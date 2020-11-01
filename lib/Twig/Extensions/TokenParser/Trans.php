@@ -9,78 +9,105 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Extensions_TokenParser_Trans extends Twig_TokenParser
+use Twig\Error\SyntaxError;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\ModuleNode;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+use Twig\Node\TextNode;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
+
+class Twig_Extensions_TokenParser_Trans extends AbstractTokenParser
 {
     /**
-     * {@inheritdoc}
+     * @param Token $token
+     * @return ModuleNode
+     * @throws SyntaxError
      */
-    public function parse(Twig_Token $token)
+    public function parse(Token $token): Node
     {
+        $parser = $this->parser;
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
         $count = null;
         $plural = null;
         $notes = null;
 
-        if (!$stream->test(Twig_Token::BLOCK_END_TYPE)) {
+        if (!$stream->test(Token::BLOCK_END_TYPE)) {
             $body = $this->parser->getExpressionParser()->parseExpression();
         } else {
-            $stream->expect(Twig_Token::BLOCK_END_TYPE);
-            $body = $this->parser->subparse(array($this, 'decideForFork'));
+            $stream->expect(Token::BLOCK_END_TYPE);
+            $body = $this->parser->subparse([$this, 'decideForFork']);
             $next = $stream->next()->getValue();
 
             if ('plural' === $next) {
                 $count = $this->parser->getExpressionParser()->parseExpression();
-                $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                $plural = $this->parser->subparse(array($this, 'decideForFork'));
+                $stream->expect(Token::BLOCK_END_TYPE);
+                $plural = $this->parser->subparse([$this, 'decideForFork']);
 
                 if ('notes' === $stream->next()->getValue()) {
-                    $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                    $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
+                    $stream->expect(Token::BLOCK_END_TYPE);
+                    $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
                 }
             } elseif ('notes' === $next) {
-                $stream->expect(Twig_Token::BLOCK_END_TYPE);
-                $notes = $this->parser->subparse(array($this, 'decideForEnd'), true);
+                $stream->expect(Token::BLOCK_END_TYPE);
+                $notes = $this->parser->subparse([$this, 'decideForEnd'], true);
             }
         }
 
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         $this->checkTransString($body, $lineno);
 
         return new Twig_Extensions_Node_Trans($body, $plural, $count, $notes, $lineno, $this->getTag());
     }
 
-    public function decideForFork(Twig_Token $token)
+    /**
+     * @param Token $token
+     * @return bool
+     */
+    public function decideForFork(Token $token): bool
     {
-        return $token->test(array('plural', 'notes', 'endtrans'));
+        return $token->test(['plural', 'notes', 'endtrans']);
     }
 
-    public function decideForEnd(Twig_Token $token)
+    /**
+     * @param Token $token
+     * @return bool
+     */
+    public function decideForEnd(Token $token): bool
     {
         return $token->test('endtrans');
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getTag()
+    public function getTag(): string
     {
         return 'trans';
     }
 
-    protected function checkTransString(Twig_Node $body, $lineno)
+    /**
+     * @param Node $body
+     * @param int $lineno
+     * @throws SyntaxError
+     */
+    protected function checkTransString(Node $body, int $lineno): void
     {
         foreach ($body as $i => $node) {
             if (
-                $node instanceof Twig_Node_Text
-                ||
-                ($node instanceof Twig_Node_Print && $node->getNode('expr') instanceof Twig_Node_Expression_Name)
+                $node instanceof TextNode ||
+                ($node instanceof PrintNode && $node->getNode('expr') instanceof NameExpression)
             ) {
                 continue;
             }
 
-            throw new Twig_Error_Syntax(sprintf('The text to be translated with "trans" can only contain references to simple variables'), $lineno);
+            throw new SyntaxError(
+                'The text to be translated with "trans" can only contain references to simple variables',
+                $lineno
+            );
         }
     }
 }

@@ -8,9 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Component\Translation\TranslatorInterface as TranslatorInterfaceLegacy;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -20,14 +20,14 @@ use Twig\TwigFilter;
  */
 class Twig_Extensions_Extension_Date extends AbstractExtension
 {
-    public static $units = array(
+    public static $units = [
         'y' => 'year',
         'm' => 'month',
         'd' => 'day',
         'h' => 'hour',
         'i' => 'minute',
         's' => 'second',
-    );
+    ];
 
     /**
      * @var TranslatorInterface
@@ -47,23 +47,23 @@ class Twig_Extensions_Extension_Date extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
-            new TwigFilter('time_diff', array($this, 'diff'), array('needs_environment' => true)),
-        );
+        return [
+            new TwigFilter('time_diff', [$this, 'diff'], ['needs_environment' => true]),
+        ];
     }
 
     /**
      * Filter for converting dates to a time ago string like Facebook and Twitter has.
      *
-     * @param Environment $env  a Twig_Environment instance
-     * @param string|DateTime  $date a string or DateTime object to convert
-     * @param string|DateTime  $now  A string or DateTime object to compare with. If none given, the current time will be used.
+     * @param Environment $env a Twig_Environment instance
+     * @param string|DateTime $date a string or DateTime object to convert
+     * @param string|DateTime|null $now A string or DateTime object to compare with. If none given, the current time will be used.
      *
      * @return string the converted time
      */
-    public function diff(Environment $env, $date, $now = null)
+    public function diff(Environment $env, $date, $now = null): ?string
     {
         // Convert both dates to DateTime instances.
         $date = twig_date_converter($env, $date);
@@ -84,16 +84,12 @@ class Twig_Extensions_Extension_Date extends AbstractExtension
         return '';
     }
 
-    protected function getPluralizedInterval($count, $invert, $unit)
+    protected function getPluralizedInterval($count, $invert, $unit): ?string
     {
         if ($this->translator) {
             $id = sprintf('diff.%s.%s', $invert ? 'in' : 'ago', $unit);
 
-            if ($this->translator instanceof TranslatorInterfaceLegacy) {
-                return $this->translator->transChoice($id, $count, array('%count%' => $count), 'date');
-            }
-
-            return $this->translator->trans($id, array('%count%' => $count), 'date');
+            return $this->translator->trans($id, ['%count%' => $count], 'date');
         }
 
         if (1 !== $count) {
@@ -104,9 +100,9 @@ class Twig_Extensions_Extension_Date extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'date';
     }

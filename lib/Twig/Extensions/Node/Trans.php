@@ -9,16 +9,40 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Expression\ConstantExpression;
+use Twig\Node\Expression\FilterExpression;
+use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\TempNameExpression;
+use Twig\Node\Node;
+use Twig\Node\PrintNode;
+
 /**
  * Represents a trans node.
  *
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-class Twig_Extensions_Node_Trans extends Twig_Node
+class Twig_Extensions_Node_Trans extends Node
 {
-    public function __construct(Twig_Node $body, Twig_Node $plural = null, Twig_Node_Expression $count = null, Twig_Node $notes = null, $lineno, $tag = null)
-    {
-        $nodes = array('body' => $body);
+    /**
+     * Twig_Extensions_Node_Trans constructor.
+     * @param Node $body
+     * @param Node|null $plural
+     * @param AbstractExpression|null $count
+     * @param Node|null $notes
+     * @param $lineno
+     * @param null $tag
+     */
+    public function __construct(
+        Node $body,
+        Node $plural = null,
+        AbstractExpression $count = null,
+        Node $notes = null,
+        $lineno,
+        $tag = null
+    ) {
+        $nodes = ['body' => $body];
         if (null !== $count) {
             $nodes['count'] = $count;
         }
@@ -29,20 +53,20 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $nodes['notes'] = $notes;
         }
 
-        parent::__construct($nodes, array(), $lineno, $tag);
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler->addDebugInfo($this);
 
-        list($msg, $vars) = $this->compileString($this->getNode('body'));
+        [$msg, $vars] = $this->compileString($this->getNode('body'));
 
         if ($this->hasNode('plural')) {
-            list($msg1, $vars1) = $this->compileString($this->getNode('plural'));
+            [$msg1, $vars1] = $this->compileString($this->getNode('plural'));
 
             $vars = array_merge($vars, $vars1);
         }
@@ -53,15 +77,14 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $message = trim($this->getNode('notes')->getAttribute('data'));
 
             // line breaks are not allowed cause we want a single line comment
-            $message = str_replace(array("\n", "\r"), ' ', $message);
+            $message = str_replace(["\n", "\r"], ' ', $message);
             $compiler->write("// notes: {$message}\n");
         }
 
         if ($vars) {
             $compiler
                 ->write('echo strtr('.$function.'(')
-                ->subcompile($msg)
-            ;
+                ->subcompile($msg);
 
             if ($this->hasNode('plural')) {
                 $compiler
@@ -69,8 +92,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
-                    ->raw(')')
-                ;
+                    ->raw(')');
             }
 
             $compiler->raw('), array(');
@@ -81,15 +103,13 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                         ->string('%count%')
                         ->raw(' => abs(')
                         ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
-                        ->raw('), ')
-                    ;
+                        ->raw('), ');
                 } else {
                     $compiler
                         ->string('%'.$var->getAttribute('name').'%')
                         ->raw(' => ')
                         ->subcompile($var)
-                        ->raw(', ')
-                    ;
+                        ->raw(', ');
                 }
             }
 
@@ -97,8 +117,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
         } else {
             $compiler
                 ->write('echo '.$function.'(')
-                ->subcompile($msg)
-            ;
+                ->subcompile($msg);
 
             if ($this->hasNode('plural')) {
                 $compiler
@@ -106,8 +125,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
                     ->subcompile($msg1)
                     ->raw(', abs(')
                     ->subcompile($this->hasNode('count') ? $this->getNode('count') : null)
-                    ->raw(')')
-                ;
+                    ->raw(')');
             }
 
             $compiler->raw(");\n");
@@ -115,32 +133,28 @@ class Twig_Extensions_Node_Trans extends Twig_Node
     }
 
     /**
-     * @param Twig_Node $body A Twig_Node instance
+     * @param Node $body A Twig_Node instance
      *
      * @return array
      */
-    protected function compileString(Twig_Node $body)
+    protected function compileString(Node $body): array
     {
-        if ($body instanceof Twig_Node_Expression_Name || $body instanceof Twig_Node_Expression_Constant || $body instanceof Twig_Node_Expression_TempName) {
-            return array($body, array());
+        if ($body instanceof NameExpression || $body instanceof ConstantExpression || $body instanceof TempNameExpression) {
+            return [$body, []];
         }
 
-        $vars = array();
+        $vars = [];
         if (count($body)) {
             $msg = '';
 
             foreach ($body as $node) {
-                if (get_class($node) === 'Twig_Node' && $node->getNode(0) instanceof Twig_Node_SetTemp) {
-                    $node = $node->getNode(1);
-                }
-
-                if ($node instanceof Twig_Node_Print) {
+                if ($node instanceof PrintNode) {
                     $n = $node->getNode('expr');
-                    while ($n instanceof Twig_Node_Expression_Filter) {
+                    while ($n instanceof FilterExpression) {
                         $n = $n->getNode('node');
                     }
                     $msg .= sprintf('%%%s%%', $n->getAttribute('name'));
-                    $vars[] = new Twig_Node_Expression_Name($n->getAttribute('name'), $n->getTemplateLine());
+                    $vars[] = new NameExpression($n->getAttribute('name'), $n->getTemplateLine());
                 } else {
                     $msg .= $node->getAttribute('data');
                 }
@@ -149,7 +163,7 @@ class Twig_Extensions_Node_Trans extends Twig_Node
             $msg = $body->getAttribute('data');
         }
 
-        return array(new Twig_Node(array(new Twig_Node_Expression_Constant(trim($msg), $body->getTemplateLine()))), $vars);
+        return [new Node([new ConstantExpression(trim($msg), $body->getTemplateLine())]), $vars];
     }
 
     /**

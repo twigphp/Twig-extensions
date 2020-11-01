@@ -9,27 +9,28 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * @author Ricard Clau <ricard.clau@gmail.com>
  */
-class Twig_Extensions_Extension_Array extends Twig_Extension
+class Twig_Extensions_Extension_Array extends AbstractExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        $filters = array(
-             new Twig_SimpleFilter('shuffle', 'twig_shuffle_filter'),
-        );
-
-        return $filters;
+        return [
+            new TwigFilter('shuffle', 'twig_shuffle_filter'),
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'array';
     }
