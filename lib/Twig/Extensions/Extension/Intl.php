@@ -9,47 +9,70 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Extensions_Extension_Intl extends Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\Environment;
+
+class Twig_Extensions_Extension_Intl extends AbstractExtension
 {
     public function __construct()
     {
         if (!class_exists('IntlDateFormatter')) {
-            throw new RuntimeException('The native PHP intl extension (http://php.net/manual/en/book.intl.php) is needed to use intl-based filters.');
+            throw new RuntimeException('The native PHP intl extension (https://www.php.net/manual/en/book.intl.php) is needed to use intl-based filters.');
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
-            new Twig_SimpleFilter('localizeddate', 'twig_localized_date_filter', array('needs_environment' => true)),
-            new Twig_SimpleFilter('localizednumber', 'twig_localized_number_filter'),
-            new Twig_SimpleFilter('localizedcurrency', 'twig_localized_currency_filter'),
-        );
+        return [
+            new TwigFilter('localizeddate', 'twig_localized_date_filter', ['needs_environment' => true]),
+            new TwigFilter('localizednumber', 'twig_localized_number_filter'),
+            new TwigFilter('localizedcurrency', 'twig_localized_currency_filter'),
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'intl';
     }
 }
 
-function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 'medium', $timeFormat = 'medium', $locale = null, $timezone = null, $format = null, $calendar = 'gregorian')
-{
+/**
+ * @param Environment $env
+ * @param string|DateTime $date
+ * @param string $dateFormat
+ * @param string $timeFormat
+ * @param null $locale
+ * @param null $timezone
+ * @param null $format
+ * @param string $calendar
+ * @return false|string
+ */
+function twig_localized_date_filter(
+    Environment $env,
+    $date,
+    $dateFormat = 'medium',
+    $timeFormat = 'medium',
+    $locale = null,
+    $timezone = null,
+    $format = null,
+    $calendar = 'gregorian'
+) {
     $date = twig_date_converter($env, $date, $timezone);
 
-    $formatValues = array(
+    $formatValues = [
         'none' => IntlDateFormatter::NONE,
         'short' => IntlDateFormatter::SHORT,
         'medium' => IntlDateFormatter::MEDIUM,
         'long' => IntlDateFormatter::LONG,
         'full' => IntlDateFormatter::FULL,
-    );
+    ];
 
     if (PHP_VERSION_ID < 50500 || !class_exists('IntlTimeZone')) {
         $formatter = IntlDateFormatter::create(
@@ -78,18 +101,19 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
 
 function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null)
 {
-    static $typeValues = array(
+    static $typeValues = [
         'default' => NumberFormatter::TYPE_DEFAULT,
         'int32' => NumberFormatter::TYPE_INT32,
         'int64' => NumberFormatter::TYPE_INT64,
         'double' => NumberFormatter::TYPE_DOUBLE,
         'currency' => NumberFormatter::TYPE_CURRENCY,
-    );
+    ];
 
     $formatter = twig_get_number_formatter($locale, $style);
 
     if (!isset($typeValues[$type])) {
-        throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type, implode('", "', array_keys($typeValues))));
+        throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type,
+            implode('", "', array_keys($typeValues))));
     }
 
     return $formatter->format($number, $typeValues[$type]);
@@ -106,7 +130,7 @@ function twig_localized_currency_filter($number, $currency = null, $locale = nul
  * Gets a number formatter instance according to given locale and formatter.
  *
  * @param string $locale Locale in which the number would be formatted
- * @param int    $style  Style of the formatting
+ * @param int $style Style of the formatting
  *
  * @return NumberFormatter A NumberFormatter instance
  */
@@ -122,7 +146,7 @@ function twig_get_number_formatter($locale, $style)
         return $formatter;
     }
 
-    static $styleValues = array(
+    static $styleValues = [
         'decimal' => NumberFormatter::DECIMAL,
         'currency' => NumberFormatter::CURRENCY,
         'percent' => NumberFormatter::PERCENT,
@@ -130,10 +154,11 @@ function twig_get_number_formatter($locale, $style)
         'spellout' => NumberFormatter::SPELLOUT,
         'ordinal' => NumberFormatter::ORDINAL,
         'duration' => NumberFormatter::DURATION,
-    );
+    ];
 
     if (!isset($styleValues[$style])) {
-        throw new Twig_Error_Syntax(sprintf('The style "%s" does not exist. Known styles are: "%s"', $style, implode('", "', array_keys($styleValues))));
+        throw new Twig_Error_Syntax(sprintf('The style "%s" does not exist. Known styles are: "%s"', $style,
+            implode('", "', array_keys($styleValues))));
     }
 
     $currentStyle = $style;

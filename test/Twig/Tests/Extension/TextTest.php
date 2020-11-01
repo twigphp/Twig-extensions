@@ -9,41 +9,52 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+
 require_once __DIR__.'/../../../../lib/Twig/Extensions/Extension/Text.php';
 
-class Twig_Tests_Extension_TextTest extends \PHPUnit\Framework\TestCase
+class Twig_Tests_Extension_TextTest extends TestCase
 {
-    /** @var TwigEnvironment */
+    /** @var Environment */
     private $env;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->env = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
+        $this->env = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
         $this->env
-            ->expects($this->any())
             ->method('getCharset')
-            ->will($this->returnValue('utf-8'))
-        ;
+            ->willReturn('utf-8');
     }
 
     /**
      * @dataProvider getTruncateTestData
+     * @param string $input
+     * @param int $length
+     * @param bool $preserve
+     * @param string $separator
+     * @param string $expectedOutput
      */
-    public function testTruncate($input, $length, $preserve, $separator, $expectedOutput)
-    {
+    public function testTruncate(
+        string $input,
+        int $length,
+        bool $preserve,
+        string $separator,
+        string $expectedOutput
+    ): void {
         $output = twig_truncate_filter($this->env, $input, $length, $preserve, $separator);
-        $this->assertEquals($expectedOutput, $output);
+        self::assertEquals($expectedOutput, $output);
     }
 
-    public function getTruncateTestData()
+    public function getTruncateTestData(): array
     {
-        return array(
-            array('This is a very long sentence.', 2, false, '...', 'Th...'),
-            array('This is a very long sentence.', 6, false, '...', 'This i...'),
-            array('This is a very long sentence.', 2, true, '...', 'This...'),
-            array('This is a very long sentence.', 2, true, '[...]', 'This[...]'),
-            array('This is a very long sentence.', 23, false, '...', 'This is a very long sen...'),
-            array('This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'),
-        );
+        return [
+            ['This is a very long sentence.', 2, false, '...', 'Th...'],
+            ['This is a very long sentence.', 6, false, '...', 'This i...'],
+            ['This is a very long sentence.', 2, true, '...', 'This...'],
+            ['This is a very long sentence.', 2, true, '[...]', 'This[...]'],
+            ['This is a very long sentence.', 23, false, '...', 'This is a very long sen...'],
+            ['This is a very long sentence.', 23, true, '...', 'This is a very long sentence.'],
+        ];
     }
 }

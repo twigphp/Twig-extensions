@@ -9,30 +9,33 @@
  * file that was distributed with this source code.
  */
 
-class Twig_Extensions_Extension_I18n extends Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class Twig_Extensions_Extension_I18n extends AbstractExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
-        return array(new Twig_Extensions_TokenParser_Trans());
+        return [new Twig_Extensions_TokenParser_Trans()];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
-             new Twig_SimpleFilter('trans', 'gettext'),
-        );
+        return [
+            new TwigFilter('trans', 'gettext'),
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'i18n';
     }
