@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\Environment;
@@ -99,6 +100,14 @@ function twig_localized_date_filter(
     return $formatter->format($date->getTimestamp());
 }
 
+/**
+ * @param int|float $number
+ * @param string $style
+ * @param string $type
+ * @param null $locale
+ * @return false|string
+ * @throws SyntaxError
+ */
 function twig_localized_number_filter($number, $style = 'decimal', $type = 'default', $locale = null)
 {
     static $typeValues = [
@@ -112,14 +121,21 @@ function twig_localized_number_filter($number, $style = 'decimal', $type = 'defa
     $formatter = twig_get_number_formatter($locale, $style);
 
     if (!isset($typeValues[$type])) {
-        throw new Twig_Error_Syntax(sprintf('The type "%s" does not exist. Known types are: "%s"', $type,
+        throw new SyntaxError(sprintf('The type "%s" does not exist. Known types are: "%s"', $type,
             implode('", "', array_keys($typeValues))));
     }
 
     return $formatter->format($number, $typeValues[$type]);
 }
 
-function twig_localized_currency_filter($number, $currency = null, $locale = null)
+/**
+ * @param float $number
+ * @param string|null $currency
+ * @param string|null $locale
+ * @return string
+ * @throws SyntaxError
+ */
+function twig_localized_currency_filter(float $number, $currency = null, $locale = null)
 {
     $formatter = twig_get_number_formatter($locale, 'currency');
 
@@ -133,14 +149,15 @@ function twig_localized_currency_filter($number, $currency = null, $locale = nul
  * @param int $style Style of the formatting
  *
  * @return NumberFormatter A NumberFormatter instance
+ * @throws SyntaxError
  */
-function twig_get_number_formatter($locale, $style)
+function twig_get_number_formatter(string$locale, int $style)
 {
     static $formatter, $currentStyle;
 
-    $locale = null !== $locale ? $locale : Locale::getDefault();
+    $locale = $locale ?? Locale::getDefault();
 
-    if ($formatter && $formatter->getLocale() === $locale && $currentStyle === $style) {
+    if ($formatter && $currentStyle === $style && $formatter->getLocale() === $locale) {
         // Return same instance of NumberFormatter if parameters are the same
         // to those in previous call
         return $formatter;
@@ -157,7 +174,7 @@ function twig_get_number_formatter($locale, $style)
     ];
 
     if (!isset($styleValues[$style])) {
-        throw new Twig_Error_Syntax(sprintf('The style "%s" does not exist. Known styles are: "%s"', $style,
+        throw new SyntaxError(sprintf('The style "%s" does not exist. Known styles are: "%s"', $style,
             implode('", "', array_keys($styleValues))));
     }
 
